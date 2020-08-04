@@ -20,10 +20,7 @@ namespace Voxel.MiddyNet
             MiddyContext.LambdaContext = context;
             MiddyContext.AdditionalContext.Clear(); //  Given that the instance is reused, we need to clean the dictionary.
 
-            foreach (var middleware in middlewares)
-            {
-                await middleware.Before(lambdaEvent, MiddyContext);
-            }
+            middlewares.ForEach(async m => await m.Before(lambdaEvent, MiddyContext));
 
             var response = await Handle(lambdaEvent, MiddyContext);
 
