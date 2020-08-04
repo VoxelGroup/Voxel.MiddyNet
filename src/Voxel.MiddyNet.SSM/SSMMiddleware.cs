@@ -1,31 +1,61 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Amazon.SimpleSystemsManagement;
 using Amazon.SimpleSystemsManagement.Model;
 
 namespace Voxel.MiddyNet.SSM
 {
-    public class SSMMiddleware<Req, Res> : ILambdaMiddleware<Req, Res>
+    public class SSMParameterToGet
     {
-        private string ParameterPath { get; }
-        public SSMMiddleware(string parameterPath)
+        public string Name { get; }
+        public string Path { get; }
+
+        public SSMParameterToGet(string name, string path)
         {
-            ParameterPath = parameterPath;
+            Name = name;
+            Path = path;
+        }
+    }
+
+    public class SSMOptions
+    {
+        public List<SSMParameterToGet> ParametersToGet { get; set; }
+    }
+
+    public class SSMMiddleware<TReq, TRes> : ILambdaMiddleware<TReq, TRes>
+    {
+        private readonly SSMOptions ssmOptions;
+
+        private readonly Func<IAmazonSimpleSystemsManagement> ssmClientFactory;
+
+        public SSMMiddleware(SSMOptions ssmOptions) : this(ssmOptions, () => new AmazonSimpleSystemsManagementClient())
+        {
+        }
+        
+        public SSMMiddleware(SSMOptions ssmOptions, Func<IAmazonSimpleSystemsManagement> ssmClientFactory)
+        {
+            this.ssmOptions = ssmOptions;
+            this.ssmClientFactory = ssmClientFactory;
         }
 
-        public Task<Res> After(Res lambdaResponse, MiddyNetContext context)
+        public Task<TRes> After(TRes lambdaResponse, MiddyNetContext context)
         {
             return Task.FromResult(lambdaResponse);
         }
 
-        public async Task Before(Req lambdaEvent, MiddyNetContext context)
+        public async Task Before(TReq lambdaEvent, MiddyNetContext context)
         {
-            using var ssmClient = new AmazonSimpleSystemsManagementClient();
-            var cloudTradeAuthResponse = await ssmClient.GetParameterAsync(new GetParameterRequest()
+            using var ssmClient = ssmClientFactory();
+            foreach (var parameter in ssmOptions.ParametersToGet)
             {
-                Name = ParameterPath
-            });
+                var cloudTradeAuthResponse = await ssmClient.GetParameterAsync(new GetParameterRequest
+                {
+                    Name = parameter.Path
+                });
 
-            context.AdditionalContext.Add("SSSParameter", cloudTradeAuthResponse.Parameter.Value); // Need more work
+                context.AdditionalContext.Add(parameter.Name, cloudTradeAuthResponse.Parameter.Value);
+            }
         }
     }
 }

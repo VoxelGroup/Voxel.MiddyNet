@@ -2,6 +2,23 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageOutputPath>..\..\</PackageOutputPath>
+    <PackageId>Voxel.MiddyNet.SSM</PackageId>
+    <Authors>Voxel Media S.L.</Authors>
+    <Company>Voxel Media S.L.</Company>
+    <Product>Voxel.ApiTemplate</Product>
+    <Description>SSM Middleware for Middy .NET</Description>
+    <Copyright>Copyright © Voxel Media 2007-2020</Copyright>
+    <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <PackageProjectUrl>https://github.com/VoxelGroup/Voxel.MiddyNet</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/VoxelGroup/Voxel.MiddyNet.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <DebugType>Embedded</DebugType>
   </PropertyGroup>
 
   <ItemGroup>
