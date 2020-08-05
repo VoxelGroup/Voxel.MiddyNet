@@ -21,6 +21,29 @@ namespace Voxel.MiddyNet.SSM
     public class SSMOptions
     {
         public List<SSMParameterToGet> ParametersToGet { get; set; }
+        public int CacheExpiryInMillis { get; set; }
+    }
+
+    public class CachedParameter
+    {
+        public DateTimeOffset InsertDateTime { get; }
+        public string Value { get; }
+
+        public CachedParameter(DateTimeOffset insertDateTime, string value)
+        {
+            InsertDateTime = insertDateTime;
+            Value = value;
+        }
+    }
+
+    public interface ITimeProvider
+    {
+        DateTime UtcNow { get; }
+    }
+
+    public class SystemTimeProvider : ITimeProvider
+    {
+        public DateTime UtcNow => DateTime.UtcNow;
     }
 
     public class SSMMiddleware<TReq, TRes> : ILambdaMiddleware<TReq, TRes>
@@ -28,15 +51,19 @@ namespace Voxel.MiddyNet.SSM
         private readonly SSMOptions ssmOptions;
 
         private readonly Func<IAmazonSimpleSystemsManagement> ssmClientFactory;
+        private readonly ITimeProvider timeProvider;
 
-        public SSMMiddleware(SSMOptions ssmOptions) : this(ssmOptions, () => new AmazonSimpleSystemsManagementClient())
+        private Dictionary<string, CachedParameter> ParametersCache = new Dictionary<string, CachedParameter>();
+
+        public SSMMiddleware(SSMOptions ssmOptions) : this(ssmOptions, () => new AmazonSimpleSystemsManagementClient(), new SystemTimeProvider())
         {
         }
         
-        public SSMMiddleware(SSMOptions ssmOptions, Func<IAmazonSimpleSystemsManagement> ssmClientFactory)
+        public SSMMiddleware(SSMOptions ssmOptions, Func<IAmazonSimpleSystemsManagement> ssmClientFactory, ITimeProvider timeProvider)
         {
             this.ssmOptions = ssmOptions;
             this.ssmClientFactory = ssmClientFactory;
+            this.timeProvider = timeProvider;
         }
 
         public Task<TRes> After(TRes lambdaResponse, MiddyNetContext context)
@@ -49,13 +76,48 @@ namespace Voxel.MiddyNet.SSM
             using var ssmClient = ssmClientFactory();
             foreach (var parameter in ssmOptions.ParametersToGet)
             {
-                var cloudTradeAuthResponse = await ssmClient.GetParameterAsync(new GetParameterRequest
+                if (IsParameterInCacheValid(parameter.Name))
                 {
-                    Name = parameter.Path
-                });
+                    UpdateAdditionalContext(context, parameter.Name, ParametersCache[parameter.Name].Value);
+                    UpdateCache(parameter.Name, ParametersCache[parameter.Name].Value);
+                }
+                else
+                {
+                    var cloudTradeAuthResponse = await ssmClient.GetParameterAsync(new GetParameterRequest
+                    {
+                        Name = parameter.Path
+                    });
 
-                context.AdditionalContext.Add(parameter.Name, cloudTradeAuthResponse.Parameter.Value);
+                    UpdateAdditionalContext(context, parameter.Name, cloudTradeAuthResponse.Parameter.Value);
+                    UpdateCache(parameter.Name, cloudTradeAuthResponse.Parameter.Value);
+                }
             }
+        }
+
+        private bool IsParameterInCacheValid(string parameterName)
+        {
+            if (!ParametersCache.ContainsKey(parameterName)) return false;
+
+            if (ParametersCache[parameterName].InsertDateTime.AddMilliseconds(ssmOptions.CacheExpiryInMillis) >
+                timeProvider.UtcNow) return true;
+
+            return false;
+        }
+
+        private void UpdateAdditionalContext(MiddyNetContext context, string parameterName, string parameterValue)
+        {
+            if (context.AdditionalContext.ContainsKey(parameterName))
+                context.AdditionalContext.Remove(parameterName);
+
+            context.AdditionalContext.Add(parameterName, parameterValue);
+        }
+
+        private void UpdateCache(string parameterName, string parameterValue)
+        {
+            if (ParametersCache.ContainsKey(parameterName))
+                ParametersCache.Remove(parameterName);
+
+            ParametersCache.Add(parameterName, new CachedParameter(timeProvider.UtcNow, parameterValue));
         }
     }
 }

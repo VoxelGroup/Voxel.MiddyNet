@@ -24,7 +24,7 @@ namespace Voxel.MiddyNet.Tests
             {
                 LogLines = logLines;
                 ContextLogLines = contextLogLines;
-                Exceptions = exceptions;
+                Exceptions = exceptions ?? new List<Exception>();
                 for (var i = 0; i < numberOfMiddlewares; i++)
                 {
                     Use(new TestMiddleware(logLines, i+1, withFailingMiddleware));
@@ -123,11 +123,12 @@ namespace Voxel.MiddyNet.Tests
         [Theory]
         [InlineData(1)]
         [InlineData(2)]
-        public async Task NotifyErrorOnBefore(int numberOfMiddlewares)
+        public void NotifyErrorOnBefore(int numberOfMiddlewares)
         {
             var lambdaFunction = new TestLambdaFunction(logLines, contextLines, numberOfMiddlewares, true, middlewareExceptions);
 
-            await lambdaFunction.Handler(1, null);
+            Func<Task> act = async () => await lambdaFunction.Handler(1, null);
+            act.Should().Throw<AggregateException>();
 
             middlewareExceptions.Should().HaveCount(numberOfMiddlewares);
             middlewareExceptions.Should().AllBeOfType<MiddlewareException>();
@@ -136,7 +137,7 @@ namespace Voxel.MiddyNet.Tests
         [Theory]
         [InlineData(1)]
         [InlineData(2)]
-        public async Task NotifyErrorOnAfter(int numberOfMiddlewares)
+        public void NotifyErrorOnAfter(int numberOfMiddlewares)
         {
             var lambdaFunction = new TestLambdaFunction(logLines, contextLines, numberOfMiddlewares, true, middlewareExceptions);
             
