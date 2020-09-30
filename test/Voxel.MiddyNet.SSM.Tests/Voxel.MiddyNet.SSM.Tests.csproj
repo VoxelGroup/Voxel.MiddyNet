@@ -19,4 +19,10 @@
     <ProjectReference Include="..\..\src\Voxel.MiddyNet.SSM\Voxel.MiddyNet.SSM.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Properties\launchSettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

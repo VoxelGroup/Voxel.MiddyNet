@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "Voxel.MiddyNet.SSM.Tests": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "AWS_PROFILE": "VoxelDev"
+      }
+    }
+  }
+}

@@ -49,7 +49,6 @@ namespace Voxel.MiddyNet.SSM
     public class SSMMiddleware<TReq, TRes> : ILambdaMiddleware<TReq, TRes>
     {
         private readonly SSMOptions ssmOptions;
-
         private readonly Func<IAmazonSimpleSystemsManagement> ssmClientFactory;
         private readonly ITimeProvider timeProvider;
 
@@ -73,7 +72,6 @@ namespace Voxel.MiddyNet.SSM
 
         public async Task Before(TReq lambdaEvent, MiddyNetContext context)
         {
-            using var ssmClient = ssmClientFactory();
             foreach (var parameter in ssmOptions.ParametersToGet)
             {
                 if (IsParameterInCacheValid(parameter.Name))
@@ -83,13 +81,24 @@ namespace Voxel.MiddyNet.SSM
                 }
                 else
                 {
-                    var cloudTradeAuthResponse = await ssmClient.GetParameterAsync(new GetParameterRequest
+                    using (var ssmClient = ssmClientFactory())
                     {
-                        Name = parameter.Path
-                    });
+                        try
+                        {
+                            var response = await ssmClient.GetParameterAsync(new GetParameterRequest
+                            {
+                                Name = parameter.Path,
+                                WithDecryption = true
+                            });
 
-                    UpdateAdditionalContext(context, parameter.Name, cloudTradeAuthResponse.Parameter.Value);
-                    UpdateCache(parameter.Name, cloudTradeAuthResponse.Parameter.Value);
+                            UpdateAdditionalContext(context, parameter.Name, response.Parameter.Value);
+                            UpdateCache(parameter.Name, response.Parameter.Value);
+                        }
+                        catch (Exception ex)
+                        {
+                            context.MiddlewareExceptions.Add(ex);
+                        }
+                    }
                 }
             }
         }
