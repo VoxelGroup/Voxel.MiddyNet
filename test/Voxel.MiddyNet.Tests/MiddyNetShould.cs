@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Amazon.Lambda.Core;
 using FluentAssertions;
 using Xunit;
 
@@ -84,7 +85,7 @@ namespace Voxel.MiddyNet.Tests
         {
             var lambdaFunction = new TestLambdaFunction(logLines, contextLines, 1);
 
-            await lambdaFunction.Handler(1, null);
+            await lambdaFunction.Handler(1, new FakeLambdaContext());
 
             logLines.Should().ContainInOrder($"{MiddlewareBeforeLog}-1", FunctionLog, $"{MiddlewareAfterLog}-1");
         }
@@ -94,7 +95,7 @@ namespace Voxel.MiddyNet.Tests
         {
             var lambdaFunction = new TestLambdaFunction(logLines, contextLines, 2);
 
-            await lambdaFunction.Handler(1, null);
+            await lambdaFunction.Handler(1, new FakeLambdaContext());
 
             logLines.Should().ContainInOrder($"{MiddlewareBeforeLog}-1", $"{MiddlewareBeforeLog}-2", FunctionLog);
         }
@@ -104,7 +105,7 @@ namespace Voxel.MiddyNet.Tests
         {
             var lambdaFunction = new TestLambdaFunction(logLines, contextLines, 2);
 
-            await lambdaFunction.Handler(1, null);
+            await lambdaFunction.Handler(1, new FakeLambdaContext());
 
             logLines.Should().ContainInOrder(FunctionLog, $"{MiddlewareAfterLog}-2", $"{MiddlewareAfterLog}-1");
         }
@@ -114,9 +115,9 @@ namespace Voxel.MiddyNet.Tests
         {
             var lambdaFunction = new TestLambdaFunction(logLines, contextLines, 2);
 
-            await lambdaFunction.Handler(1, null);
+            await lambdaFunction.Handler(1, new FakeLambdaContext());
             contextLines.Should().HaveCount(2);
-            await lambdaFunction.Handler(1, null);
+            await lambdaFunction.Handler(1, new FakeLambdaContext());
             contextLines.Should().HaveCount(4);
         }
 
@@ -127,7 +128,7 @@ namespace Voxel.MiddyNet.Tests
         {
             var lambdaFunction = new TestLambdaFunction(logLines, contextLines, numberOfMiddlewares, true, middlewareExceptions);
 
-            Func<Task> act = async () => await lambdaFunction.Handler(1, null);
+            Func<Task> act = async () => await lambdaFunction.Handler(1, new FakeLambdaContext());
             act.Should().Throw<AggregateException>();
 
             middlewareExceptions.Should().HaveCount(numberOfMiddlewares);
@@ -141,10 +142,25 @@ namespace Voxel.MiddyNet.Tests
         {
             var lambdaFunction = new TestLambdaFunction(logLines, contextLines, numberOfMiddlewares, true, middlewareExceptions);
             
-            Func<Task> act = async () => await lambdaFunction.Handler(1, null);
+            Func<Task> act = async () => await lambdaFunction.Handler(1, new FakeLambdaContext());
 
             act.Should().Throw<AggregateException>().Where(a =>
                 a.InnerExceptions.Count == numberOfMiddlewares && a.InnerExceptions.All(e => e is MiddlewareException));
         }
+    }
+
+    public class FakeLambdaContext : ILambdaContext
+    {
+        public string AwsRequestId { get; }
+        public IClientContext ClientContext { get; }
+        public string FunctionName { get; }
+        public string FunctionVersion { get; }
+        public ICognitoIdentity Identity { get; }
+        public string InvokedFunctionArn { get; }
+        public ILambdaLogger Logger { get; }
+        public string LogGroupName { get; }
+        public string LogStreamName { get; }
+        public int MemoryLimitInMB { get; }
+        public TimeSpan RemainingTime { get; }
     }
 }

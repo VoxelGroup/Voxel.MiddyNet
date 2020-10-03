@@ -18,7 +18,7 @@ namespace Voxel.MiddyNet
 
         public async Task<TRes> Handler(TReq lambdaEvent, ILambdaContext context)
         {
-            MiddyContext.LambdaContext = context;
+            MiddyContext.AttachToLambdaContext(context);
             MiddyContext.AdditionalContext.Clear(); //  Given that the instance is reused, we need to clean the dictionary.
 
             foreach (var middleware in middlewares)
