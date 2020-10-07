@@ -3,15 +3,21 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30225.117
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Voxel.MiddyNet", "src\Voxel.MiddyNet\Voxel.MiddyNet.csproj", "{32031CD7-A5CE-4C42-9F4A-4D28550C7144}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Voxel.MiddyNet", "src\Voxel.MiddyNet\Voxel.MiddyNet.csproj", "{32031CD7-A5CE-4C42-9F4A-4D28550C7144}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Voxel.MiddyNet.SSM", "src\Voxel.MiddyNet.SSM\Voxel.MiddyNet.SSM.csproj", "{F987185E-B537-494B-8B1A-F17F24F9FB08}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Voxel.MiddyNet.SSM", "src\Voxel.MiddyNet.SSM\Voxel.MiddyNet.SSM.csproj", "{F987185E-B537-494B-8B1A-F17F24F9FB08}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Middlewares", "Middlewares", "{202D1DF0-62D6-4006-99DC-BBFBE59428B1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Voxel.MiddyNet.Tests", "test\Voxel.MiddyNet.Tests\Voxel.MiddyNet.Tests.csproj", "{ECBAEEC0-38E9-4423-B141-50BF5F3F1B53}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Voxel.MiddyNet.Tests", "test\Voxel.MiddyNet.Tests\Voxel.MiddyNet.Tests.csproj", "{ECBAEEC0-38E9-4423-B141-50BF5F3F1B53}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Voxel.MiddyNet.SSM.Tests", "test\Voxel.MiddyNet.SSM.Tests\Voxel.MiddyNet.SSM.Tests.csproj", "{D74B9EF4-4B97-4D2C-B1E6-38D06CDEC157}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Voxel.MiddyNet.SSM.Tests", "test\Voxel.MiddyNet.SSM.Tests\Voxel.MiddyNet.SSM.Tests.csproj", "{D74B9EF4-4B97-4D2C-B1E6-38D06CDEC157}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Voxel.MiddyNet.Tracing.Core", "src\Voxel.MiddyNet.Tracing.Core\Voxel.MiddyNet.Tracing.Core.csproj", "{DD2A5A54-06C7-4945-A17A-6A7D8B7A6E66}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Voxel.MiddyNet.Tracing.Core.Tests", "test\Voxel.MiddyNet.Tracing.Core.Tests\Voxel.MiddyNet.Tracing.Core.Tests.csproj", "{A8BB5D3F-C32F-43BB-B0AB-03A7E83C3519}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tracing", "Tracing", "{D204572D-6B0A-4C3A-86D3-2B9C71346490}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,6 +41,14 @@ Global
 		{D74B9EF4-4B97-4D2C-B1E6-38D06CDEC157}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D74B9EF4-4B97-4D2C-B1E6-38D06CDEC157}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D74B9EF4-4B97-4D2C-B1E6-38D06CDEC157}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DD2A5A54-06C7-4945-A17A-6A7D8B7A6E66}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DD2A5A54-06C7-4945-A17A-6A7D8B7A6E66}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DD2A5A54-06C7-4945-A17A-6A7D8B7A6E66}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DD2A5A54-06C7-4945-A17A-6A7D8B7A6E66}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A8BB5D3F-C32F-43BB-B0AB-03A7E83C3519}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A8BB5D3F-C32F-43BB-B0AB-03A7E83C3519}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A8BB5D3F-C32F-43BB-B0AB-03A7E83C3519}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A8BB5D3F-C32F-43BB-B0AB-03A7E83C3519}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -42,6 +56,8 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{F987185E-B537-494B-8B1A-F17F24F9FB08} = {202D1DF0-62D6-4006-99DC-BBFBE59428B1}
 		{D74B9EF4-4B97-4D2C-B1E6-38D06CDEC157} = {202D1DF0-62D6-4006-99DC-BBFBE59428B1}
+		{DD2A5A54-06C7-4945-A17A-6A7D8B7A6E66} = {D204572D-6B0A-4C3A-86D3-2B9C71346490}
+		{A8BB5D3F-C32F-43BB-B0AB-03A7E83C3519} = {D204572D-6B0A-4C3A-86D3-2B9C71346490}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {EFA347F5-761B-44CF-B6DB-8981387C72B3}
