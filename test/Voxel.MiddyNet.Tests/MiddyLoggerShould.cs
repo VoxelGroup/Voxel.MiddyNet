@@ -56,6 +56,36 @@ namespace Voxel.MiddyNet.Tests
 }"));
         }
 
+        [Fact]
+        public void LogEnrichWithExtraProperties()
+        {
+            var lambdaLogger = Substitute.For<ILambdaLogger>();
+
+            var logger = new MiddyLogger(lambdaLogger);
+            logger.EnrichWith(new LogProperty("key", "value"));
+            logger.Log(LogLevel.Info, "hello world");
+            lambdaLogger.Received().Log(Arg.Is(@"{
+  ""Message"": ""hello world"",
+  ""Level"": ""Info"",
+  ""key"": ""value""
+}"));
+        }
+        [Fact]
+        public void LogGlobalPropertiesAndExtraProperties()
+        {
+            var lambdaLogger = Substitute.For<ILambdaLogger>();
+
+            var logger = new MiddyLogger(lambdaLogger);
+            logger.EnrichWith(new LogProperty("key", "value"));
+            logger.Log(LogLevel.Info, "hello world", new LogProperty("key2", "value2"));
+            lambdaLogger.Received().Log(Arg.Is(@"{
+  ""Message"": ""hello world"",
+  ""Level"": ""Info"",
+  ""key"": ""value"",
+  ""key2"": ""value2""
+}"));
+        }
+
         internal class ClassToLog
         {
             public string Property1 { get; set; }

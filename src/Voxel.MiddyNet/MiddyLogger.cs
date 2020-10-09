@@ -10,6 +10,8 @@ namespace Voxel.MiddyNet
     {
         private readonly ILambdaLogger lambdaLogger;
 
+        private List<LogProperty> globalProperties = new List<LogProperty>();
+
         public MiddyLogger(ILambdaLogger lambdaLogger)
         {
             this.lambdaLogger = lambdaLogger;
@@ -20,7 +22,8 @@ namespace Voxel.MiddyNet
             var logMessage = new LogMessage
             {
                 Level = logLevel,
-                Message = message
+                Message = message,
+                Properties = globalProperties.ToDictionary(p => p.Key, p => p.Value)
             };
 
             InternalLog(logMessage);
@@ -32,7 +35,7 @@ namespace Voxel.MiddyNet
             {
                 Level = logLevel,
                 Message = message,
-                Properties = properties.ToDictionary(p=>p.Key, p=>p.Value)
+                Properties = globalProperties.Concat(properties).ToDictionary(p=>p.Key, p=>p.Value)
             };
 
             InternalLog(logMessage);
@@ -51,6 +54,11 @@ namespace Voxel.MiddyNet
             var jsonString = JsonSerializer.Serialize(logMessage, options);
 
             lambdaLogger.Log(jsonString);
+        }
+
+        public void EnrichWith(LogProperty logProperty)
+        {
+            globalProperties.Add(logProperty);
         }
     }
 

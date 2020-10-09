@@ -19,6 +19,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Voxel.MiddyNet.Tracing.Core
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tracing", "Tracing", "{D204572D-6B0A-4C3A-86D3-2B9C71346490}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Voxel.MiddyNet.Tracing.SNS", "src\Voxel.MiddyNet.Tracing.SNS\Voxel.MiddyNet.Tracing.SNS.csproj", "{9322166A-6C2C-4121-9567-2C7CD98FA08D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Voxel.MiddyNet.Tracing.SNSMiddleware", "src\Voxel.MiddyNet.Tracing.SNSMiddleware\Voxel.MiddyNet.Tracing.SNSMiddleware.csproj", "{2280E5EB-9E68-4B74-9263-0C3D3390B464}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -49,6 +53,14 @@ Global
 		{A8BB5D3F-C32F-43BB-B0AB-03A7E83C3519}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A8BB5D3F-C32F-43BB-B0AB-03A7E83C3519}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A8BB5D3F-C32F-43BB-B0AB-03A7E83C3519}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9322166A-6C2C-4121-9567-2C7CD98FA08D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9322166A-6C2C-4121-9567-2C7CD98FA08D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9322166A-6C2C-4121-9567-2C7CD98FA08D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9322166A-6C2C-4121-9567-2C7CD98FA08D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2280E5EB-9E68-4B74-9263-0C3D3390B464}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2280E5EB-9E68-4B74-9263-0C3D3390B464}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2280E5EB-9E68-4B74-9263-0C3D3390B464}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2280E5EB-9E68-4B74-9263-0C3D3390B464}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -58,6 +70,8 @@ Global
 		{D74B9EF4-4B97-4D2C-B1E6-38D06CDEC157} = {202D1DF0-62D6-4006-99DC-BBFBE59428B1}
 		{DD2A5A54-06C7-4945-A17A-6A7D8B7A6E66} = {D204572D-6B0A-4C3A-86D3-2B9C71346490}
 		{A8BB5D3F-C32F-43BB-B0AB-03A7E83C3519} = {D204572D-6B0A-4C3A-86D3-2B9C71346490}
+		{9322166A-6C2C-4121-9567-2C7CD98FA08D} = {D204572D-6B0A-4C3A-86D3-2B9C71346490}
+		{2280E5EB-9E68-4B74-9263-0C3D3390B464} = {202D1DF0-62D6-4006-99DC-BBFBE59428B1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {EFA347F5-761B-44CF-B6DB-8981387C72B3}

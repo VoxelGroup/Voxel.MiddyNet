@@ -86,7 +86,7 @@ namespace Voxel.MiddyNet.Tracing.Core
         public string TraceState { get; private set; }
 
         private static readonly Random random = new Random();
-        public static string RandomString(int length)
+        private static string RandomString(int length)
         {
             const string chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
             return new string(Enumerable.Repeat(chars, length)
