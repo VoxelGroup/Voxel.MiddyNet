@@ -61,19 +61,4 @@ namespace Voxel.MiddyNet.Tracing.SNSMiddleware.Tests
             logger.Received().EnrichWith(Arg.Is<LogProperty>(p => p.Key == "tracestate"));
         }
     }
-
-    public class FakeLambdaContext : ILambdaContext
-    {
-        public string AwsRequestId { get; }
-        public IClientContext ClientContext { get; }
-        public string FunctionName { get; }
-        public string FunctionVersion { get; }
-        public ICognitoIdentity Identity { get; }
-        public string InvokedFunctionArn { get; }
-        public ILambdaLogger Logger { get; set; }
-        public string LogGroupName { get; }
-        public string LogStreamName { get; }
-        public int MemoryLimitInMB { get; }
-        public TimeSpan RemainingTime { get; }
-    };
 }
