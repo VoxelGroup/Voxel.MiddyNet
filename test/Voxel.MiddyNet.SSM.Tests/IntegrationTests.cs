@@ -55,7 +55,7 @@ namespace Voxel.MiddyNet.SSM.Tests
     {
         public LaunchSettingsFixture()
         {
-            using (var file = File.OpenText("Properties\\launchSettings.json"))
+            using (var file = File.OpenText("Properties/launchSettings.json"))
             {
                 var reader = new JsonTextReader(file);
                 var jObject = JObject.Load(reader);
