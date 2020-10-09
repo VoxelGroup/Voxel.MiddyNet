@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Amazon.Lambda.Core;
 using Amazon.SimpleSystemsManagement;
 using Amazon.SimpleSystemsManagement.Model;
 using FluentAssertions;
@@ -27,7 +28,7 @@ namespace Voxel.MiddyNet.SSM.Tests
             ssmClient.GetParameterAsync(Arg.Is<GetParameterRequest>(r => r.Name == Param2Path)).Returns(
                 Task.FromResult(new GetParameterResponse { Parameter = new Parameter { Value = Param2Value } }));
 
-            var context = new MiddyNetContext();
+            var context = new MiddyNetContext(Substitute.For<ILambdaContext>());
 
             var options = new SSMOptions
             {
@@ -54,7 +55,7 @@ namespace Voxel.MiddyNet.SSM.Tests
             ssmClient.GetParameterAsync(Arg.Is<GetParameterRequest>(r => r.Name == Param1Path)).Returns(
                 Task.FromResult(new GetParameterResponse { Parameter = new Parameter { Value = Param1Value } }));
 
-            var context = new MiddyNetContext();
+            var context = new MiddyNetContext(Substitute.For<ILambdaContext>());
 
             var options = new SSMOptions
             {
@@ -83,7 +84,7 @@ namespace Voxel.MiddyNet.SSM.Tests
 
             var timeProvider = Substitute.For<ITimeProvider>();
 
-            var context = new MiddyNetContext();
+            var context = new MiddyNetContext(Substitute.For<ILambdaContext>());
 
             var options = new SSMOptions
             {
@@ -111,7 +112,7 @@ namespace Voxel.MiddyNet.SSM.Tests
             ssmClient.GetParameterAsync(Arg.Is<GetParameterRequest>(r => r.Name == Param1Path)).Returns(
                 Task.FromResult(new GetParameterResponse { Parameter = new Parameter { Value = Param1Value } }));
 
-            var context = new MiddyNetContext();
+            var context = new MiddyNetContext(Substitute.For<ILambdaContext>());
 
             var options = new SSMOptions
             {

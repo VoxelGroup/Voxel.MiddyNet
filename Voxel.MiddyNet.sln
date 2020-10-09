@@ -23,6 +23,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Voxel.MiddyNet.Tracing.SNS"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Voxel.MiddyNet.Tracing.SNSMiddleware", "src\Voxel.MiddyNet.Tracing.SNSMiddleware\Voxel.MiddyNet.Tracing.SNSMiddleware.csproj", "{2280E5EB-9E68-4B74-9263-0C3D3390B464}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Voxel.MiddyNet.Tracing.SNSMiddleware.Tests", "test\Voxel.MiddyNet.Tracing.SNSMiddleware.Tests\Voxel.MiddyNet.Tracing.SNSMiddleware.Tests.csproj", "{7451BB47-7C57-4B03-8E88-FE7E8F1B4852}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -61,6 +63,10 @@ Global
 		{2280E5EB-9E68-4B74-9263-0C3D3390B464}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2280E5EB-9E68-4B74-9263-0C3D3390B464}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2280E5EB-9E68-4B74-9263-0C3D3390B464}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7451BB47-7C57-4B03-8E88-FE7E8F1B4852}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7451BB47-7C57-4B03-8E88-FE7E8F1B4852}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7451BB47-7C57-4B03-8E88-FE7E8F1B4852}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7451BB47-7C57-4B03-8E88-FE7E8F1B4852}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -72,6 +78,7 @@ Global
 		{A8BB5D3F-C32F-43BB-B0AB-03A7E83C3519} = {D204572D-6B0A-4C3A-86D3-2B9C71346490}
 		{9322166A-6C2C-4121-9567-2C7CD98FA08D} = {D204572D-6B0A-4C3A-86D3-2B9C71346490}
 		{2280E5EB-9E68-4B74-9263-0C3D3390B464} = {202D1DF0-62D6-4006-99DC-BBFBE59428B1}
+		{7451BB47-7C57-4B03-8E88-FE7E8F1B4852} = {202D1DF0-62D6-4006-99DC-BBFBE59428B1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {EFA347F5-761B-44CF-B6DB-8981387C72B3}

@@ -6,7 +6,7 @@ using System.Text.Json.Serialization;
 
 namespace Voxel.MiddyNet
 {
-    public class MiddyLogger
+    public class MiddyLogger : IMiddyLogger
     {
         private readonly ILambdaLogger lambdaLogger;
 

@@ -10,33 +10,26 @@ namespace Voxel.MiddyNet
     {
         private MiddyNetContext MiddyContext { get; set; }
         private readonly List<ILambdaMiddleware<TReq, TRes>> middlewares = new List<ILambdaMiddleware<TReq, TRes>>();
-
-        protected MiddyNet()
-        {
-            MiddyContext = new MiddyNetContext();
-        }
-
+        
         public async Task<TRes> Handler(TReq lambdaEvent, ILambdaContext context)
         {
-            MiddyContext.AttachToLambdaContext(context);
-            MiddyContext.AdditionalContext.Clear(); //  Given that the instance is reused, we need to clean the dictionary.
+            InitialiseMiddyContext(context);
 
-            foreach (var middleware in middlewares)
-            {
-                try
-                {
-                    await middleware.Before(lambdaEvent, MiddyContext);
-                }
-                catch (Exception ex)
-                {
-                    MiddyContext.MiddlewareExceptions.Add(ex);
-                }
-            }
+            await ExecuteBeforeMiddlewares(lambdaEvent);
 
             var response = await Handle(lambdaEvent, MiddyContext);
 
             MiddyContext.MiddlewareExceptions.Clear(); // We assume that the function is Ok with the exceptions it might have received
 
+            await ExecuteAfterMiddlewares(response);
+
+            if (MiddyContext.MiddlewareExceptions.Any()) throw new AggregateException(MiddyContext.MiddlewareExceptions);
+
+            return response;
+        }
+
+        private async Task ExecuteAfterMiddlewares(TRes response)
+        {
             foreach (var middleware in Enumerable.Reverse(middlewares))
             {
                 try
@@ -48,10 +41,35 @@ namespace Voxel.MiddyNet
                     MiddyContext.MiddlewareExceptions.Add(ex);
                 }
             }
+        }
 
-            if (MiddyContext.MiddlewareExceptions.Any()) throw new AggregateException(MiddyContext.MiddlewareExceptions);
+        private async Task ExecuteBeforeMiddlewares(TReq lambdaEvent)
+        {
+            foreach (var middleware in middlewares)
+            {
+                try
+                {
+                    await middleware.Before(lambdaEvent, MiddyContext);
+                }
+                catch (Exception ex)
+                {
+                    MiddyContext.MiddlewareExceptions.Add(ex);
+                }
+            }
+        }
 
-            return response;
+        private void InitialiseMiddyContext(ILambdaContext context)
+        {
+            if (MiddyContext == null)
+            {
+                MiddyContext = new MiddyNetContext(context);
+            }
+            else
+            {
+                MiddyContext.AttachToLambdaContext(context);
+            }
+
+            MiddyContext.AdditionalContext.Clear(); //  Given that the instance is reused, we need to clean the dictionary.
         }
 
         protected MiddyNet<TReq, TRes> Use(ILambdaMiddleware<TReq, TRes> middleware)
