@@ -55,6 +55,10 @@ namespace Voxel.MiddyNet.SSM.Tests
     {
         public LaunchSettingsFixture()
         {
+            var loadProfileFromLaunchSettings = Environment.GetEnvironmentVariable("IGNORE_LAUNCH_SETTINGS");
+
+            if (loadProfileFromLaunchSettings == null || loadProfileFromLaunchSettings == "true") return;
+
             using (var file = File.OpenText("Properties/launchSettings.json"))
             {
                 var reader = new JsonTextReader(file);
