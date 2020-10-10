@@ -14,7 +14,7 @@ namespace Voxel.MiddyNet.Tracing.ApiGatewayMiddleware
         {
             if (!(lambdaEvent is APIGatewayProxyRequest))
             {
-                context.MiddlewareExceptions.Add(new InvalidOperationException($"Trying to use the SNSTracingMiddleware with an event of type {typeof(TReq)}"));
+                context.MiddlewareExceptions.Add(new InvalidOperationException($"Trying to use the ApiGatewayTracingMiddleware with an event of type {typeof(TReq)}"));
                 return Task.CompletedTask;
             }
 

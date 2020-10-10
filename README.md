@@ -77,7 +77,7 @@ After the `Handle` function is called and before the `After` middlewares are cal
 When an exception is thrown by a middleware in the `After` method, the exception is captured and added to the `MiddlewareExceptions` list, so that the following middlewares can reacto to it. When all the middlewares have run, if this list has any item, an `AggregateException` with all of them is thrown.
 
 ## How to write a middleware
-To write a new Middleware, you just need to implement the interface `ILambdaMiddleware` and implement the before and after methods. If you need to store data so that the `Handle` method can see it, you can use the `AdditionalContext` dictionary inside the `MiddyContext` object.
+To write a new Middleware, you just need to implement the interface `ILambdaMiddleware` and implement the `Before` and `After` methods, although normally you will only implement one of them. If you need to store data so that the `Handle` method can use it, you can use the `AdditionalContext` dictionary inside the `MiddyContext` object.
 
 ## Logger
 There's a simple logger implemented in the package. This logger is a wrapper of the `ILambdaLogger` provided by the AWS runtime, which you can still access inside the `LambdaContext` property inside the `MiddyContext` object. Our logger, logs a JSON message so the logs are easily readable by your preferred log aggregation platform. We can also add additional properties apart from the message and LogLevel.
@@ -91,7 +91,7 @@ protected override async Task<int> Handle(SNSEvent lambdaEvent, MiddyNetContext 
 }
 ```
 
-Right now, there's a middleware to extract `traceparent` and `tracestate` headers from an SNSEvent. The headers should follow the format described [here](https://www.w3.org/TR/trace-context/). The current implementation doesn't mutate `tracestate` and changes the `parent-id` section of the `traceparent` in case a valid `traceparent` header is provided. If the `traceparent` header provided is not valid, it creates a new one.
+Right now, there's a middleware to extract `traceparent` and `tracestate` headers from an `SNSEvent` (from the `MessageAttributes` of the first record), from an `SQSEvent` (from the `MessageAttributes` of the first record), and from an `ApiGatewayProxyRequest` (from the headers). The headers should follow the format described [here](https://www.w3.org/TR/trace-context/). The current implementation doesn't mutate `tracestate` and changes the `parent-id` section of the `traceparent` in case a valid `traceparent` header is provided. If the `traceparent` header provided is not valid, it creates a new one.
 
 ## Maintainers
 
