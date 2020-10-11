@@ -6,16 +6,16 @@ The basics
 
 To use a middleware in your lambda function, you need to add it using the function use in the constructor. For example, to add the *SQSTracingMiddleware* you need to follow the following steps:
 
-1. Add the corresponding package
+1. Add the corresponding package::
 
     dotnet package add Voxel.MiddyNet.Tracing.SQSMiddleware
 
 
-2. Add the corresponding using in your lambda function
+2. Add the corresponding using in your lambda function::
 
     using Voxel.MiddyNet.Tracing.SQSTracingMiddleware;
 
-3. Add it to the engine in your constructor
+3. Add it to the engine in your constructor::
 
     public MySQSLambdaFunction()
     {
@@ -28,7 +28,7 @@ And that's all. **MiddyNet** will execute this middleware before and after your 
 Middleware configurations
 -------------------------
 
-Some middlewares can have configurations you might want to take advantage of. The configuration will usually be a parameter of the constructor, like in the SSM middleware:
+Some middlewares can have configurations you might want to take advantage of. The configuration will usually be a parameter of the constructor, like in the SSM middleware::
 
     public class MySQSLambdaFunction: MiddyNet<SQSEvent,int>
     {
