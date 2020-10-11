@@ -1,7 +1,7 @@
 Welcome to MiddyNet
 ===================
 
-**MiddyNet** is a lightweight middleware library for .NET Core and AWS Lambda that let's you concentrate in what's really important for you: your business logic.
+**MiddyNet** is a lightweight middleware library for .NET Core and AWS Lambda that let you focus on what's really important for you: your business logic.
 
 **MiddyNet** is a port to .NET Core of the fantastic `Middy <https://github.com/middyjs/middy>`_ library for Javascript.
 
