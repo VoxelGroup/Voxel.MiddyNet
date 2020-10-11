@@ -36,8 +36,8 @@ jobs:
       uses: NuGet/setup-nuget@v1.0.2
       with:
         nuget-version: latest
-    - name: Publish Esquio AspNetCore nuget
-      run: dotnet nuget push ./artifacts/Voxel.MiddyNet.*.nupkg -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json --skip-duplicate
+    - name: Publish Voxel.MiddyNet nuget
+      run: dotnet nuget push ./artifacts/Voxel.MiddyNet.*.nupkg -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json --skip-duplicate -n
     
     # - name: Publish MiddyNet
     #   id: publish_nuget_middynet
