@@ -1,3 +1,6 @@
+![MiddyNet Continuous Integration](https://github.com/VoxelGroup/Voxel.MiddyNet/workflows/MiddyNet%20Continuous%20Integration/badge.svg)
+
+[![Documentation Status](https://readthedocs.org/projects/voxelmiddynet/badge/?version=latest)](https://voxelmiddynet.readthedocs.io/en/latest/?badge=latest)
 
 # Voxel.MiddyNet
 
