@@ -31,49 +31,42 @@ jobs:
         IGNORE_LAUNCH_SETTINGS: true
       run: dotnet test --no-restore --verbosity normal
     - name: Publish MiddyNet
-        id: publish_nuget_middynet
         uses: rohith/publish-nuget@v2
         with:
           # Filepath of the project to be packaged, relative to root of repository
           PROJECT_FILE_PATH: src/Voxel.MiddyNet/Voxel.MiddyNet.csproj
           NUGET_KEY: ${{secrets.NUGET_API_KEY}}
     - name: Publish MiddyNet.SSM
-        id: publish_nuget_middynet_ssm
         uses: rohith/publish-nuget@v2
         with:
           # Filepath of the project to be packaged, relative to root of repository
           PROJECT_FILE_PATH: src/Voxel.MiddyNet.SSM/Voxel.MiddyNet.SSM.csproj
           NUGET_KEY: ${{secrets.NUGET_API_KEY}}
     - name: Publish MiddyNet Tracing ApiGateway
-        id: publish_nuget_middynet_tracing_apigateway
         uses: rohith/publish-nuget@v2
         with:
           # Filepath of the project to be packaged, relative to root of repository
           PROJECT_FILE_PATH: src/Voxel.MiddyNet.Tracing.ApiGatewayMiddleware/Voxel.MiddyNet.Tracing.ApiGatewayMiddleware.csproj
           NUGET_KEY: ${{secrets.NUGET_API_KEY}}
     - name: Publish MiddyNet Tracing Core
-        id: publish_nuget_tracing_core
         uses: rohith/publish-nuget@v2
         with:
           # Filepath of the project to be packaged, relative to root of repository
           PROJECT_FILE_PATH: src/Voxel.MiddyNet.Tracing.Core/Voxel.MiddyNet.Tracing.Core.csproj
           NUGET_KEY: ${{secrets.NUGET_API_KEY}}
     - name: Publish MiddyNet Tracing SNS
-        id: publish_nuget_middynet_tracing_sns
         uses: rohith/publish-nuget@v2
         with:
           # Filepath of the project to be packaged, relative to root of repository
           PROJECT_FILE_PATH: src/Voxel.MiddyNet.Tracing.SNS/Voxel.MiddyNet.Tracing.SNSM.csproj
           NUGET_KEY: ${{secrets.NUGET_API_KEY}}
     - name: Publish MiddyNet Tracing SNS Middleware
-        id: publish_nuget_middynet_tracing_sns_middleware
         uses: rohith/publish-nuget@v2
         with:
           # Filepath of the project to be packaged, relative to root of repository
           PROJECT_FILE_PATH: src/Voxel.MiddyNet.Tracing.SNSMiddleware/Voxel.MiddyNet.Tracing.SNSMiddleware.csproj
           NUGET_KEY: ${{secrets.NUGET_API_KEY}}
     - name: Publish MiddyNet Tracing SQS Middleware
-        id: publish_nuget_middynet_tracing_sqs_middleware
         uses: rohith/publish-nuget@v2
         with:
           # Filepath of the project to be packaged, relative to root of repository
