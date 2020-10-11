@@ -4,7 +4,7 @@ Getting started
 Installation
 ------------
 
-**MiddyNet** is splited in different NuGet packages so that you only import what you really use. To start using it, add the main package to your AWS Lambda project.
+**MiddyNet** is splited in different NuGet packages so that you only import what you really use. To start using it, add the main package to your AWS Lambda project::
 
     dotnet package add Voxel.MiddyNet
 
@@ -18,7 +18,7 @@ The best way to organise your code when working with **MiddyNet** is to have a s
 
 **MiddyNet** will make you implement a function called *Handle* where you will need to put your code.
 
-So, a minimum skeleton of your lambda function would be something like this:
+So, a minimum skeleton of your lambda function would be something like this::
 
     public class MySQSLambdaFunction : MiddyNet<SQSEvent, int>
     {
