@@ -7,6 +7,8 @@ It allows you to inject middlewares into your lambda functions so that your code
 
 Middlewares are published as separate NuGet packages (one NuGet for middleware) so that your lambda package can be as small as possible.
 
+For project documentation, please visit [readthedocs](https://voxelmiddynet.readthedocs.io).
+
 ## Prerequisites
 
 ```
@@ -98,10 +100,6 @@ Right now, there's a middleware to extract `traceparent` and `tracestate` header
 * Voxel Media S.L.
 
 See also the list of [contributors](https://github.com/VoxelGroup/Voxel.MiddyNet/contributors) who participated in this project.
-
-## Contributing
-
-Please read [CONTRIBUTING.md](..) for details on our code of conduct, and the process for submitting pull requests to us.
 
 ## Versioning
 
