@@ -24,9 +24,10 @@ Welcome to MiddyNet
    :hidden:
    :caption: Getting Started Guide
 
-   started/logger
+   started/basics
    started/usemiddleware
    started/middycontext
+   started/logger
 
 .. toctree::
    :maxdepth: 3
