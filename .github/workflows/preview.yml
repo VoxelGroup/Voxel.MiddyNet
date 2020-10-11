@@ -1,4 +1,4 @@
-name: Voxel.MiddyNet Preview Continous Deployment
+name: MiddyNet Preview Continous Deployment
 on: 
   push:
     tags:       
