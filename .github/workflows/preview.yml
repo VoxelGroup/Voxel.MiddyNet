@@ -32,17 +32,17 @@ jobs:
       run: dotnet test --no-restore --verbosity normal
     - name: dotnet pack [MiddyNet]
       run: dotnet pack src/Voxel.MiddyNet/Voxel.MiddyNet.csproj -c $BUILD_CONFIG --version-suffix $VERSION_SUFFIX --no-build --include-source --include-symbols -o ./artifacts
-    - name: dotnet pack [MiddyNet]
+    - name: dotnet pack [MiddyNet SSM]
       run: dotnet pack src/Voxel.MiddyNet.SSM/Voxel.MiddyNet.SSM.csproj -c $BUILD_CONFIG --version-suffix $VERSION_SUFFIX --no-build --include-source --include-symbols -o ./artifacts
-    - name: dotnet pack [MiddyNet]
+    - name: dotnet pack [MiddyNet Tracing ApiGatewayMiddleware]
       run: dotnet pack src/Voxel.MiddyNet.Tracing.ApiGatewayMiddleware/Voxel.MiddyNet.Tracing.ApiGatewayMiddleware.csproj -c $BUILD_CONFIG --version-suffix $VERSION_SUFFIX --no-build --include-source --include-symbols -o ./artifacts
-    - name: dotnet pack [MiddyNet]
+    - name: dotnet pack [MiddyNet Tracing Core]
       run: dotnet pack src/Voxel.MiddyNet.Tracing.Core/Voxel.MiddyNet.Tracing.Core.csproj -c $BUILD_CONFIG --version-suffix $VERSION_SUFFIX --no-build --include-source --include-symbols -o ./artifacts
-    - name: dotnet pack [MiddyNet]
+    - name: dotnet pack [MiddyNet Tracing SNS]
       run: dotnet pack src/Voxel.MiddyNet.Tracing.SNS/Voxel.MiddyNet.Tracing.SNS.csproj -c $BUILD_CONFIG --version-suffix $VERSION_SUFFIX --no-build --include-source --include-symbols -o ./artifacts
-    - name: dotnet pack [MiddyNet]
+    - name: dotnet pack [MiddyNet Tracing SNS Middleware]
       run: dotnet pack src/Voxel.MiddyNet.Tracing.SNSMiddleware/Voxel.MiddyNet.Tracing.SNSMiddleware.csproj -c $BUILD_CONFIG --version-suffix $VERSION_SUFFIX --no-build --include-source --include-symbols -o ./artifacts
-    - name: dotnet pack [MiddyNet]
+    - name: dotnet pack [MiddyNet Tracing SQS Middleware]
       run: dotnet pack src/Voxel.MiddyNet.Tracing.SQSMiddleware/Voxel.MiddyNet.Tracing.SQSMiddleware.csproj -c $BUILD_CONFIG --version-suffix $VERSION_SUFFIX --no-build --include-source --include-symbols -o ./artifacts
     - name: setup nuget
       uses: NuGet/setup-nuget@v1.0.2
@@ -50,16 +50,16 @@ jobs:
         nuget-version: latest
     - name: Publish Voxel.MiddyNet nuget
       run: dotnet nuget push ./artifacts/Voxel.MiddyNet.*.nupkg -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json --skip-duplicate
-    - name: Publish Voxel.MiddyNet nuget
+    - name: Publish Voxel.MiddyNet.SSM nuget
       run: dotnet nuget push ./artifacts/Voxel.MiddyNet.SSM.*.nupkg -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json --skip-duplicate
-    - name: Publish Voxel.MiddyNet nuget
+    - name: Publish Voxel.MiddyNet.Tracing.ApiGatewayMiddleware nuget
       run: dotnet nuget push ./artifacts/Voxel.MiddyNet.Tracing.ApiGatewayMiddleware.*.nupkg -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json --skip-duplicate
-    - name: Publish Voxel.MiddyNet nuget
+    - name: Publish Voxel.Tracing.Core nuget
       run: dotnet nuget push ./artifacts/Voxel.MiddyNet.Tracing.Core.*.nupkg -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json --skip-duplicate
-    - name: Publish Voxel.MiddyNet nuget
+    - name: Publish Voxel.MiddyNet.Tracing.SNS nuget
       run: dotnet nuget push ./artifacts/Voxel.MiddyNet.Tracing.SNS.*.nupkg -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json --skip-duplicate
-    - name: Publish Voxel.MiddyNet nuget
+    - name: Publish Voxel.MiddyNet.Tracing.SNSMiddleware nuget
       run: dotnet nuget push ./artifacts/Voxel.MiddyNet.Tracing.SNSMiddleware.*.nupkg -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json --skip-duplicate
-    - name: Publish Voxel.MiddyNet nuget
+    - name: Publish Voxel.MiddyNet.Tracing.SQSMiddleware nuget
       run: dotnet nuget push ./artifacts/Voxel.MiddyNet.Tracing.SQSMiddleware.*.nupkg -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json --skip-duplicate
     

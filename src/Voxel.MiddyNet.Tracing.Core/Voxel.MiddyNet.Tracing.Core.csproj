@@ -4,7 +4,7 @@
     <TargetFramework>$(NetCoreTargetVersion)</TargetFramework>
     <Description>Tracing capabilities for Voxel.MiddyNet</Description>
     <Version>$(middynet)</Version>
-    <PackageId>Voxel.Tracing.Core</PackageId>
+    <PackageId>Voxel.MiddyNet.Tracing.Core</PackageId>
     <PackageVersion>$(middynet)</PackageVersion>
   </PropertyGroup>
 
