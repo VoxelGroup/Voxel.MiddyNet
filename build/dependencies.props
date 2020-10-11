@@ -5,6 +5,6 @@
   </PropertyGroup>  
 
   <PropertyGroup Label="MiddyNet Versions">
-    <middynet>1.0.0$(VersionSuffix)</middynet>
+    <middynet>1.0.1$(VersionSuffix)</middynet>
   </PropertyGroup>
 </Project>
