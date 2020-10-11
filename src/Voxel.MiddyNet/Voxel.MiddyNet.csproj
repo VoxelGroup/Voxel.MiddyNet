@@ -1,23 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <PackageOutputPath>..\..\</PackageOutputPath>
-    <PackageId>Voxel.MiddyNet</PackageId>
-    <Authors>Voxel Media S.L.</Authors>
-    <Company>Voxel Media S.L.</Company>
-    <Product>Voxel.ApiTemplate</Product>
+    <TargetFramework>$(NetCoreTargetVersion)</TargetFramework>
     <Description>Lightwave middleware library for AWS Lambda</Description>
-    <Copyright>Copyright © Voxel Media 2007-2020</Copyright>
-    <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
-    <IncludeSymbols>true</IncludeSymbols>
-    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    <PublishRepositoryUrl>true</PublishRepositoryUrl>
-    <PackageProjectUrl>https://github.com/VoxelGroup/Voxel.MiddyNet</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/VoxelGroup/Voxel.MiddyNet.git</RepositoryUrl>
-    <RepositoryType>git</RepositoryType>
-    <DebugType>Embedded</DebugType>
+    <Version>$(middynet)</Version>
+    <PackageId>Voxel.MiddyNet</PackageId>
+    <PackageVersion>$(middynet)</PackageVersion>
   </PropertyGroup>
 
   <ItemGroup>

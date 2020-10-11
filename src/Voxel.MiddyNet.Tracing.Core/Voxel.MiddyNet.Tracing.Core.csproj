@@ -1,7 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>$(NetCoreTargetVersion)</TargetFramework>
+    <Description>Tracing capabilities for Voxel.MiddyNet</Description>
+    <Version>$(middynet)</Version>
+    <PackageId>Voxel.Tracing.Core</PackageId>
+    <PackageVersion>$(middynet)</PackageVersion>
   </PropertyGroup>
 
 </Project>

@@ -1,0 +1,27 @@
+<Project>
+  <Import Project="build/dependencies.props" />
+  <PropertyGroup Label="Package information">
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <PackageProjectUrl>http://github.com/VoxelGroup/Voxel.MiddyNet</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/VoxelGroup/Voxel.MiddyNet</RepositoryUrl>
+    <Authors>MiddyNet Contributors</Authors>
+    <Company>Voxel Media S.L.</Company>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <AllowedOutputExtensionsInPackageBuildOutputFolder>true;</AllowedOutputExtensionsInPackageBuildOutputFolder>
+    <RepositoryType>git</RepositoryType>
+    <DebugType>Embedded</DebugType>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
+    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+  </PropertyGroup>
+  <ItemGroup>
+   <SourceRoot Include="$(MSBuildThisFileDirectory)/"/>
+	 <PackageReference Include="Microsoft.SourceLink.GitHub" Version="$(GitHubSourceLink)">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+</Project>

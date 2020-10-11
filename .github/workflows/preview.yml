@@ -1,0 +1,81 @@
+name: Voxel.MiddyNet Preview Continous Deployment
+on: 
+  push:
+    tags:       
+      - preview-*
+
+jobs:
+  build:
+    env:
+      BUILD_CONFIG: Release
+      VERSION_SUFFIX: -rc1.${{ github.run_number }}
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.1.301
+    - name: Install dependencies
+      run: dotnet restore
+    - name: Build
+      run: dotnet build --configuration Release --no-restore
+    - name: Test
+      env: # Or as an environment variable
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_SECRET_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        AWS_DEFAULT_REGION: eu-west-1
+        AWS_REGION: eu-west-1
+        IGNORE_LAUNCH_SETTINGS: true
+      run: dotnet test --no-restore --verbosity normal
+    - name: Publish MiddyNet
+        id: publish_nuget_middynet
+        uses: rohith/publish-nuget@v2
+        with:
+          # Filepath of the project to be packaged, relative to root of repository
+          PROJECT_FILE_PATH: src/Voxel.MiddyNet/Voxel.MiddyNet.csproj
+          NUGET_KEY: ${{secrets.NUGET_API_KEY}}
+    - name: Publish MiddyNet.SSM
+        id: publish_nuget_middynet_ssm
+        uses: rohith/publish-nuget@v2
+        with:
+          # Filepath of the project to be packaged, relative to root of repository
+          PROJECT_FILE_PATH: src/Voxel.MiddyNet.SSM/Voxel.MiddyNet.SSM.csproj
+          NUGET_KEY: ${{secrets.NUGET_API_KEY}}
+    - name: Publish MiddyNet Tracing ApiGateway
+        id: publish_nuget_middynet_tracing_apigateway
+        uses: rohith/publish-nuget@v2
+        with:
+          # Filepath of the project to be packaged, relative to root of repository
+          PROJECT_FILE_PATH: src/Voxel.MiddyNet.Tracing.ApiGatewayMiddleware/Voxel.MiddyNet.Tracing.ApiGatewayMiddleware.csproj
+          NUGET_KEY: ${{secrets.NUGET_API_KEY}}
+    - name: Publish MiddyNet Tracing Core
+        id: publish_nuget_tracing_core
+        uses: rohith/publish-nuget@v2
+        with:
+          # Filepath of the project to be packaged, relative to root of repository
+          PROJECT_FILE_PATH: src/Voxel.MiddyNet.Tracing.Core/Voxel.MiddyNet.Tracing.Core.csproj
+          NUGET_KEY: ${{secrets.NUGET_API_KEY}}
+    - name: Publish MiddyNet Tracing SNS
+        id: publish_nuget_middynet_tracing_sns
+        uses: rohith/publish-nuget@v2
+        with:
+          # Filepath of the project to be packaged, relative to root of repository
+          PROJECT_FILE_PATH: src/Voxel.MiddyNet.Tracing.SNS/Voxel.MiddyNet.Tracing.SNSM.csproj
+          NUGET_KEY: ${{secrets.NUGET_API_KEY}}
+    - name: Publish MiddyNet Tracing SNS Middleware
+        id: publish_nuget_middynet_tracing_sns_middleware
+        uses: rohith/publish-nuget@v2
+        with:
+          # Filepath of the project to be packaged, relative to root of repository
+          PROJECT_FILE_PATH: src/Voxel.MiddyNet.Tracing.SNSMiddleware/Voxel.MiddyNet.Tracing.SNSMiddleware.csproj
+          NUGET_KEY: ${{secrets.NUGET_API_KEY}}
+    - name: Publish MiddyNet Tracing SQS Middleware
+        id: publish_nuget_middynet_tracing_sqs_middleware
+        uses: rohith/publish-nuget@v2
+        with:
+          # Filepath of the project to be packaged, relative to root of repository
+          PROJECT_FILE_PATH: src/Voxel.MiddyNet.Tracing.SQSMiddleware/Voxel.MiddyNet.Tracing.SQSMiddleware.csproj
+          NUGET_KEY: ${{secrets.NUGET_API_KEY}}

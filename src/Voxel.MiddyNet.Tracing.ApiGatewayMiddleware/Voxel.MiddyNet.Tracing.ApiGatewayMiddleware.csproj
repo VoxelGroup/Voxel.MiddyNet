@@ -1,7 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>$(NetCoreTargetVersion)</TargetFramework>
+    <Description>ApiGateway middleware for Voxel.MiddyNet</Description>
+    <Version>$(middynet)</Version>
+    <PackageId>Voxel.MiddyNet.Tracing.ApiGatewayMiddleware</PackageId>
+    <PackageVersion>$(middynet)</PackageVersion>
   </PropertyGroup>
 
   <ItemGroup>

@@ -1,0 +1,10 @@
+<Project>
+  <PropertyGroup Label="SDK Versions">
+    <NetCoreTargetVersion>netcoreapp3.1</NetCoreTargetVersion>
+    <GitHubSourceLink>1.0.0</GitHubSourceLink>
+  </PropertyGroup>  
+
+  <PropertyGroup Label="MiddyNet Versions">
+    <middynet>1.0.0$(VersionSuffix)</middynet>
+  </PropertyGroup>
+</Project>
