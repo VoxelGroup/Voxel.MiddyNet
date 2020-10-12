@@ -43,6 +43,7 @@ namespace Voxel.MiddyNet.Tracing.SNSMiddleware.Tests
             await middleware.Before(snsEvent, context);
             logger.Received().EnrichWith(Arg.Is<LogProperty>(p => p.Key == "traceparent"));
             logger.Received().EnrichWith(Arg.Is<LogProperty>(p => p.Key == "tracestate"));
+            logger.Received().EnrichWith(Arg.Is<LogProperty>(p => p.Key == "trace-id"));
         }
     }
 }

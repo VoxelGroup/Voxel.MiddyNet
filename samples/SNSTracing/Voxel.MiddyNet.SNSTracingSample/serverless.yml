@@ -18,9 +18,6 @@ functions:
     handler: Voxel.MiddyNet.SNSTracingSample::Voxel.MiddyNet.SNSTracingSample.SNSTracing::Handler
     package:
       artifact: bin/Release/netcoreapp3.1/Voxel.MiddyNet.SNSTracingSample.zip
-    environment:
-      clientIdPath: /${self:service}/${self:provider.stage}/clientId
-      clientSecretPath: /${self:service}/${self:provider.stage}/clientSecret
     events:
       - sns:
           arn: !Ref SnsTracingSampleTopic

@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
+    <AssemblyName>Voxel.MiddyNet.SQSTracingSample</AssemblyName>
+    <PackageId>Voxel.MiddyNet.SQSTracingSample</PackageId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Amazon.Lambda.Core" Version="1.1.0" />
+    <PackageReference Include="Amazon.Lambda.Serialization.SystemTextJson" Version="2.0.1" />
+    <PackageReference Include="Amazon.Lambda.SQSEvents" Version="1.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\src\Voxel.MiddyNet.Tracing.SQSMiddleware\Voxel.MiddyNet.Tracing.SQSMiddleware.csproj" />
+    <ProjectReference Include="..\..\..\src\Voxel.MiddyNet\Voxel.MiddyNet.csproj" />
+  </ItemGroup>
+
+</Project>

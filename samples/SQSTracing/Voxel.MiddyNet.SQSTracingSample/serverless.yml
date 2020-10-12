@@ -1,0 +1,31 @@
+service: voxel-middynet-sqstracingsample
+
+provider:
+  name: aws
+  runtime: dotnetcore3.1
+  region: ${opt:region, self:custom.defaultRegion}
+  stage: ${opt:stage, self:custom.defaultStage}
+
+custom:
+  defaultRegion: eu-west-1
+  defaultStage: dev${env:SLSUSER, ""}
+  sqsTracingSampleQueueName: ${self:service}-${self:provider.stage}-sqsTracingSampleQueue
+package:
+  individually: true
+
+functions:
+  sqsTracingSample:
+    handler: Voxel.MiddyNet.SQSTracingSample::Voxel.MiddyNet.SQSTracingSample.SQSTracing::Handler
+    package:
+      artifact: bin/Release/netcoreapp3.1/Voxel.MiddyNet.SQSTracingSample.zip
+    events:
+      - sqs:
+          arn: !GetAtt SqsTracingSampleQueue.Arn
+          batchSize: 1
+
+resources:
+  Resources:
+    SqsTracingSampleQueue:
+      Type: AWS::SQS::Queue
+      Properties:
+        QueueName: ${self:custom.sqsTracingSampleQueueName}

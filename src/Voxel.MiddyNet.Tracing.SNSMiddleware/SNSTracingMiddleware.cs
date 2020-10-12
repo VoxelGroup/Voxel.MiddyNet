@@ -9,6 +9,7 @@ namespace Voxel.MiddyNet.Tracing.SNSMiddleware
     {
         private const string TraceParentHeaderName = "traceparent";
         private const string TraceStateHeaderName = "tracestate";
+        private const string TraceIdHeaderName = "trace-id";
 
         public Task Before(SNSEvent snsEvent, MiddyNetContext context)
         {
@@ -26,6 +27,7 @@ namespace Voxel.MiddyNet.Tracing.SNSMiddleware
 
             context.Logger.EnrichWith( new LogProperty(TraceParentHeaderName, traceContext.TraceParent));
             context.Logger.EnrichWith(new LogProperty(TraceStateHeaderName, traceContext.TraceState));
+            context.Logger.EnrichWith(new LogProperty(TraceIdHeaderName, traceContext.TraceId));
 
             return Task.CompletedTask;
         }

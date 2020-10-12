@@ -29,6 +29,7 @@ namespace Voxel.MiddyNet.Tracing.ApiGatewayMiddleware.Tests
             await middleware.Before(apiGatewayEvent, context);
             logger.Received().EnrichWith(Arg.Is<LogProperty>(p => p.Key == "traceparent"));
             logger.Received().EnrichWith(Arg.Is<LogProperty>(p => p.Key == "tracestate"));
+            logger.Received().EnrichWith(Arg.Is<LogProperty>(p => p.Key == "trace-id"));
         }
     }
 }

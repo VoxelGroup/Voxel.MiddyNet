@@ -6,14 +6,14 @@ namespace Voxel.MiddyNet.Tracing.Core
     public class TraceContext
     {
         private string version;
-        private string traceId;
+        public string TraceId { get; }
         private string parentId;
         private string traceFlags;
 
         private TraceContext(string version, string traceId, string parentId, string traceFlags)
         {
             this.version = version;
-            this.traceId = traceId;
+            TraceId = traceId;
             this.parentId = parentId;
             this.traceFlags = traceFlags;
             TraceState = string.Empty;
@@ -22,7 +22,7 @@ namespace Voxel.MiddyNet.Tracing.Core
         private TraceContext(string version, string traceId, string parentId, string traceFlags, string traceState)
         {
             this.version = version;
-            this.traceId = traceId;
+            TraceId = traceId;
             this.parentId = parentId;
             this.traceFlags = traceFlags;
             TraceState = traceState;
@@ -82,8 +82,8 @@ namespace Voxel.MiddyNet.Tracing.Core
             return new TraceContext("00", RandomString(32), RandomString(16), "00");
         }
 
-        public string TraceParent => $"{version}-{traceId}-{parentId}-{traceFlags}";
-        public string TraceState { get; private set; }
+        public string TraceParent => $"{version}-{TraceId}-{parentId}-{traceFlags}";
+        public string TraceState { get; }
 
         private static readonly Random random = new Random();
         private static string RandomString(int length)
