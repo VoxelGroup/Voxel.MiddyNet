@@ -27,7 +27,6 @@ This library will force you to organize your lambda functions in a certain way, 
 ```
 public class ForwardEmail : MiddyNet<SNSEvent, int>
 {
-    private static HttpClient httpClient = new HttpClient();
     private const string Param1Name = "Param1Name";
     private const string Param2Name = "Param2Name";
 

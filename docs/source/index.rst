@@ -35,3 +35,10 @@ Welcome to MiddyNet
    :caption: Writing a Middleware
 
    writing/writing
+
+.. toctree::
+   :maxdepth: 3
+   :hidden:
+   :caption: Existing NuGet packages
+
+   nuget/packages
