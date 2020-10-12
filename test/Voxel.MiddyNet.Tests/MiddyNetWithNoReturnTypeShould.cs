@@ -104,11 +104,11 @@ namespace Voxel.MiddyNet.Tests
         [Theory]
         [InlineData(1)]
         [InlineData(2)]
-        public void NotifyErrorOnBefore(int numberOfMiddlewares)
+        public async Task NotifyErrorOnBefore(int numberOfMiddlewares)
         {
             var lambdaFunction = new TestLambdaFunction(logLines, contextLines, numberOfMiddlewares, true, middlewareExceptions);
 
-            Func<Task> act = async () => await lambdaFunction.Handler(1, new FakeLambdaContext());
+            await lambdaFunction.Handler(1, new FakeLambdaContext());
 
             middlewareExceptions.Should().HaveCount(numberOfMiddlewares);
             middlewareExceptions.Should().AllBeOfType<MiddlewareException>();
