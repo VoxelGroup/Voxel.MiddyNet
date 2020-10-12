@@ -109,7 +109,6 @@ namespace Voxel.MiddyNet.Tests
             var lambdaFunction = new TestLambdaFunction(logLines, contextLines, numberOfMiddlewares, true, middlewareExceptions);
 
             Func<Task> act = async () => await lambdaFunction.Handler(1, new FakeLambdaContext());
-            act.Should().Throw<AggregateException>();
 
             middlewareExceptions.Should().HaveCount(numberOfMiddlewares);
             middlewareExceptions.Should().AllBeOfType<MiddlewareException>();
