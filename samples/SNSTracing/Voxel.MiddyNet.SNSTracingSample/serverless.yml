@@ -1,0 +1,34 @@
+service: voxel-middynet-snstracingsample
+
+provider:
+  name: aws
+  runtime: dotnetcore3.1
+  region: ${opt:region, self:custom.defaultRegion}
+  stage: ${opt:stage, self:custom.defaultStage}
+
+custom:
+  defaultRegion: eu-west-1
+  defaultStage: dev${env:SLSUSER, ""}
+  snsTracingSampleTopic: ${self:service}-${self:provider.stage}-snsTracingSampleTopic
+package:
+  individually: true
+
+functions:
+  snsTracingSample:
+    handler: Voxel.MiddyNet.SNSTracingSample::Voxel.MiddyNet.SNSTracingSample.SNSTracing::Handler
+    package:
+      artifact: bin/Release/netcoreapp3.1/Voxel.MiddyNet.SNSTracingSample.zip
+    environment:
+      clientIdPath: /${self:service}/${self:provider.stage}/clientId
+      clientSecretPath: /${self:service}/${self:provider.stage}/clientSecret
+    events:
+      - sns:
+          arn: !Ref SnsTracingSampleTopic
+          topicName: ${self:custom.snsTracingSampleTopic}
+
+resources:
+  Resources:
+    SnsTracingSampleTopic:
+      Type: AWS::SNS::Topic
+      Properties:
+        TopicName: ${self:custom.snsTracingSampleTopic}

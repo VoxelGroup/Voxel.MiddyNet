@@ -33,6 +33,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Voxel.MiddyNet.Tracing.SQSM
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Voxel.MiddyNet.Tracing.SQSMiddleware.Tests", "test\Voxel.MiddyNet.Tracing.SQSMiddleware.Tests\Voxel.MiddyNet.Tracing.SQSMiddleware.Tests.csproj", "{7F4369B3-0189-4D74-B095-4FEA608476E5}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{B07FEFF7-B407-4792-8C6B-B6D0CC8626D4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SNSTracing", "SNSTracing", "{D40F9889-778B-47F1-8B7C-F5109755B328}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Voxel.MiddyNet.SNSTracingSample", "samples\SNSTracing\Voxel.MiddyNet.SNSTracingSample\Voxel.MiddyNet.SNSTracingSample.csproj", "{4DAFC7C9-1530-4D0A-80ED-EC82697C2960}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -91,6 +97,10 @@ Global
 		{7F4369B3-0189-4D74-B095-4FEA608476E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7F4369B3-0189-4D74-B095-4FEA608476E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7F4369B3-0189-4D74-B095-4FEA608476E5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4DAFC7C9-1530-4D0A-80ED-EC82697C2960}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4DAFC7C9-1530-4D0A-80ED-EC82697C2960}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4DAFC7C9-1530-4D0A-80ED-EC82697C2960}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4DAFC7C9-1530-4D0A-80ED-EC82697C2960}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -107,6 +117,8 @@ Global
 		{821198ED-C6FB-4DEE-8446-31D56B9E0689} = {202D1DF0-62D6-4006-99DC-BBFBE59428B1}
 		{FFF68015-13F8-42AA-9866-0606638ABB24} = {202D1DF0-62D6-4006-99DC-BBFBE59428B1}
 		{7F4369B3-0189-4D74-B095-4FEA608476E5} = {202D1DF0-62D6-4006-99DC-BBFBE59428B1}
+		{D40F9889-778B-47F1-8B7C-F5109755B328} = {B07FEFF7-B407-4792-8C6B-B6D0CC8626D4}
+		{4DAFC7C9-1530-4D0A-80ED-EC82697C2960} = {D40F9889-778B-47F1-8B7C-F5109755B328}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {EFA347F5-761B-44CF-B6DB-8981387C72B3}
