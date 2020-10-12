@@ -1,25 +1,17 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Amazon.Lambda.SQSEvents;
 using Voxel.MiddyNet.Tracing.Core;
 
 namespace Voxel.MiddyNet.Tracing.SQSMiddleware
 {
-    public class SQSTracingMiddleware<TReq, TRes> : ILambdaMiddleware<TReq, TRes>
+    public class SQSTracingMiddleware<TRes> : ILambdaMiddleware<SQSEvent, TRes>
     {
         private const string TraceParentHeaderName = "traceparent";
         private const string TraceStateHeaderName = "tracestate";
 
-        public Task Before(TReq lambdaEvent, MiddyNetContext context)
+        public Task Before(SQSEvent sqsEvent, MiddyNetContext context)
         {
-            if (!(lambdaEvent is SQSEvent))
-            {
-                context.MiddlewareExceptions.Add(new InvalidOperationException($"Trying to use the SQSTracingMiddleware with an event of type {typeof(TReq)}"));
-                return Task.CompletedTask;
-            }
-
-            var sqsEvent = lambdaEvent as SQSEvent;
             var sqsMessage = sqsEvent.Records.First();
 
             var traceParentHeaderValue = string.Empty;

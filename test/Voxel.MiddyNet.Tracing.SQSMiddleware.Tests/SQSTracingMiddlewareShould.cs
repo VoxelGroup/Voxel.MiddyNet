@@ -1,10 +1,7 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Amazon.Lambda.Core;
 using Amazon.Lambda.SQSEvents;
-using FluentAssertions;
 using NSubstitute;
 using Voxel.MiddyNet.Tracing.SQSMiddleware;
 using Xunit;
@@ -14,24 +11,12 @@ namespace Voxel.MiddyNet.Tracing.SNSMiddleware.Tests
     public class SNSTracingMiddlewareShould
     {
         [Fact]
-        public async Task ThrowAnExceptionIfTheEventIsNotAnSNSEvent()
-        {
-            var context = new MiddyNetContext(Substitute.For<ILambdaContext>());
-            var middleware = new SQSTracingMiddleware<int, int>();
-
-            await middleware.Before(1, context);
-
-            context.MiddlewareExceptions.Should().HaveCount(1);
-            context.MiddlewareExceptions.Single().Should().BeOfType<InvalidOperationException>();
-        }
-
-        [Fact]
         public async Task EnrichLoggerWithTraceContext()
         {
             var logger = Substitute.For<IMiddyLogger>();
             var context = new MiddyNetContext(Substitute.For<ILambdaContext>(), _ => logger);
             
-            var middleware = new SQSTracingMiddleware<SQSEvent , int>();
+            var middleware = new SQSTracingMiddleware<int>();
 
             var snsEvent = new SQSEvent
             {
