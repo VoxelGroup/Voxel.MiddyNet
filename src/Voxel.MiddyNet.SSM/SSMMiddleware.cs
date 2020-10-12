@@ -6,47 +6,7 @@ using Amazon.SimpleSystemsManagement.Model;
 
 namespace Voxel.MiddyNet.SSM
 {
-    public class SSMParameterToGet
-    {
-        public string Name { get; }
-        public string Path { get; }
-
-        public SSMParameterToGet(string name, string path)
-        {
-            Name = name;
-            Path = path;
-        }
-    }
-
-    public class SSMOptions
-    {
-        public List<SSMParameterToGet> ParametersToGet { get; set; }
-        public int CacheExpiryInMillis { get; set; }
-    }
-
-    public class CachedParameter
-    {
-        public DateTimeOffset InsertDateTime { get; }
-        public string Value { get; }
-
-        public CachedParameter(DateTimeOffset insertDateTime, string value)
-        {
-            InsertDateTime = insertDateTime;
-            Value = value;
-        }
-    }
-
-    public interface ITimeProvider
-    {
-        DateTime UtcNow { get; }
-    }
-
-    public class SystemTimeProvider : ITimeProvider
-    {
-        public DateTime UtcNow => DateTime.UtcNow;
-    }
-
-    public class SSMMiddleware<TReq, TRes> : ILambdaMiddleware<TReq, TRes>
+    public class SSMMiddleware<TReq> : IBeforeLambdaMiddleware<TReq>
     {
         private readonly SSMOptions ssmOptions;
         private readonly Func<IAmazonSimpleSystemsManagement> ssmClientFactory;
@@ -63,11 +23,6 @@ namespace Voxel.MiddyNet.SSM
             this.ssmOptions = ssmOptions;
             this.ssmClientFactory = ssmClientFactory;
             this.timeProvider = timeProvider;
-        }
-
-        public Task<TRes> After(TRes lambdaResponse, MiddyNetContext context)
-        {
-            return Task.FromResult(lambdaResponse);
         }
 
         public async Task Before(TReq lambdaEvent, MiddyNetContext context)

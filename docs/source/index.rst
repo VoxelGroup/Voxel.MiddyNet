@@ -18,6 +18,7 @@ Welcome to MiddyNet
 
    intro/howitworks
    intro/contributing
+   intro/terminology
 
 .. toctree::
    :maxdepth: 3

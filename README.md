@@ -49,7 +49,7 @@ public class ForwardEmail : MiddyNet<SNSEvent, int>
             }
         };
 
-        this.Use(new SSMMiddleware<SNSEvent, int>(options));
+        this.Use(new SSMMiddleware<SNSEvent>(options));
     }
 
 
@@ -70,18 +70,18 @@ As you can see, you need to derive from MiddyNet, and specify the type of event 
 After your code is executed, Middy .NET will call the after methods of the middlewares in reverse order. You can use this to, for example, alter the response in some way (adding headers, for example).
 
 ### Handling errors
-Errors can happen in the `Before` method of the middleware or in the `After` method of them. Although we capture those errors, we treat those them slightly different.
+Errors can happen in a middleware that implements `IBeforeLambdaMiddleware` or in a middleware that implements `IAfterLambdaMiddleware`. Although we capture those errors, we treat those them slightly different.
 
 #### Errors on Before
-When an exception is thrown by a middleware in the `Before` method, the exception is captured and added to the `MiddlewareExceptions` list, so that the following middlewares and the function can react to it.
+When an exception is thrown by a middleware that implements `IBeforeLambdaMiddleware`, the exception is captured and added to the `MiddlewareExceptions` list, so that the following middlewares and the function can react to it.
 
-After the `Handle` function is called and before the `After` middlewares are called, this list is cleared.
+After the `Handle` function is called and before the middlewares that implement `IAfterLambdaMiddleware` are called, this list is cleared.
 
 #### Errors on After
-When an exception is thrown by a middleware in the `After` method, the exception is captured and added to the `MiddlewareExceptions` list, so that the following middlewares can reacto to it. When all the middlewares have run, if this list has any item, an `AggregateException` with all of them is thrown.
+When an exception is thrown by a middleware that implements `IAfterLambdaMiddleware`, the exception is captured and added to the `MiddlewareExceptions` list, so that the following middlewares can reacto to it. When all the middlewares have run, if this list has any item, an `AggregateException` with all of them is thrown.
 
 ## How to write a middleware
-To write a new Middleware, you just need to implement the interface `ILambdaMiddleware` and implement the `Before` and `After` methods, although normally you will only implement one of them. If you need to store data so that the `Handle` method can use it, you can use the `AdditionalContext` dictionary inside the `MiddyContext` object.
+To write a new Middleware, you just need to implement one of the interfaces `IBeforeLambdaMiddleware` or `IAfterLambdaMiddleware` and implement it. In a *before* middleware, if you need to store data so that the `Handle` method can use it, you can use the `AdditionalContext` dictionary inside the `MiddyContext` object.
 
 ## Logger
 There's a simple logger implemented in the package. This logger is a wrapper of the `ILambdaLogger` provided by the AWS runtime, which you can still access inside the `LambdaContext` property inside the `MiddyContext` object. Our logger, logs a JSON message so the logs are easily readable by your preferred log aggregation platform. We can also add additional properties apart from the message and LogLevel.

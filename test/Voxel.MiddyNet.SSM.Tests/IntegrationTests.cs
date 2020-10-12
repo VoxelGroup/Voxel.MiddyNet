@@ -57,7 +57,7 @@ namespace Voxel.MiddyNet.SSM.Tests
         {
             var loadProfileFromLaunchSettings = Environment.GetEnvironmentVariable("IGNORE_LAUNCH_SETTINGS");
 
-            if (loadProfileFromLaunchSettings == null || loadProfileFromLaunchSettings == "true") return;
+            if (loadProfileFromLaunchSettings == "true") return;
 
             using (var file = File.OpenText("Properties/launchSettings.json"))
             {
@@ -105,7 +105,7 @@ namespace Voxel.MiddyNet.SSM.Tests
     {
         public TheLambdaFunction(Dictionary<string, string> parametersToGet)
         {
-            Use(new SSMMiddleware<int, string[]>(new SSMOptions
+            Use(new SSMMiddleware<int>(new SSMOptions
             {
                 CacheExpiryInMillis = 60000,
                 ParametersToGet = parametersToGet.Select(kvp => new SSMParameterToGet(kvp.Key, kvp.Value)).ToList()

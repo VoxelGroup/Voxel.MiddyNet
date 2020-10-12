@@ -5,7 +5,7 @@ using Voxel.MiddyNet.Tracing.Core;
 
 namespace Voxel.MiddyNet.Tracing.SQSMiddleware
 {
-    public class SQSTracingMiddleware<TRes> : ILambdaMiddleware<SQSEvent, TRes>
+    public class SQSTracingMiddleware : IBeforeLambdaMiddleware<SQSEvent>
     {
         private const string TraceParentHeaderName = "traceparent";
         private const string TraceStateHeaderName = "tracestate";
@@ -28,11 +28,6 @@ namespace Voxel.MiddyNet.Tracing.SQSMiddleware
             context.Logger.EnrichWith(new LogProperty(TraceStateHeaderName, traceContext.TraceState));
 
             return Task.CompletedTask;
-        }
-
-        public Task<TRes> After(TRes lambdaResponse, MiddyNetContext context)
-        {
-            return Task.FromResult(lambdaResponse);
         }
     }
 }

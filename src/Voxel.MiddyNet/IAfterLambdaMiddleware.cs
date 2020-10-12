@@ -2,9 +2,8 @@
 
 namespace Voxel.MiddyNet
 {
-    public interface ILambdaMiddleware<in TReq, TRes>
+    public interface IAfterLambdaMiddleware<TRes>
     {
-        Task Before(TReq lambdaEvent, MiddyNetContext context);
         Task<TRes> After(TRes lambdaResponse, MiddyNetContext context);
     }
 }

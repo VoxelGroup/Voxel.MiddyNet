@@ -12,7 +12,7 @@ Installation
 Conventions
 -----------
 
-The best way to organise your code when working with **MiddyNet** is to have a single file for each lambda function. Once you have that, you need to derive from ``MiddyNet<TReq,TRes>``, where TReq is the type of the input event (SNS, SQS, etc) and TRes is the type of the result. If your function doesn't have to return anything, we recommend you to use an int and return 0 from your function. At this moment we don't offer a class with no return type.
+The best way to organise your code when working with **MiddyNet** is to have a single file for each lambda function. Once you have that, you need to derive from ``MiddyNet<TReq,TRes>``, where TReq is the type of the input event (SNS, SQS, etc) and TRes is the type of the result. If your function doesn't have to return anything, you can derive from ``MiddyNet<TReq>``.
 
 **MiddyNet** does its work in a function called Handler. This is the function you will need to specify when configuring your lambda as your entry point. So, at this point, all your lambdas will have its own source file and all of them will expose the same method called *Handler*. Nice and easy.
 
@@ -33,5 +33,23 @@ So, a minimum skeleton of your lambda function would be something like this::
             // Your business logic
 
             return Task.FromResult(0);
+        }
+    }
+
+Or if you don't want to return anything::
+    
+    public class MySQSLambdaFunction : MiddyNet<SQSEvent>
+    {
+        public MySQSLambdaFunction()
+        {
+            // Your own initializations 
+            // MiddyNet middleware definitions. More on that later.
+        }
+
+        protected override Task<int> Handle(SQSEvent lambdaEvent, MiddyNetContext context)
+        {
+            // Your business logic
+
+            return Task.CompletedTask;
         }
     }
