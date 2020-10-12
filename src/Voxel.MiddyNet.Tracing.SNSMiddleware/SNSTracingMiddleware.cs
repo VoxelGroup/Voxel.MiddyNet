@@ -1,25 +1,17 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Amazon.Lambda.SNSEvents;
 using Voxel.MiddyNet.Tracing.Core;
 
 namespace Voxel.MiddyNet.Tracing.SNSMiddleware
 {
-    public class SNSTracingMiddleware<TReq, TRes> : ILambdaMiddleware<TReq, TRes>
+    public class SNSTracingMiddleware<TRes> : ILambdaMiddleware<SNSEvent, TRes>
     {
         private const string TraceParentHeaderName = "traceparent";
         private const string TraceStateHeaderName = "tracestate";
 
-        public Task Before(TReq lambdaEvent, MiddyNetContext context)
+        public Task Before(SNSEvent snsEvent, MiddyNetContext context)
         {
-            if (!(lambdaEvent is SNSEvent))
-            {
-                context.MiddlewareExceptions.Add(new InvalidOperationException($"Trying to use the SNSTracingMiddleware with an event of type {typeof(TReq)}"));
-                return Task.CompletedTask;
-            }
-
-            var snsEvent = lambdaEvent as SNSEvent;
             var snsMessage = snsEvent.Records.First().Sns;
 
             var traceParentHeaderValue = string.Empty;

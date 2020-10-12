@@ -35,8 +35,6 @@ This package contains a middleware that reads the ``TraceContext`` information f
 
 The logs will have a property for ``traceparent``, another one for ``tracestate``, and another one for ``trace-id``.
 
-It adds and Exception to the ``MiddlewareExceptions`` list if the event is not of type ``SNSEvent``.
-
 Sample code
 ^^^^^^^^^^^
 A typical use of the middelware will look like this::
@@ -45,7 +43,7 @@ A typical use of the middelware will look like this::
     {
         public MySample()
         {
-            Use(new SNSTracingMiddleware<SNSEvent, int>());
+            Use(new SNSTracingMiddleware<int>());
         }
 
         protected override async Task<int> Handle(SNSEvent snsEvent, MiddyNetContext context)
