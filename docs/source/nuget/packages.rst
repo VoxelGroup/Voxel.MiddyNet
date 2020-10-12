@@ -93,26 +93,30 @@ This package contains a middleware that reads the ``TraceContext`` information f
 
 The logs will have a property for ``traceparent``, another one for ``tracestate``, and another one for ``trace-id``.
 
-It adds and Exception to the ``MiddlewareExceptions`` list if the event is not of type ``APIGatewayProxyRequest``.
-
 Sample code
 ^^^^^^^^^^^
 A typical use of the middelware will look like this::
 
-    public class MySample : MiddyNet<APIGatewayProxyRequest, int>
+    public class MySample : MiddyNet<APIGatewayProxyResponse>
     {
         public MySample()
         {
-            Use(new ApiGatewayTracingMiddleware<APIGatewayProxyRequest, int>());
+            Use(new ApiGatewayTracingMiddleware<APIGatewayProxyResponse>());
         }
 
-        protected override async Task<int> Handle(APIGatewayProxyRequest apiEvent, MiddyNetContext context)
+        protected override async Task<APIGatewayProxyResponse> Handle(APIGatewayProxyRequest apiEvent, MiddyNetContext context)
         {
             context.Logger.Log(LogLevel.Info, "hello world");
 
             // Do stuff
 
-            return Task.FromResult(0);
+            var result = new APIGatewayProxyResponse
+            {
+                StatusCode = 200,
+                Body = "hello from test"
+            };
+
+            return Task.FromResult(result);
         }
     }
 
