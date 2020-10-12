@@ -1,3 +1,6 @@
+![MiddyNet Continuous Integration](https://github.com/VoxelGroup/Voxel.MiddyNet/workflows/MiddyNet%20Continuous%20Integration/badge.svg)
+
+[![Documentation Status](https://readthedocs.org/projects/voxelmiddynet/badge/?version=latest)](https://voxelmiddynet.readthedocs.io/en/latest/?badge=latest)
 
 # Voxel.MiddyNet
 
@@ -6,6 +9,8 @@ Middy .NET is a lightwave middleware library for AWS Lambda and .NET Core 3.1. I
 It allows you to inject middlewares into your lambda functions so that your code is entirely focused on business logic. 
 
 Middlewares are published as separate NuGet packages (one NuGet for middleware) so that your lambda package can be as small as possible.
+
+For project documentation, please visit [readthedocs](https://voxelmiddynet.readthedocs.io).
 
 ## Prerequisites
 
@@ -97,10 +102,6 @@ Right now, there's a middleware to extract `traceparent` and `tracestate` header
 * Voxel Media S.L.
 
 See also the list of [contributors](https://github.com/VoxelGroup/Voxel.MiddyNet/contributors) who participated in this project.
-
-## Contributing
-
-Please read [CONTRIBUTING.md](..) for details on our code of conduct, and the process for submitting pull requests to us.
 
 ## Versioning
 
