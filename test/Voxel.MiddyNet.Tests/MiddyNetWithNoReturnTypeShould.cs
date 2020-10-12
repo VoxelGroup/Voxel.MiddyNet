@@ -13,7 +13,6 @@ namespace Voxel.MiddyNet.Tests
         private readonly List<string> contextLines = new List<string>();
         private const string FunctionLog = "FunctionCode";
         private const string MiddlewareBeforeLog = "MiddlewareBeforeCode";
-        private const string MiddlewareAfterLog = "MiddlewareAfterCode";
         private const string ContextLog = "ContextLog";
         private const string ContextKeyLog = "ContextKeyLog";
         private List<Exception> middlewareExceptions = new List<Exception>();
@@ -78,7 +77,7 @@ namespace Voxel.MiddyNet.Tests
 
             await lambdaFunction.Handler(1, new FakeLambdaContext());
 
-            logLines.Should().ContainInOrder($"{MiddlewareBeforeLog}-1", FunctionLog, $"{MiddlewareAfterLog}-1");
+            logLines.Should().ContainInOrder($"{MiddlewareBeforeLog}-1", FunctionLog);
         }
 
         [Fact]
