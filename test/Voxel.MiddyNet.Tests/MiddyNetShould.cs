@@ -49,7 +49,7 @@ namespace Voxel.MiddyNet.Tests
 
         public class MiddlewareException : Exception { }
 
-        public class TestBeforeMiddleware : IBeforeLambdaMiddleware<int>
+        public class TestBeforeMiddleware : ILambdaMiddleware<int, int>
         {
             private readonly int position;
             public List<string> LogLines { get; }
@@ -71,9 +71,14 @@ namespace Voxel.MiddyNet.Tests
 
                 return Task.CompletedTask;
             }
+
+            public Task<int> After(int lambdaResponse, MiddyNetContext context)
+            {
+                return Task.FromResult(lambdaResponse);
+            }
         }
 
-        public class TestAfterMiddleware : IAfterLambdaMiddleware<int>
+        public class TestAfterMiddleware : ILambdaMiddleware<int, int>
         {
             private readonly int position;
             public List<string> LogLines { get; }
@@ -84,6 +89,11 @@ namespace Voxel.MiddyNet.Tests
                 this.position = position;
                 LogLines = logLines;
                 Failing = failing;
+            }
+
+            public Task Before(int lambdaEvent, MiddyNetContext context)
+            {
+                return Task.CompletedTask;
             }
 
             public Task<int> After(int lambdaResponse, MiddyNetContext context)

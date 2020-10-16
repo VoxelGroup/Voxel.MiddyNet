@@ -15,7 +15,7 @@ namespace Voxel.MiddyNet.Tracing.SNSMiddleware.Tests
             var logger = Substitute.For<IMiddyLogger>();
             var context = new MiddyNetContext(Substitute.For<ILambdaContext>(), _ => logger);
             
-            var middleware = new SNSTracingMiddleware();
+            var middleware = new SNSTracingMiddleware<int>();
 
             var snsEvent = new SNSEvent
             {

@@ -7,14 +7,14 @@ using Voxel.MiddyNet.Tracing.SQSMiddleware;
 [assembly: LambdaSerializer(typeof(Amazon.Lambda.Serialization.SystemTextJson.DefaultLambdaJsonSerializer))]
 namespace Voxel.MiddyNet.SQSTracingSample
 {
-    public class SQSTracing : MiddyNet<SQSEvent>
+    public class SQSTracing : MiddyNet<SQSEvent, int>
     {
         public SQSTracing()
         {
-            Use(new SQSTracingMiddleware());
+            Use(new SQSTracingMiddleware<int>());
         }
 
-        protected override Task Handle(SQSEvent lambdaEvent, MiddyNetContext context)
+        protected override Task<int> Handle(SQSEvent lambdaEvent, MiddyNetContext context)
         {
             var originalTraceParentHeaderValue = string.Empty;
 
@@ -25,7 +25,7 @@ namespace Voxel.MiddyNet.SQSTracingSample
 
             context.Logger.Log(LogLevel.Info, "Function called", new LogProperty("original-traceparent", originalTraceParentHeaderValue));
 
-            return Task.CompletedTask;
+            return Task.FromResult(0);
         }
     }
 }

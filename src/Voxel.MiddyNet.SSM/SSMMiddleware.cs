@@ -6,7 +6,7 @@ using Amazon.SimpleSystemsManagement.Model;
 
 namespace Voxel.MiddyNet.SSM
 {
-    public class SSMMiddleware<TReq> : IBeforeLambdaMiddleware<TReq>
+    public class SSMMiddleware<TReq, TRes> : ILambdaMiddleware<TReq, TRes>
     {
         private readonly SSMOptions ssmOptions;
         private readonly Func<IAmazonSimpleSystemsManagement> ssmClientFactory;
@@ -56,6 +56,11 @@ namespace Voxel.MiddyNet.SSM
                     }
                 }
             }
+        }
+
+        public Task<TRes> After(TRes lambdaResponse, MiddyNetContext context)
+        {
+            return Task.FromResult(lambdaResponse);
         }
 
         private bool IsParameterInCacheValid(string parameterName)

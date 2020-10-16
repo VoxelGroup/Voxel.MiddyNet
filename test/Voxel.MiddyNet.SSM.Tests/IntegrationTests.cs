@@ -105,7 +105,7 @@ namespace Voxel.MiddyNet.SSM.Tests
     {
         public TheLambdaFunction(Dictionary<string, string> parametersToGet)
         {
-            Use(new SSMMiddleware<int>(new SSMOptions
+            Use(new SSMMiddleware<int, string[]>(new SSMOptions
             {
                 CacheExpiryInMillis = 60000,
                 ParametersToGet = parametersToGet.Select(kvp => new SSMParameterToGet(kvp.Key, kvp.Value)).ToList()

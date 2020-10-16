@@ -39,7 +39,7 @@ namespace Voxel.MiddyNet.SSM.Tests
                 }
             };
 
-            var ssmMiddleware = new SSMMiddleware<int>(options, () => ssmClient, new SystemTimeProvider());
+            var ssmMiddleware = new SSMMiddleware<int, int>(options, () => ssmClient, new SystemTimeProvider());
             await ssmMiddleware.Before(1, context);
 
             await ssmClient.Received().GetParameterAsync(Arg.Is<GetParameterRequest>(r => r.Name == Param1Path));
@@ -66,7 +66,7 @@ namespace Voxel.MiddyNet.SSM.Tests
                 CacheExpiryInMillis = 60 * 1000
             };
 
-            var ssmMiddleware = new SSMMiddleware<int>(options, () => ssmClient, new SystemTimeProvider());
+            var ssmMiddleware = new SSMMiddleware<int, int>(options, () => ssmClient, new SystemTimeProvider());
             await ssmMiddleware.Before(1, context);
             await ssmMiddleware.Before(1, context);
 
@@ -95,7 +95,7 @@ namespace Voxel.MiddyNet.SSM.Tests
                 CacheExpiryInMillis = 60 * 1000
             };
 
-            var ssmMiddleware = new SSMMiddleware<int>(options, () => ssmClient, timeProvider);
+            var ssmMiddleware = new SSMMiddleware<int, int>(options, () => ssmClient, timeProvider);
             timeProvider.UtcNow.Returns(now);
             await ssmMiddleware.Before(1, context);
 
@@ -122,7 +122,7 @@ namespace Voxel.MiddyNet.SSM.Tests
                 }
             };
 
-            var ssmMiddleware = new SSMMiddleware<int>(options, () => ssmClient, new SystemTimeProvider());
+            var ssmMiddleware = new SSMMiddleware<int, int>(options, () => ssmClient, new SystemTimeProvider());
             await ssmMiddleware.Before(1, context);
             await ssmMiddleware.Before(1, context);
 

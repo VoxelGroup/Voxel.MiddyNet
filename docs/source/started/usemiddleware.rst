@@ -23,7 +23,7 @@ To use a middleware in your lambda function, you need to add it using the functi
         Use(new SQSTracingMiddleware());
     }
 
-And that's all. **MiddyNet** will execute this middleware before or after your function runs, depending wether if it implements ``IBeforeLambdaMiddleware`` or ``IAfterLambdaMiddleware``.
+And that's all. **MiddyNet** will execute this middleware before and after your function runs. In this particular case, the middleware only will do things in the *before* section.
 
 Middleware configurations
 -------------------------

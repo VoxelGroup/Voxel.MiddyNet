@@ -15,7 +15,7 @@ namespace Voxel.MiddyNet.Tracing.ApiGatewayMiddleware.Tests
             var logger = Substitute.For<IMiddyLogger>();
             var context = new MiddyNetContext(Substitute.For<ILambdaContext>(), _ => logger);
 
-            var middleware = new ApiGatewayTracingMiddleware();
+            var middleware = new ApiGatewayTracingMiddleware<int>();
 
             var apiGatewayEvent = new APIGatewayProxyRequest
             {
