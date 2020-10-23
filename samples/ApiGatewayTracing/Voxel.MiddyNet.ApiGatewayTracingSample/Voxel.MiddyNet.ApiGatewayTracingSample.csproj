@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
+    <AssemblyName>Voxel.MiddyNet.ApiGatewayTracingSample</AssemblyName>
+    <PackageId>Voxel.MiddyNet.ApiGatewayTracingSample</PackageId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\src\Voxel.MiddyNet.Tracing.ApiGatewayMiddleware\Voxel.MiddyNet.Tracing.ApiGatewayMiddleware.csproj" />
+    <ProjectReference Include="..\..\..\src\Voxel.MiddyNet\Voxel.MiddyNet.csproj" />
+  </ItemGroup>
+
+</Project>

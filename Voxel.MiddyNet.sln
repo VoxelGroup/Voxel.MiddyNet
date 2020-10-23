@@ -19,15 +19,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Voxel.MiddyNet.Tracing.Core
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tracing", "Tracing", "{D204572D-6B0A-4C3A-86D3-2B9C71346490}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Voxel.MiddyNet.Tracing.SNS", "src\Voxel.MiddyNet.Tracing.SNS\Voxel.MiddyNet.Tracing.SNS.csproj", "{9322166A-6C2C-4121-9567-2C7CD98FA08D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Voxel.MiddyNet.Tracing.SNS", "src\Voxel.MiddyNet.Tracing.SNS\Voxel.MiddyNet.Tracing.SNS.csproj", "{9322166A-6C2C-4121-9567-2C7CD98FA08D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Voxel.MiddyNet.Tracing.SNSMiddleware", "src\Voxel.MiddyNet.Tracing.SNSMiddleware\Voxel.MiddyNet.Tracing.SNSMiddleware.csproj", "{2280E5EB-9E68-4B74-9263-0C3D3390B464}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Voxel.MiddyNet.Tracing.SNSMiddleware", "src\Voxel.MiddyNet.Tracing.SNSMiddleware\Voxel.MiddyNet.Tracing.SNSMiddleware.csproj", "{2280E5EB-9E68-4B74-9263-0C3D3390B464}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Voxel.MiddyNet.Tracing.SNSMiddleware.Tests", "test\Voxel.MiddyNet.Tracing.SNSMiddleware.Tests\Voxel.MiddyNet.Tracing.SNSMiddleware.Tests.csproj", "{7451BB47-7C57-4B03-8E88-FE7E8F1B4852}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Voxel.MiddyNet.Tracing.SNSMiddleware.Tests", "test\Voxel.MiddyNet.Tracing.SNSMiddleware.Tests\Voxel.MiddyNet.Tracing.SNSMiddleware.Tests.csproj", "{7451BB47-7C57-4B03-8E88-FE7E8F1B4852}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Voxel.MiddyNet.Tracing.ApiGatewayMiddleware", "src\Voxel.MiddyNet.Tracing.ApiGatewayMiddleware\Voxel.MiddyNet.Tracing.ApiGatewayMiddleware.csproj", "{137C5D50-2679-408D-898B-B801E1D2EF2C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Voxel.MiddyNet.Tracing.ApiGatewayMiddleware.Tests", "test\Voxel.MiddyNet.Tracing.ApiGatewayMiddleware.Tests\Voxel.MiddyNet.Tracing.ApiGatewayMiddleware.Tests.csproj", "{821198ED-C6FB-4DEE-8446-31D56B9E0689}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Voxel.MiddyNet.Tracing.ApiGatewayMiddleware.Tests", "test\Voxel.MiddyNet.Tracing.ApiGatewayMiddleware.Tests\Voxel.MiddyNet.Tracing.ApiGatewayMiddleware.Tests.csproj", "{821198ED-C6FB-4DEE-8446-31D56B9E0689}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Voxel.MiddyNet.Tracing.SQSMiddleware", "src\Voxel.MiddyNet.Tracing.SQSMiddleware\Voxel.MiddyNet.Tracing.SQSMiddleware.csproj", "{FFF68015-13F8-42AA-9866-0606638ABB24}"
 EndProject
@@ -37,11 +37,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{B07F
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SNSTracing", "SNSTracing", "{D40F9889-778B-47F1-8B7C-F5109755B328}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Voxel.MiddyNet.SNSTracingSample", "samples\SNSTracing\Voxel.MiddyNet.SNSTracingSample\Voxel.MiddyNet.SNSTracingSample.csproj", "{4DAFC7C9-1530-4D0A-80ED-EC82697C2960}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Voxel.MiddyNet.SNSTracingSample", "samples\SNSTracing\Voxel.MiddyNet.SNSTracingSample\Voxel.MiddyNet.SNSTracingSample.csproj", "{4DAFC7C9-1530-4D0A-80ED-EC82697C2960}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SQSTracing", "SQSTracing", "{26E7F028-6A6A-4C9A-BF23-ECD9E9FF5956}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Voxel.MiddyNet.SQSTracingSample", "samples\SQSTracing\Voxel.MiddyNet.SQSTracingSample\Voxel.MiddyNet.SQSTracingSample.csproj", "{D0BB25EE-3326-4941-96BE-99922BC4A48E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ApiGatewayTracing", "ApiGatewayTracing", "{C145A545-25D0-4C1F-8F64-AF3DBDFEB1DB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Voxel.MiddyNet.ApiGatewayTracingSample", "samples\ApiGatewayTracing\Voxel.MiddyNet.ApiGatewayTracingSample\Voxel.MiddyNet.ApiGatewayTracingSample.csproj", "{AE394947-01C4-4E6C-8ED8-C04C633030D9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -109,6 +113,10 @@ Global
 		{D0BB25EE-3326-4941-96BE-99922BC4A48E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D0BB25EE-3326-4941-96BE-99922BC4A48E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D0BB25EE-3326-4941-96BE-99922BC4A48E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AE394947-01C4-4E6C-8ED8-C04C633030D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AE394947-01C4-4E6C-8ED8-C04C633030D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AE394947-01C4-4E6C-8ED8-C04C633030D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AE394947-01C4-4E6C-8ED8-C04C633030D9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -129,6 +137,8 @@ Global
 		{4DAFC7C9-1530-4D0A-80ED-EC82697C2960} = {D40F9889-778B-47F1-8B7C-F5109755B328}
 		{26E7F028-6A6A-4C9A-BF23-ECD9E9FF5956} = {B07FEFF7-B407-4792-8C6B-B6D0CC8626D4}
 		{D0BB25EE-3326-4941-96BE-99922BC4A48E} = {26E7F028-6A6A-4C9A-BF23-ECD9E9FF5956}
+		{C145A545-25D0-4C1F-8F64-AF3DBDFEB1DB} = {B07FEFF7-B407-4792-8C6B-B6D0CC8626D4}
+		{AE394947-01C4-4E6C-8ED8-C04C633030D9} = {C145A545-25D0-4C1F-8F64-AF3DBDFEB1DB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {EFA347F5-761B-44CF-B6DB-8981387C72B3}
