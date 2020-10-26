@@ -12,6 +12,10 @@ namespace Voxel.MiddyNet.HttpCors
         private string incomingOrigin = string.Empty;
         private string httpMethod;
 
+        public HttpCorsMiddleware() : this(new CorsOptions())
+        {
+        }
+
         public HttpCorsMiddleware(CorsOptions corsOptions)
         {
             this.corsOptions = corsOptions;
