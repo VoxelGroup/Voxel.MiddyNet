@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Amazon.Lambda.APIGatewayEvents;
@@ -53,14 +52,62 @@ namespace Voxel.MiddyNet.HttpCors
         {
             if (string.IsNullOrWhiteSpace(httpMethod)) return Task.FromResult(lambdaResponse);
 
-            if (lambdaResponse.Headers == null)
-            {
-                lambdaResponse.Headers = new Dictionary<string, string>();
-            }
+            InitialiseHeaders(lambdaResponse);
 
+            SetAllowOriginHeader(lambdaResponse);
+
+            SetAllowHeadersHeader(lambdaResponse);
+
+            SetAllowCredentialsHeader(lambdaResponse);
+
+            SetCacheControlHeader(lambdaResponse);
+
+            SetMaxAgeHeader(lambdaResponse);
+            
+            return Task.FromResult(lambdaResponse);
+        }
+
+        private void SetMaxAgeHeader(APIGatewayProxyResponse lambdaResponse)
+        {
+            if (!string.IsNullOrWhiteSpace(corsOptions.MaxAge) && !lambdaResponse.Headers.ContainsKey(MaxAgeHeader))
+            {
+                lambdaResponse.Headers.Add(MaxAgeHeader, corsOptions.MaxAge);
+            }
+        }
+
+        private void SetCacheControlHeader(APIGatewayProxyResponse lambdaResponse)
+        {
+            if (httpMethod == "OPTIONS" && !string.IsNullOrWhiteSpace(corsOptions.CacheControl) &&
+                !lambdaResponse.Headers.ContainsKey(CacheControlHeader))
+            {
+                lambdaResponse.Headers.Add(CacheControlHeader, corsOptions.CacheControl);
+            }
+        }
+
+        private void SetAllowCredentialsHeader(APIGatewayProxyResponse lambdaResponse)
+        {
+            if (!lambdaResponse.Headers.ContainsKey(AllowCredentialsHeader))
+            {
+                lambdaResponse.Headers.Add(AllowCredentialsHeader, corsOptions.Credentials.ToString().ToLowerInvariant());
+            }
+        }
+
+        private void SetAllowHeadersHeader(APIGatewayProxyResponse lambdaResponse)
+        {
+            if (!lambdaResponse.Headers.ContainsKey(AllowHeadersHeader))
+            {
+                if (!string.IsNullOrWhiteSpace(corsOptions.Headers))
+                {
+                    lambdaResponse.Headers.Add(AllowHeadersHeader, corsOptions.Headers);
+                }
+            }
+        }
+
+        private void SetAllowOriginHeader(APIGatewayProxyResponse lambdaResponse)
+        {
             if (!lambdaResponse.Headers.ContainsKey(AllowOriginHeader))
             {
-                if (corsOptions.Origins.Contains(incomingOrigin) )
+                if (corsOptions.Origins.Contains(incomingOrigin))
                 {
                     lambdaResponse.Headers.Add(AllowOriginHeader, incomingOrigin);
                 }
@@ -77,47 +124,14 @@ namespace Voxel.MiddyNet.HttpCors
                     lambdaResponse.Headers.Add(AllowOriginHeader, DefaultAccessControlAllowOrigin);
                 }
             }
-
-            if (!lambdaResponse.Headers.ContainsKey(AllowHeadersHeader))
-            {
-                if (!string.IsNullOrWhiteSpace(corsOptions.Headers))
-                {
-                    lambdaResponse.Headers.Add(AllowHeadersHeader, corsOptions.Headers);
-                }
-            }
-
-            if (!lambdaResponse.Headers.ContainsKey(AllowCredentialsHeader))
-            {
-                lambdaResponse.Headers.Add(AllowCredentialsHeader, corsOptions.Credentials.ToString().ToLowerInvariant());
-            }
-
-            if (httpMethod == "OPTIONS" && !string.IsNullOrWhiteSpace(corsOptions.CacheControl) && !lambdaResponse.Headers.ContainsKey(CacheControlHeader))
-            {
-                lambdaResponse.Headers.Add(CacheControlHeader, corsOptions.CacheControl);
-            }
-
-            if (!string.IsNullOrWhiteSpace(corsOptions.MaxAge) && !lambdaResponse.Headers.ContainsKey(MaxAgeHeader))
-            {
-                lambdaResponse.Headers.Add(MaxAgeHeader, corsOptions.MaxAge);
-            }
-            
-
-            return Task.FromResult(lambdaResponse);
         }
-    }
 
-    public class CorsOptions
-    {
-        public string Origin { get; set; }
-        public string[] Origins { get; set; }
-        public string Headers { get; set; }
-        public bool Credentials { get; set; }
-        public string CacheControl { get; set; }
-        public string MaxAge { get; set; }
-
-        public CorsOptions()
+        private static void InitialiseHeaders(APIGatewayProxyResponse lambdaResponse)
         {
-            Origins = Array.Empty<string>();
+            if (lambdaResponse.Headers == null)
+            {
+                lambdaResponse.Headers = new Dictionary<string, string>();
+            }
         }
     }
 }
