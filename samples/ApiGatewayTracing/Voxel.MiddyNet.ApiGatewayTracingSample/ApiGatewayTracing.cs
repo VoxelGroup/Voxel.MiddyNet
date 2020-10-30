@@ -23,11 +23,10 @@ namespace Voxel.MiddyNet.ApiGatewayTracingSample
 
             context.Logger.Log(LogLevel.Info, "Function called", new LogProperty("original-traceparent", originalTraceParentHeaderValue));
 
-            return Task.FromResult(new APIGatewayProxyResponse()
+            return Task.FromResult(new APIGatewayProxyResponse
             {
                 StatusCode = 200,
-                Body = "Ok", 
-                IsBase64Encoded = false              
+                Body = "Ok"
             });
         }
     }
