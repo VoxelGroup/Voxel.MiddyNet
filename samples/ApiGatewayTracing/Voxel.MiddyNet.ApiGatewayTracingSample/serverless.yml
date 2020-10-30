@@ -1,4 +1,4 @@
-service: voxel-middynet-apigwtracingsmpl
+service: voxel-middynet-agwtracingsample
 
 provider:
   name: aws
