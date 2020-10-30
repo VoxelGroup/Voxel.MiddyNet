@@ -1,0 +1,8 @@
+{
+  "Message": "hello world",
+  "Level": "Info",
+  "key": {
+    "Property1": "The value of property1",
+    "Property2": "The value of property2"
+  }
+}

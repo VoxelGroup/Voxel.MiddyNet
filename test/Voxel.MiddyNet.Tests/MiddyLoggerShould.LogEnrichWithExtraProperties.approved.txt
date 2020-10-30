@@ -1,0 +1,5 @@
+{
+  "Message": "hello world",
+  "Level": "Info",
+  "key": "value"
+}
