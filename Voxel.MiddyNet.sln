@@ -51,6 +51,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "HttpCors", "HttpCors", "{3F
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Voxel.MiddyNet.HttpCorsSample", "samples\HttpCors\Voxel.MiddyNet.HttpCorsSample\Voxel.MiddyNet.HttpCorsSample.csproj", "{AE20C006-93B7-4EBD-8F73-F828F7B05D92}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ApiGatewayTracing", "ApiGatewayTracing", "{C145A545-25D0-4C1F-8F64-AF3DBDFEB1DB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Voxel.MiddyNet.ApiGatewayTracingSample", "samples\ApiGatewayTracing\Voxel.MiddyNet.ApiGatewayTracingSample\Voxel.MiddyNet.ApiGatewayTracingSample.csproj", "{AE394947-01C4-4E6C-8ED8-C04C633030D9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -129,6 +133,10 @@ Global
 		{AE20C006-93B7-4EBD-8F73-F828F7B05D92}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AE20C006-93B7-4EBD-8F73-F828F7B05D92}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AE20C006-93B7-4EBD-8F73-F828F7B05D92}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AE394947-01C4-4E6C-8ED8-C04C633030D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AE394947-01C4-4E6C-8ED8-C04C633030D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AE394947-01C4-4E6C-8ED8-C04C633030D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AE394947-01C4-4E6C-8ED8-C04C633030D9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -153,6 +161,8 @@ Global
 		{363B2095-FBDF-43C1-A9FE-2623BF7166C4} = {202D1DF0-62D6-4006-99DC-BBFBE59428B1}
 		{3F5F443F-6AED-4435-8FFF-660B48B37388} = {B07FEFF7-B407-4792-8C6B-B6D0CC8626D4}
 		{AE20C006-93B7-4EBD-8F73-F828F7B05D92} = {3F5F443F-6AED-4435-8FFF-660B48B37388}
+		{C145A545-25D0-4C1F-8F64-AF3DBDFEB1DB} = {B07FEFF7-B407-4792-8C6B-B6D0CC8626D4}
+		{AE394947-01C4-4E6C-8ED8-C04C633030D9} = {C145A545-25D0-4C1F-8F64-AF3DBDFEB1DB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {EFA347F5-761B-44CF-B6DB-8981387C72B3}
