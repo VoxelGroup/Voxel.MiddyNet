@@ -9,13 +9,17 @@ namespace Voxel.MiddyNet.Tests
     [UseReporter(typeof(DiffReporter))]
     public class MiddyLoggerShould
     {
+        private readonly ILambdaLogger lambdaLogger = Substitute.For<ILambdaLogger>();
+        private string receivedLog = string.Empty;
+
+        public MiddyLoggerShould()
+        {
+            lambdaLogger.Log(Arg.Do<string>(a => receivedLog = a));
+        }
+
         [Fact]
         public void LogLevelAndMessage()
         {
-            var lambdaLogger = Substitute.For<ILambdaLogger>();
-            var receivedLog = string.Empty;
-            lambdaLogger.Log(Arg.Do<string>(a => receivedLog = a));
-
             var logger = new MiddyLogger(lambdaLogger);
             logger.Log(LogLevel.Debug, "hello world");
             
@@ -25,10 +29,6 @@ namespace Voxel.MiddyNet.Tests
         [Fact]
         public void LogExtraProperties()
         {
-            var lambdaLogger = Substitute.For<ILambdaLogger>();
-            var receivedLog = string.Empty;
-            lambdaLogger.Log(Arg.Do<string>(a => receivedLog = a));
-
             var logger = new MiddyLogger(lambdaLogger);
             logger.Log(LogLevel.Info, "hello world", new LogProperty("key", "value"));
             
@@ -38,9 +38,6 @@ namespace Voxel.MiddyNet.Tests
         [Fact]
         public void LogExtraPropertiesWithObject()
         {
-            var lambdaLogger = Substitute.For<ILambdaLogger>();
-            var receivedLog = string.Empty;
-            lambdaLogger.Log(Arg.Do<string>(a => receivedLog = a));
             var classToLog = new ClassToLog
             {
                 Property1 = "The value of property1",
@@ -56,10 +53,6 @@ namespace Voxel.MiddyNet.Tests
         [Fact]
         public void LogEnrichWithExtraProperties()
         {
-            var lambdaLogger = Substitute.For<ILambdaLogger>();
-            var receivedLog = string.Empty;
-            lambdaLogger.Log(Arg.Do<string>(a => receivedLog = a));
-
             var logger = new MiddyLogger(lambdaLogger);
             logger.EnrichWith(new LogProperty("key", "value"));
             logger.Log(LogLevel.Info, "hello world");
@@ -69,10 +62,6 @@ namespace Voxel.MiddyNet.Tests
         [Fact]
         public void LogGlobalPropertiesAndExtraProperties()
         {
-            var lambdaLogger = Substitute.For<ILambdaLogger>();
-            var receivedLog = string.Empty;
-            lambdaLogger.Log(Arg.Do<string>(a => receivedLog = a));
-
             var logger = new MiddyLogger(lambdaLogger);
             logger.EnrichWith(new LogProperty("key", "value"));
             logger.Log(LogLevel.Info, "hello world", new LogProperty("key2", "value2"));
