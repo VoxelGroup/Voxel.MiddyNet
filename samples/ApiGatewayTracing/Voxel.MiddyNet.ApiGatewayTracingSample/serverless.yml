@@ -1,0 +1,24 @@
+service: voxel-middynet-apigwtracingsmpl
+
+provider:
+  name: aws
+  runtime: dotnetcore3.1
+  region: ${opt:region, self:custom.defaultRegion}
+  stage: ${opt:stage, self:custom.defaultStage}
+
+custom:
+  defaultRegion: eu-west-1
+  defaultStage: dev${env:SLSUSER, ""}
+
+package:
+  individually: true
+
+functions:
+  apiGatewayTracingSample:
+    handler: Voxel.MiddyNet.ApiGatewayTracingSample::Voxel.MiddyNet.ApiGatewayTracingSample.ApiGatewayTracing::Handler
+    package:
+      artifact: bin/Release/netcoreapp3.1/Voxel.MiddyNet.ApiGatewayTracingSample.zip
+    events:
+      - http:
+          path: /api/test
+          method: get
