@@ -93,7 +93,7 @@ Sample code
 ^^^^^^^^^^^
 A typical use of the middelware will look like this::
 
-    public class MySample : MiddyNet<APIGatewayProxyResponse>
+    public class MySample : MiddyNet<APIGatewayProxyRequest, APIGatewayProxyResponse>
     {
         public MySample()
         {
@@ -168,3 +168,43 @@ A typical configuration and use of the middelware will look like this::
             return Task.FromResult(0);
         }
     }
+
+Voxel.MiddyNet.HttpCors
+------------------
+This package contains a middleware that allows you to set the CORS headers in the response. Currently it works only for REST Api (APIGatewayProxyRequest and APIGatewayProxyResponse).
+
+Configuration
+^^^^^^^^^^^^^
+You can pass a ``CorsOptions`` object in the constructor with the following properties (all of them optional):
+* Origin: origin to put in the header (default: "*")
+* Origins: an array of allowed origins. The incoming origin is matched against the list and is returned if present.
+* Headers: value to put in ``Access-Control-Allow-Headers`` (default: null)
+* Credentials: if true, sets the ``Access-Control-Allow-Origin`` as request header Origin, if present (default ``false``)
+* MaxAge: value to put in ``Access-Control-Max-Age`` header (default: null)
+* CacheControl: value to put in ``Cache-Control`` header on pre-flight (OPTIONS) requests (default: null)
+
+Sample code
+^^^^^^^^^^^
+A typical use of the middelware will look like this::
+
+    public class MySample : MiddyNet<APIGatewayProxyRequest, APIGatewayProxyResponse>
+    {
+        public MySample()
+        {
+            Use(new HttpCorsMiddleware(new CorsOptions{Origin = "http://example.com"}));
+        }
+
+        protected override async Task<APIGatewayProxyResponse> Handle(APIGatewayProxyRequest apiEvent, MiddyNetContext context)
+        {
+            // Do stuff
+
+            var result = new APIGatewayProxyResponse
+            {
+                StatusCode = 200,
+                Body = "hello from test"
+            };
+
+            return Task.FromResult(result);
+        }
+    }
+
