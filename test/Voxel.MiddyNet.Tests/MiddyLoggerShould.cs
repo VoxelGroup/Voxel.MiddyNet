@@ -1,43 +1,43 @@
 ﻿using Amazon.Lambda.Core;
+using ApprovalTests;
+using ApprovalTests.Reporters;
 using NSubstitute;
 using Xunit;
 
 namespace Voxel.MiddyNet.Tests
 {
+    [UseReporter(typeof(DiffReporter))]
     public class MiddyLoggerShould
     {
+        private readonly ILambdaLogger lambdaLogger = Substitute.For<ILambdaLogger>();
+        private string receivedLog = string.Empty;
+
+        public MiddyLoggerShould()
+        {
+            lambdaLogger.Log(Arg.Do<string>(a => receivedLog = a));
+        }
+
         [Fact]
         public void LogLevelAndMessage()
         {
-            var lambdaLogger = Substitute.For<ILambdaLogger>();
-
             var logger = new MiddyLogger(lambdaLogger);
             logger.Log(LogLevel.Debug, "hello world");
-
-            lambdaLogger.Received().Log(Arg.Is(@"{
-  ""Message"": ""hello world"",
-  ""Level"": ""Debug""
-}"));
+            
+            Approvals.Verify(receivedLog);
         }
 
         [Fact]
         public void LogExtraProperties()
         {
-            var lambdaLogger = Substitute.For<ILambdaLogger>();
-
             var logger = new MiddyLogger(lambdaLogger);
             logger.Log(LogLevel.Info, "hello world", new LogProperty("key", "value"));
-            lambdaLogger.Received().Log(Arg.Is(@"{
-  ""Message"": ""hello world"",
-  ""Level"": ""Info"",
-  ""key"": ""value""
-}"));
+            
+            Approvals.Verify(receivedLog);
         }
 
         [Fact]
         public void LogExtraPropertiesWithObject()
         {
-            var lambdaLogger = Substitute.For<ILambdaLogger>();
             var classToLog = new ClassToLog
             {
                 Property1 = "The value of property1",
@@ -46,44 +46,27 @@ namespace Voxel.MiddyNet.Tests
 
             var logger = new MiddyLogger(lambdaLogger);
             logger.Log(LogLevel.Info, "hello world", new LogProperty("key", classToLog));
-            lambdaLogger.Received().Log(Arg.Is(@"{
-  ""Message"": ""hello world"",
-  ""Level"": ""Info"",
-  ""key"": {
-    ""Property1"": ""The value of property1"",
-    ""Property2"": ""The value of property2""
-  }
-}"));
+            
+            Approvals.Verify(receivedLog);
         }
 
         [Fact]
         public void LogEnrichWithExtraProperties()
         {
-            var lambdaLogger = Substitute.For<ILambdaLogger>();
-
             var logger = new MiddyLogger(lambdaLogger);
             logger.EnrichWith(new LogProperty("key", "value"));
             logger.Log(LogLevel.Info, "hello world");
-            lambdaLogger.Received().Log(Arg.Is(@"{
-  ""Message"": ""hello world"",
-  ""Level"": ""Info"",
-  ""key"": ""value""
-}"));
+
+            Approvals.Verify(receivedLog);
         }
         [Fact]
         public void LogGlobalPropertiesAndExtraProperties()
         {
-            var lambdaLogger = Substitute.For<ILambdaLogger>();
-
             var logger = new MiddyLogger(lambdaLogger);
             logger.EnrichWith(new LogProperty("key", "value"));
             logger.Log(LogLevel.Info, "hello world", new LogProperty("key2", "value2"));
-            lambdaLogger.Received().Log(Arg.Is(@"{
-  ""Message"": ""hello world"",
-  ""Level"": ""Info"",
-  ""key"": ""value"",
-  ""key2"": ""value2""
-}"));
+
+            Approvals.Verify(receivedLog);
         }
 
         internal class ClassToLog

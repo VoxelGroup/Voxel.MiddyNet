@@ -351,3 +351,6 @@ MigrationBackup/
 
 # serverless framework temporary files
 .serverless
+
+# Approval Tests backup files
+*.Approved.txt.bak

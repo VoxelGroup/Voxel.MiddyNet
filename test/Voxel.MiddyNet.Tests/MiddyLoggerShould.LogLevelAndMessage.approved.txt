@@ -1,0 +1,4 @@
+{
+  "Message": "hello world",
+  "Level": "Debug"
+}
