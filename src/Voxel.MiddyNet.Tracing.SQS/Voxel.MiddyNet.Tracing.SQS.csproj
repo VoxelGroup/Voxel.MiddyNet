@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>$(NetCoreTargetVersion)</TargetFramework>
+    <Description>SQS extension methods for tracing for Voxel.MiddyNet</Description>
+    <Version>$(middynet)</Version>
+    <PackageId>Voxel.MiddyNet.Tracing.SQS</PackageId>
+    <PackageVersion>$(middynet)</PackageVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AWSSDK.SQS" Version="3.5.0.34" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Voxel.MiddyNet.Tracing.Core\Voxel.MiddyNet.Tracing.Core.csproj" />
+  </ItemGroup>
+</Project>
