@@ -5,7 +5,7 @@ using Voxel.MiddyNet.Tracing.Core;
 
 namespace Voxel.MiddyNet.Tracing.ApiGatewayMiddleware
 {
-    public class ApiGatewayTracingMiddleware<TRes> : ILambdaMiddleware<APIGatewayProxyRequest, TRes>
+    public class ApiGatewayTracingMiddleware : ILambdaMiddleware<APIGatewayProxyRequest, APIGatewayProxyResponse>
     {
         private const string TraceParentHeaderName = "traceparent";
         private const string TraceStateHeaderName = "tracestate";
@@ -30,7 +30,7 @@ namespace Voxel.MiddyNet.Tracing.ApiGatewayMiddleware
             return Task.CompletedTask;
         }
 
-        public Task<TRes> After(TRes lambdaResponse, MiddyNetContext context)
+        public Task<APIGatewayProxyResponse> After(APIGatewayProxyResponse lambdaResponse, MiddyNetContext context)
         {
             return Task.FromResult(lambdaResponse);
         }
