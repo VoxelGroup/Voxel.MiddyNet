@@ -17,15 +17,38 @@ namespace Voxel.MiddyNet
 
             await ExecuteBeforeMiddlewares(lambdaEvent);
 
-            var response = await Handle(lambdaEvent, MiddyContext);
+            var response = await HandleLambdaEvent(lambdaEvent);
 
-            MiddyContext.MiddlewareExceptions.Clear(); // We assume that the function is Ok with the exceptions it might have received
+            MiddyContext.FinishedBeforeMiddlewares();
 
             await ExecuteAfterMiddlewares(response);
 
-            if (MiddyContext.MiddlewareExceptions.Any()) throw new AggregateException(MiddyContext.MiddlewareExceptions);
+            var responseExceptions = GetResponseExceptions();
+            if (responseExceptions.Count > 0) throw new AggregateException(responseExceptions);
+            return response;
+        }
+
+        private async Task<TRes> HandleLambdaEvent(TReq lambdaEvent)
+        {
+            TRes response = default(TRes);
+            try
+            {
+                response = await Handle(lambdaEvent, MiddyContext);
+            }
+            catch (Exception ex)
+            {
+                MiddyContext.HandlerException = ex;
+            }
 
             return response;
+        }
+
+        private List<Exception> GetResponseExceptions()
+        {
+            var responseExceptions = new List<Exception>();
+            if (MiddyContext.HandlerException != null) responseExceptions.Add(MiddyContext.HandlerException);
+            if (MiddyContext.MiddlewareAfterExceptions.Count > 0) responseExceptions.AddRange(MiddyContext.MiddlewareAfterExceptions);
+            return responseExceptions;
         }
 
         private async Task ExecuteAfterMiddlewares(TRes response)
@@ -38,7 +61,7 @@ namespace Voxel.MiddyNet
                 }
                 catch (Exception ex)
                 {
-                    MiddyContext.MiddlewareExceptions.Add(ex);
+                    MiddyContext.MiddlewareAfterExceptions.Add(ex);
                 }
             }
         }
@@ -53,7 +76,7 @@ namespace Voxel.MiddyNet
                 }
                 catch (Exception ex)
                 {
-                    MiddyContext.MiddlewareExceptions.Add(ex);
+                    MiddyContext.MiddlewareBeforeExceptions.Add(ex);
                 }
             }
         }
@@ -66,6 +89,7 @@ namespace Voxel.MiddyNet
             }
             else
             {
+                MiddyContext.FinishedBeforeMiddlewares();
                 MiddyContext.AttachToLambdaContext(context);
             }
 

@@ -119,9 +119,9 @@ namespace Voxel.MiddyNet.SSM.Tests
 
         protected override Task<string[]> Handle(int lambdaEvent, MiddyNetContext context)
         {
-            if (context.MiddlewareExceptions.Any())
+            if (context.MiddlewareBeforeExceptions.Any())
             {
-                return Task.FromResult(new[] {context.MiddlewareExceptions.First().ToString()});
+                return Task.FromResult(new[] {context.MiddlewareBeforeExceptions.First().ToString()});
             }
             
             var results = ParametersToGet.Select(n => context.AdditionalContext[n].ToString()).ToArray();
