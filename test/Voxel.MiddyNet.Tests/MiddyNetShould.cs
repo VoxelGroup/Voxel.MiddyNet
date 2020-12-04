@@ -30,7 +30,7 @@ namespace Voxel.MiddyNet.Tests
                 Exceptions = exceptions ?? new List<Exception>();
                 for (var i = 0; i < numberOfMiddlewares; i++)
                 {
-                    Use(new TestBeforeMiddleware(logLines, i+1, withFailingMiddleware));
+                    Use(new TestBeforeMiddleware(logLines, i + 1, withFailingMiddleware));
                     Use(new TestAfterMiddleware(logLines, i + 1, withFailingMiddleware));
                 }
 

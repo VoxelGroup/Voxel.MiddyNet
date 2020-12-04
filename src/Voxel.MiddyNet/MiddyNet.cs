@@ -17,7 +17,7 @@ namespace Voxel.MiddyNet
 
             await ExecuteBeforeMiddlewares(lambdaEvent);
 
-            var response = await HandleLambdaEvent(lambdaEvent);
+            var response = await SafeHandleLambdaEvent(lambdaEvent);
 
             MiddyContext.FinishedBeforeMiddlewares();
 
@@ -28,7 +28,7 @@ namespace Voxel.MiddyNet
             return response;
         }
 
-        private async Task<TRes> HandleLambdaEvent(TReq lambdaEvent)
+        private async Task<TRes> SafeHandleLambdaEvent(TReq lambdaEvent)
         {
             TRes response = default(TRes);
             try
@@ -89,11 +89,13 @@ namespace Voxel.MiddyNet
             }
             else
             {
-                MiddyContext.FinishedBeforeMiddlewares();
                 MiddyContext.AttachToLambdaContext(context);
             }
 
             MiddyContext.AdditionalContext.Clear(); //  Given that the instance is reused, we need to clean the dictionary.
+            MiddyContext.MiddlewareBeforeExceptions = new List<Exception>();
+            MiddyContext.HandlerException = null;
+            MiddyContext.MiddlewareAfterExceptions = null;
         }
 
         public MiddyNet<TReq, TRes> Use(ILambdaMiddleware<TReq, TRes> middleware)
