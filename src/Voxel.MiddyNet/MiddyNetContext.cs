@@ -51,7 +51,7 @@ namespace Voxel.MiddyNet
 
         public void Clear()
         {
-            AdditionalContext.Clear();
+            AdditionalContext.Clear();  //  Given that the instance is reused, we need to clean the dictionary.
             MiddlewareBeforeExceptions.Clear();
             HandlerException = null;
             MiddlewareAfterExceptions.Clear();
