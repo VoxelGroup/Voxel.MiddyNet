@@ -10,7 +10,7 @@ namespace Voxel.MiddyNet.ApiGatewayTracingSample
     {
         public ApiGatewayTracing()
         {
-            Use(new ApiGatewayTracingMiddleware<APIGatewayProxyResponse>());
+            Use(new ApiGatewayTracingMiddleware());
         }
 
         protected override Task<APIGatewayProxyResponse> Handle(APIGatewayProxyRequest proxyRequest, MiddyNetContext context)
