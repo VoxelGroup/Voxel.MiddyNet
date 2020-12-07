@@ -29,8 +29,8 @@ namespace Voxel.MiddyNet
         {
             AdditionalContext = new Dictionary<string, object>();
             MiddlewareBeforeExceptions = new List<Exception>();
+            MiddlewareAfterExceptions = new List<Exception>();
             LoggerFactory = loggerFactory;
-
             AttachToLambdaContext(context);
         }
 
