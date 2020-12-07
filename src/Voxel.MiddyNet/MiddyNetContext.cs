@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Amazon.Lambda.Core;
+using System;
 using System.Collections.Generic;
-using Amazon.Lambda.Core;
 
 namespace Voxel.MiddyNet
 {
@@ -8,15 +8,19 @@ namespace Voxel.MiddyNet
     {
         public ILambdaContext LambdaContext { get; private set; }
         public IDictionary<string, object> AdditionalContext { get; }
-        public List<Exception> MiddlewareBeforeExceptions { get; internal set; }
-        public List<Exception> MiddlewareAfterExceptions { get; internal set; }
-        public Exception HandlerException { get; internal set; }
+        public List<Exception> MiddlewareBeforeExceptions { get; }
+        public List<Exception> MiddlewareAfterExceptions { get; }
+        public Exception HandlerException { get; set; }
         public IMiddyLogger Logger { get; private set; }
+        public Func<ILambdaLogger, IMiddyLogger> LoggerFactory { get; }
+
+        public bool HasExceptions => HandlerException != null || MiddlewareBeforeExceptions.Count > 0 || MiddlewareAfterExceptions.Count > 0;
 
         public MiddyNetContext(ILambdaContext context)
         {
             AdditionalContext = new Dictionary<string, object>();
             MiddlewareBeforeExceptions = new List<Exception>();
+            MiddlewareAfterExceptions = new List<Exception>();
             LoggerFactory = logger => new MiddyLogger(logger);
             AttachToLambdaContext(context);
         }
@@ -36,12 +40,21 @@ namespace Voxel.MiddyNet
             Logger = LoggerFactory(context.Logger);
         }
 
-        public Func<ILambdaLogger, IMiddyLogger> LoggerFactory { get; }
-
-        internal void FinishedBeforeMiddlewares()
+        public List<Exception> GetAllExceptions()
         {
-            MiddlewareAfterExceptions = new List<Exception>();
-            MiddlewareBeforeExceptions = null; // We assume that the function has handled the exceptions Before middlewares might have thrown
+            var all = new List<Exception>();
+            all.AddRange(MiddlewareBeforeExceptions);
+            if (HandlerException != null) all.Add(HandlerException);
+            all.AddRange(MiddlewareAfterExceptions);
+            return all;
+        }
+
+        public void Clear()
+        {
+            AdditionalContext.Clear();
+            MiddlewareBeforeExceptions.Clear();
+            HandlerException = null;
+            MiddlewareAfterExceptions.Clear();
         }
     }
 }

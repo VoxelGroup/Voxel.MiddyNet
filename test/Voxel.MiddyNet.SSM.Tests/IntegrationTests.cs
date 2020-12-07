@@ -38,16 +38,17 @@ namespace Voxel.MiddyNet.SSM.Tests
         }
 
         [Fact]
-        public async Task IfTheParameterDoesntExistTheExceptionShouldBeAddedToTheContext()
+        public void IfTheParameterDoesntExistTheExceptionShouldBeAddedToTheContext()
         {
             var lambda = new TheLambdaFunction(new Dictionary<string, string>
             {
                 {InvalidStringParameterName, InvalidStringParameterPath }
             });
 
-            var result = await lambda.Handler(1, new FakeLambdaContext());
+            Func<Task> act = async () => await lambda.Handler(1, new FakeLambdaContext());
 
-            result[0].Should().StartWith("Amazon.SimpleSystemsManagement.Model.ParameterNotFoundException");
+            act.Should().Throw<AggregateException>().Where(a =>
+                a.InnerExceptions.Count == 1 && a.InnerExceptions[0] is Amazon.SimpleSystemsManagement.Model.ParameterNotFoundException);
         }
     }
 
@@ -119,9 +120,9 @@ namespace Voxel.MiddyNet.SSM.Tests
 
         protected override Task<string[]> Handle(int lambdaEvent, MiddyNetContext context)
         {
-            if (context.MiddlewareBeforeExceptions.Any())
+            if (context.MiddlewareBeforeExceptions.Count > 0)
             {
-                return Task.FromResult(new[] {context.MiddlewareBeforeExceptions.First().ToString()});
+                return Task.FromResult(new[] {context.MiddlewareBeforeExceptions[0].ToString()});
             }
             
             var results = ParametersToGet.Select(n => context.AdditionalContext[n].ToString()).ToArray();

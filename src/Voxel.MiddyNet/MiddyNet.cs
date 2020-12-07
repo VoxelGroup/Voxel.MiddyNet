@@ -17,14 +17,13 @@ namespace Voxel.MiddyNet
 
             await ExecuteBeforeMiddlewares(lambdaEvent);
 
-            var response = await SafeHandleLambdaEvent(lambdaEvent);
-
-            MiddyContext.FinishedBeforeMiddlewares();
+            var response = await SafeHandleLambdaEvent(lambdaEvent).ConfigureAwait(false);
 
             await ExecuteAfterMiddlewares(response);
 
-            var responseExceptions = GetResponseExceptions();
-            if (responseExceptions.Count > 0) throw new AggregateException(responseExceptions);
+            if (MiddyContext.HasExceptions)
+                throw new AggregateException(MiddyContext.GetAllExceptions());
+
             return response;
         }
 
@@ -41,14 +40,6 @@ namespace Voxel.MiddyNet
             }
 
             return response;
-        }
-
-        private List<Exception> GetResponseExceptions()
-        {
-            var responseExceptions = new List<Exception>();
-            if (MiddyContext.HandlerException != null) responseExceptions.Add(MiddyContext.HandlerException);
-            if (MiddyContext.MiddlewareAfterExceptions.Count > 0) responseExceptions.AddRange(MiddyContext.MiddlewareAfterExceptions);
-            return responseExceptions;
         }
 
         private async Task ExecuteAfterMiddlewares(TRes response)
@@ -91,11 +82,8 @@ namespace Voxel.MiddyNet
             {
                 MiddyContext.AttachToLambdaContext(context);
             }
-
-            MiddyContext.AdditionalContext.Clear(); //  Given that the instance is reused, we need to clean the dictionary.
-            MiddyContext.MiddlewareBeforeExceptions = new List<Exception>();
-            MiddyContext.HandlerException = null;
-            MiddyContext.MiddlewareAfterExceptions = null;
+            
+            MiddyContext.Clear();
         }
 
         public MiddyNet<TReq, TRes> Use(ILambdaMiddleware<TReq, TRes> middleware)
