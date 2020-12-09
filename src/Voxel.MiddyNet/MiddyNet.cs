@@ -10,7 +10,7 @@ namespace Voxel.MiddyNet
     {
         private MiddyNetContext MiddyContext { get; set; }
         private readonly List<ILambdaMiddleware<TReq, TRes>> middlewares = new List<ILambdaMiddleware<TReq, TRes>>();
-        
+
         public async Task<TRes> Handler(TReq lambdaEvent, ILambdaContext context)
         {
             InitialiseMiddyContext(context);
@@ -19,7 +19,7 @@ namespace Voxel.MiddyNet
 
             var response = await SafeHandleLambdaEvent(lambdaEvent).ConfigureAwait(false);
 
-            await ExecuteAfterMiddlewares(response);
+            response = await ExecuteAfterMiddlewares(response);
 
             if (MiddyContext.HasExceptions)
                 throw new AggregateException(MiddyContext.GetAllExceptions());
@@ -42,7 +42,7 @@ namespace Voxel.MiddyNet
             return response;
         }
 
-        private async Task ExecuteAfterMiddlewares(TRes response)
+        private async Task<TRes> ExecuteAfterMiddlewares(TRes response)
         {
             foreach (var middleware in Enumerable.Reverse(middlewares))
             {
@@ -55,6 +55,8 @@ namespace Voxel.MiddyNet
                     MiddyContext.MiddlewareAfterExceptions.Add(ex);
                 }
             }
+
+            return response;
         }
 
         private async Task ExecuteBeforeMiddlewares(TReq lambdaEvent)
@@ -82,7 +84,7 @@ namespace Voxel.MiddyNet
             {
                 MiddyContext.AttachToLambdaContext(context);
             }
-            
+
             MiddyContext.Clear();
         }
 

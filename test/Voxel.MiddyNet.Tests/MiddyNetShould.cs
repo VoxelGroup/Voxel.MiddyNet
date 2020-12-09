@@ -194,6 +194,38 @@ namespace Voxel.MiddyNet.Tests
                 .Where(a => a.InnerExceptions.Take(numberOfMiddlewares).All(e => e is MiddlewareException))
                 .Where(a => a.InnerExceptions.Skip(numberOfMiddlewares + 1).All(e => e is MiddlewareException));
         }
+
+        [Fact]
+        public async Task LetMiddlewaresChangeTheFunctionResult()
+        {
+            var function = new AddsTwo();
+            function.Use(new SquareIt());
+
+            var result = await function.Handler(1, new FakeLambdaContext());
+
+            result.Should().Be(9);
+        }
+
+        private class AddsTwo : MiddyNet<int, int>
+        {
+            protected override Task<int> Handle(int lambdaEvent, MiddyNetContext context)
+            {
+                return Task.FromResult(lambdaEvent + 2);
+            }
+        }
+
+        private class SquareIt : ILambdaMiddleware<int, int>
+        {
+            public Task<int> After(int lambdaResponse, MiddyNetContext context)
+            {
+                return Task.FromResult(lambdaResponse * lambdaResponse);
+            }
+
+            public Task Before(int lambdaEvent, MiddyNetContext context)
+            {
+                return Task.CompletedTask;
+            }
+        }
     }
 
     public class FakeLambdaContext : ILambdaContext
