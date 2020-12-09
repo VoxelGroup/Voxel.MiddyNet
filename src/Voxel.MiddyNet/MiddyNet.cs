@@ -10,7 +10,7 @@ namespace Voxel.MiddyNet
     {
         private MiddyNetContext MiddyContext { get; set; }
         private readonly List<ILambdaMiddleware<TReq, TRes>> middlewares = new List<ILambdaMiddleware<TReq, TRes>>();
-        
+
         public async Task<TRes> Handler(TReq lambdaEvent, ILambdaContext context)
         {
             InitialiseMiddyContext(context);
@@ -84,8 +84,8 @@ namespace Voxel.MiddyNet
             {
                 MiddyContext.AttachToLambdaContext(context);
             }
-            
-            MiddyContext.Clear();
+
+            MiddyContext.Clear(); //  Given that the instance is reused, we need to clean the context.
         }
 
         public MiddyNet<TReq, TRes> Use(ILambdaMiddleware<TReq, TRes> middleware)
