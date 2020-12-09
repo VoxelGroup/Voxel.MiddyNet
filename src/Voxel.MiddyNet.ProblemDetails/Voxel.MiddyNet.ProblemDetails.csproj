@@ -4,7 +4,7 @@
     <TargetFramework>$(NetCoreTargetVersion)</TargetFramework>
     <Description>ProblemDetails middleware for Voxel.MiddyNet</Description>
     <Version>$(middynet)</Version>
-    <PackageId>Voxel.MiddyNet.SSM</PackageId>
+    <PackageId>Voxel.MiddyNet.ProblemDetails</PackageId>
     <PackageVersion>$(middynet)</PackageVersion>
   </PropertyGroup>
 
