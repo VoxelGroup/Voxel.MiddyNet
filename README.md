@@ -8,7 +8,7 @@ Middy .NET is a lightwave middleware library for AWS Lambda and .NET Core 3.1. I
 
 It allows you to inject middlewares into your lambda functions so that your code is entirely focused on business logic. 
 
-Middlewares are published as separate NuGet packages (one NuGet for middleware) so that your lambda package can be as small as possible.
+Middlewares are published as separate NuGet packages (one NuGet per middleware) so that your lambda package can be as small as possible.
 
 For project documentation, please visit [readthedocs](https://voxelmiddynet.readthedocs.io).
 
@@ -27,7 +27,7 @@ Tests are written using xUnit and NSubstitute. There are some integration tests 
 3. Run tests using VS embedded Tests Window or with this command: `dotnet test` under the test project folder
 
 ## Usage
-This library will force you to organize your lambda functions in a certain way, although we think this way it's quite convenient. Each lambda will reside in it's own file and the exposed function will always be called `Handler`. All functions will have an input event and an output, although your system might ignore the output. An example of using the library with the SSM middleware will look like this:
+This library will force you to organize your lambda functions in a certain way, although we think this way is quite convenient. Each lambda will reside in it's own file and the exposed function will always be called `Handler`. All functions will have an input event and an output, although your system might ignore the output. An example of using the library with the SSM middleware will look like this:
 
 ```
 public class ForwardEmail : MiddyNet<SNSEvent, int>
@@ -73,12 +73,15 @@ After your code is executed, Middy .NET will call the after methods of the middl
 Errors can happen in the `Before` method of the middleware or in the `After` method of them. Although we capture those errors, we treat those them slightly different.
 
 #### Errors on Before
-When an exception is thrown by a middleware in the `Before` method, the exception is captured and added to the `MiddlewareExceptions` list, so that the following middlewares and the function can react to it.
+When an exception is thrown by a middleware in the `Before` method, the exception is captured and added to the `MiddlewareBeforeExceptions` list, so that the following middlewares and the function can react to it.
 
-After the `Handle` function is called and before the `After` middlewares are called, this list is cleared.
+#### Errors on Handler
+When an exception is thrown by the function in its `Handle` method and before the `After` middlewares are called, the exception is captured in the `HandlerException` property of the context, so that the following middlewares can react to it.
 
 #### Errors on After
-When an exception is thrown by a middleware in the `After` method, the exception is captured and added to the `MiddlewareExceptions` list, so that the following middlewares can reacto to it. When all the middlewares have run, if this list has any item, an `AggregateException` with all of them is thrown.
+When an exception is thrown by a middleware in the `After` method, the exception is captured and added to the `MiddlewareAfterExceptions` list, so that the following middlewares can react to it.
+
+When all the middlewares have run, if these lists or property have any items, an `AggregateException` with all of them is thrown.
 
 ## How to write a middleware
 To write a new Middleware, you just need to implement the interface `ILambdaMiddleware` and implement the `Before` and `After` methods, although normally you will only implement one of them. If you need to store data so that the `Handle` method can use it, you can use the `AdditionalContext` dictionary inside the `MiddyContext` object.
