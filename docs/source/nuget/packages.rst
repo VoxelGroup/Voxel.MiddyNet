@@ -85,13 +85,13 @@ A typical use of the middelware will look like this::
 
 Voxel.MiddyNet.Tracing.ApiGatewayMiddleware
 -------------------------------------------
-This package contains a middleware that reads the ``TraceContext`` information from the ``traceparent`` and ``tracestate`` headers of an ``APIGatewayProxyRequest`` and enriches the ``MiddyLogger`` with them, so that your logs will have it and it will be easier to correlate them.
+This package contains a middleware that reads the ``TraceContext`` information from the ``traceparent`` and ``tracestate`` headers of an ``APIGatewayProxyRequest`` or an ``APIGatewayHttpApiV2ProxyRequest`` and enriches the ``MiddyLogger`` with them, so that your logs will have it and it will be easier to correlate them.
 
 The logs will have a property for ``traceparent``, another one for ``tracestate``, and another one for ``trace-id``.
 
 Sample code
 ^^^^^^^^^^^
-A typical use of the middelware will look like this::
+A typical use of the middleware for APIGateway will look like this::
 
     public class MySample : MiddyNet<APIGatewayProxyRequest, APIGatewayProxyResponse>
     {
@@ -113,6 +113,29 @@ A typical use of the middelware will look like this::
             };
 
             return Task.FromResult(result);
+        }
+    }
+
+and for APIGatewayHttpV2Api will look like this::
+
+    public class ApiGatewayHttpApiV2Tracing : MiddyNet<APIGatewayHttpApiV2ProxyRequest, APIGatewayHttpApiV2ProxyResponse>
+    {
+        public ApiGatewayHttpApiV2Tracing()
+        {
+            Use(new ApiGatewayHttpApiV2TracingMiddleware());
+        }
+
+        protected override Task<APIGatewayHttpApiV2ProxyResponse> Handle(APIGatewayHttpApiV2ProxyRequest proxyRequest, MiddyNetContext context)
+        {
+            context.Logger.Log(LogLevel.Info, "hello world");
+
+            // Do stuff
+
+            return Task.FromResult(new APIGatewayHttpApiV2ProxyResponse
+            {
+                StatusCode = 200,
+                Body = "Ok"
+            });
         }
     }
 
