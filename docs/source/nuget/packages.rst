@@ -25,6 +25,12 @@ This is another package that is quite independent. It contains extension methods
 
 You can use this package inside a Lambda function or from any place, to send the ``TraceContext`` information in a way that MiddyNet will be able to read using a middleware.
 
+Voxel.MiddyNet.Tracing.Http
+--------------------------
+This is another package that is quite independent. It contains extension methods to add the information of the ``TraceContext`` object from ``Voxel.MiddyNet.Tracing.Core`` to an HttpRequestMessage via ``Headers``.
+
+You can use this package inside a Lambda function or from any place, to send the ``TraceContext`` information in a way that MiddyNet will be able to read using a middleware.
+
 Voxel.MiddyNet
 --------------
 This is the main package. You need to add it to your project if you want to use MiddyNet.
