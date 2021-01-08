@@ -51,7 +51,7 @@ namespace Voxel.MiddyNet.SSM
                         }
                         catch (Exception ex)
                         {
-                            context.MiddlewareExceptions.Add(ex);
+                            context.MiddlewareBeforeExceptions.Add(ex);
                         }
                     }
                 }
