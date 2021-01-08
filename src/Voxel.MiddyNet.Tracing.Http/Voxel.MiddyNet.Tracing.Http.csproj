@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>$(NetCoreTargetVersion)</TargetFramework>
+    <Description>HttpClient extension methods for tracing for Voxel.MiddyNet</Description>
+    <Version>$(middynet)</Version>
+    <PackageId>Voxel.MiddyNet.Tracing.Http</PackageId>
+    <PackageVersion>$(middynet)</PackageVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Voxel.MiddyNet.Tracing.Core\Voxel.MiddyNet.Tracing.Core.csproj" />
+  </ItemGroup>
+</Project>

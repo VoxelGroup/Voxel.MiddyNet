@@ -85,7 +85,7 @@ namespace Voxel.MiddyNet
                 MiddyContext.AttachToLambdaContext(context);
             }
 
-            MiddyContext.Clear(); //  Given that the instance is reused, we need to clean the context.
+            MiddyContext.Clear(); // Given that the instance is reused, we need to clean the context.
         }
 
         public MiddyNet<TReq, TRes> Use(ILambdaMiddleware<TReq, TRes> middleware)
