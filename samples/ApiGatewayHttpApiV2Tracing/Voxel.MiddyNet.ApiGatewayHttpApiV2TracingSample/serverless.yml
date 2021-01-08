@@ -1,4 +1,4 @@
-service: voxel-middynet-agwv2tracingsample
+service: middynet-agwv2tracingsample
 
 provider:
   name: aws
@@ -19,6 +19,6 @@ functions:
     package:
       artifact: bin/Release/netcoreapp3.1/Voxel.MiddyNet.ApiGatewayHttpApiV2TracingSample.zip
     events:
-      - http:
+      - httpApi:
           path: /api/test
           method: get
