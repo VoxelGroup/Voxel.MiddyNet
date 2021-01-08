@@ -1,8 +1,5 @@
 service: httpapitracingsample
 
-plugins:
-  serverless-offline
-  
 provider:
   name: aws
   runtime: dotnetcore3.1
