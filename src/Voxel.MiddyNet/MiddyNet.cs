@@ -10,25 +10,39 @@ namespace Voxel.MiddyNet
     {
         private MiddyNetContext MiddyContext { get; set; }
         private readonly List<ILambdaMiddleware<TReq, TRes>> middlewares = new List<ILambdaMiddleware<TReq, TRes>>();
-        
+
         public async Task<TRes> Handler(TReq lambdaEvent, ILambdaContext context)
         {
             InitialiseMiddyContext(context);
 
             await ExecuteBeforeMiddlewares(lambdaEvent);
 
-            var response = await Handle(lambdaEvent, MiddyContext);
+            var response = await SafeHandleLambdaEvent(lambdaEvent).ConfigureAwait(false);
 
-            MiddyContext.MiddlewareExceptions.Clear(); // We assume that the function is Ok with the exceptions it might have received
+            response = await ExecuteAfterMiddlewares(response);
 
-            await ExecuteAfterMiddlewares(response);
-
-            if (MiddyContext.MiddlewareExceptions.Any()) throw new AggregateException(MiddyContext.MiddlewareExceptions);
+            if (MiddyContext.HasExceptions)
+                throw new AggregateException(MiddyContext.GetAllExceptions());
 
             return response;
         }
 
-        private async Task ExecuteAfterMiddlewares(TRes response)
+        private async Task<TRes> SafeHandleLambdaEvent(TReq lambdaEvent)
+        {
+            TRes response = default(TRes);
+            try
+            {
+                response = await Handle(lambdaEvent, MiddyContext);
+            }
+            catch (Exception ex)
+            {
+                MiddyContext.HandlerException = ex;
+            }
+
+            return response;
+        }
+
+        private async Task<TRes> ExecuteAfterMiddlewares(TRes response)
         {
             foreach (var middleware in Enumerable.Reverse(middlewares))
             {
@@ -38,9 +52,11 @@ namespace Voxel.MiddyNet
                 }
                 catch (Exception ex)
                 {
-                    MiddyContext.MiddlewareExceptions.Add(ex);
+                    MiddyContext.MiddlewareAfterExceptions.Add(ex);
                 }
             }
+
+            return response;
         }
 
         private async Task ExecuteBeforeMiddlewares(TReq lambdaEvent)
@@ -53,7 +69,7 @@ namespace Voxel.MiddyNet
                 }
                 catch (Exception ex)
                 {
-                    MiddyContext.MiddlewareExceptions.Add(ex);
+                    MiddyContext.MiddlewareBeforeExceptions.Add(ex);
                 }
             }
         }
@@ -69,7 +85,7 @@ namespace Voxel.MiddyNet
                 MiddyContext.AttachToLambdaContext(context);
             }
 
-            MiddyContext.AdditionalContext.Clear(); //  Given that the instance is reused, we need to clean the dictionary.
+            MiddyContext.Clear(); // Given that the instance is reused, we need to clean the context.
         }
 
         public MiddyNet<TReq, TRes> Use(ILambdaMiddleware<TReq, TRes> middleware)
