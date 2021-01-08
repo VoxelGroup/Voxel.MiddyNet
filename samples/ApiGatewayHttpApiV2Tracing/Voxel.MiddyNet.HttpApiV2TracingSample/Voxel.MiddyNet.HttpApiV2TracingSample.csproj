@@ -3,8 +3,8 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
-    <AssemblyName>Voxel.MiddyNet.ApiGatewayHttpApiV2TracingSample</AssemblyName>
-    <PackageId>Voxel.MiddyNet.ApiGatewayHttpApiV2TracingSample</PackageId>
+    <AssemblyName>Voxel.MiddyNet.HttpApiV2TracingSample</AssemblyName>
+    <PackageId>Voxel.MiddyNet.HttpApiV2TracingSample</PackageId>
   </PropertyGroup>
 
   <ItemGroup>

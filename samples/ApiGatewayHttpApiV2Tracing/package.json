@@ -4,12 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build-package": "pushd Voxel.MiddyNet.ApiGatewayHttpApiV2TracingSample && build.cmd && popd",
-    "deploy": "pushd Voxel.MiddyNet.ApiGatewayHttpApiV2TracingSample && serverless deploy && popd"
+    "build-package": "pushd Voxel.MiddyNet.HttpApiV2TracingSample && build.cmd && popd",
+    "deploy": "pushd Voxel.MiddyNet.HttpApiV2TracingSample && serverless deploy && popd"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "serverless": "^2.6.0"
+    "serverless": "^2.18.0"
   }
 }

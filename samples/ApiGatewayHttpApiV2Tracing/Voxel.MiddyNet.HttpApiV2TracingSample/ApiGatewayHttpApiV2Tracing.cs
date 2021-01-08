@@ -4,7 +4,7 @@ using Amazon.Lambda.Core;
 using Voxel.MiddyNet.Tracing.ApiGatewayMiddleware;
 
 [assembly: LambdaSerializer(typeof(Amazon.Lambda.Serialization.SystemTextJson.DefaultLambdaJsonSerializer))]
-namespace Voxel.MiddyNet.ApiGatewayHttpApiV2TracingSample
+namespace Voxel.MiddyNet.HttpApiTracingSample
 {
     public class ApiGatewayHttpApiV2Tracing : MiddyNet<APIGatewayHttpApiV2ProxyRequest, APIGatewayHttpApiV2ProxyResponse>
     {

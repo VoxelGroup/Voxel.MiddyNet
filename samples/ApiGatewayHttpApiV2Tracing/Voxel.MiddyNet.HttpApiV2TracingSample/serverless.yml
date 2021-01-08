@@ -1,5 +1,8 @@
-service: middynet-agwv2tracingsample
+service: httpapitracingsample
 
+plugins:
+  serverless-offline
+  
 provider:
   name: aws
   runtime: dotnetcore3.1
@@ -15,9 +18,9 @@ package:
 
 functions:
   apiGatewayTracingSample:
-    handler: Voxel.MiddyNet.ApiGatewayHttpApiV2TracingSample::Voxel.MiddyNet.ApiGatewayHttpApiV2TracingSample.ApiGatewayHttpApiV2Tracing::Handler
+    handler: Voxel.MiddyNet.HttpApiV2TracingSample::Voxel.MiddyNet.HttpApiV2TracingSample.ApiGatewayHttpApiV2Tracing::Handler
     package:
-      artifact: bin/Release/netcoreapp3.1/Voxel.MiddyNet.ApiGatewayHttpApiV2TracingSample.zip
+      artifact: bin/Release/netcoreapp3.1/Voxel.MiddyNet.HttpApiV2TracingSample.zip
     events:
       - httpApi:
           path: /api/test
