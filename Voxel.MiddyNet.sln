@@ -59,7 +59,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Voxel.MiddyNet.Tracing.SQS"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Voxel.MiddyNet.Tracing.SQS.Tests", "test\Voxel.MiddyNet.Tracing.SQS.Tests\Voxel.MiddyNet.Tracing.SQS.Tests.csproj", "{655FCA46-3E57-4FF8-999B-4CB765FEDB1F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Voxel.MiddyNet.Tracing.Http", "src\Voxel.MiddyNet.Tracing.Http\Voxel.MiddyNet.Tracing.Http.csproj", "{DECF1429-7F3A-4A30-BC9B-4E61DCB50F5B}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ApiGatewayHttpApiV2Tracing", "ApiGatewayHttpApiV2Tracing", "{37F8D065-90D3-4B6A-8B1B-09FAACEF2E04}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Voxel.MiddyNet.HttpApiV2TracingSample", "samples\ApiGatewayHttpApiV2Tracing\Voxel.MiddyNet.HttpApiV2TracingSample\Voxel.MiddyNet.HttpApiV2TracingSample.csproj", "{56C54B95-4721-470D-81BD-E62BA51006F9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -151,10 +153,10 @@ Global
 		{655FCA46-3E57-4FF8-999B-4CB765FEDB1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{655FCA46-3E57-4FF8-999B-4CB765FEDB1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{655FCA46-3E57-4FF8-999B-4CB765FEDB1F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DECF1429-7F3A-4A30-BC9B-4E61DCB50F5B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DECF1429-7F3A-4A30-BC9B-4E61DCB50F5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DECF1429-7F3A-4A30-BC9B-4E61DCB50F5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DECF1429-7F3A-4A30-BC9B-4E61DCB50F5B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{56C54B95-4721-470D-81BD-E62BA51006F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{56C54B95-4721-470D-81BD-E62BA51006F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{56C54B95-4721-470D-81BD-E62BA51006F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{56C54B95-4721-470D-81BD-E62BA51006F9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -183,7 +185,8 @@ Global
 		{AE394947-01C4-4E6C-8ED8-C04C633030D9} = {C145A545-25D0-4C1F-8F64-AF3DBDFEB1DB}
 		{C28E1CE5-B2DB-4F94-B93C-B4660C9B87CC} = {D204572D-6B0A-4C3A-86D3-2B9C71346490}
 		{655FCA46-3E57-4FF8-999B-4CB765FEDB1F} = {D204572D-6B0A-4C3A-86D3-2B9C71346490}
-		{DECF1429-7F3A-4A30-BC9B-4E61DCB50F5B} = {D204572D-6B0A-4C3A-86D3-2B9C71346490}
+		{37F8D065-90D3-4B6A-8B1B-09FAACEF2E04} = {B07FEFF7-B407-4792-8C6B-B6D0CC8626D4}
+		{56C54B95-4721-470D-81BD-E62BA51006F9} = {37F8D065-90D3-4B6A-8B1B-09FAACEF2E04}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {EFA347F5-761B-44CF-B6DB-8981387C72B3}
