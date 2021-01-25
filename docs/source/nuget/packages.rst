@@ -199,12 +199,16 @@ A typical configuration and use of the middelware will look like this::
     }
 
 Voxel.MiddyNet.HttpCors
-------------------
-This package contains a middleware that allows you to set the CORS headers in the response. Currently it works only for REST Api (APIGatewayProxyRequest and APIGatewayProxyResponse).
+-----------------------
+This package contains a middleware that allows you to set the CORS headers in the response. There are two versions avalaible: 
+
+* One for REST Api (APIGatewayProxyRequest and APIGatewayProxyResponse).
+* And another for Http Api (APIGatewayHttpApiV2ProxyRequest and APIGatewayHttpApiV2ProxyResponse).
 
 Configuration
 ^^^^^^^^^^^^^
 You can pass a ``CorsOptions`` object in the constructor with the following properties (all of them optional):
+
 * Origin: origin to put in the header (default: "*")
 * Origins: an array of allowed origins. The incoming origin is matched against the list and is returned if present.
 * Headers: value to put in ``Access-Control-Allow-Headers`` (default: null)
@@ -214,7 +218,7 @@ You can pass a ``CorsOptions`` object in the constructor with the following prop
 
 Sample code
 ^^^^^^^^^^^
-A typical use of the middelware will look like this::
+A typical use of the middelware will look like this for Rest API::
 
     public class MySample : MiddyNet<APIGatewayProxyRequest, APIGatewayProxyResponse>
     {
@@ -237,3 +241,25 @@ A typical use of the middelware will look like this::
         }
     }
 
+And like this for Http API::
+
+    public class MySample : MiddyNet<APIGatewayHttpApiV2ProxyRequest, APIGatewayHttpApiV2ProxyResponse>
+    {
+        public MySample()
+        {
+            Use(new HttpV2CorsMiddleware(new CorsOptions{Origin = "http://example.com"}));
+        }
+
+        protected override async Task<APIGatewayHttpApiV2ProxyResponse> Handle(APIGatewayHttpApiV2ProxyResponse apiEvent, MiddyNetContext context)
+        {
+            // Do stuff
+
+            var result = new APIGatewayHttpApiV2ProxyResponse
+            {
+                StatusCode = 200,
+                Body = "hello from test"
+            };
+
+            return Task.FromResult(result);
+        }
+    }
