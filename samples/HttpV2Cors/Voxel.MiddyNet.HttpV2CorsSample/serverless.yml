@@ -1,0 +1,21 @@
+service: voxel-middynet-httpV2CorsSample
+
+provider:
+  name: aws
+  runtime: dotnetcore3.1
+  region: ${opt:region, self:custom.defaultRegion}
+  stage: ${opt:stage, self:custom.defaultStage}
+
+custom:
+  defaultRegion: eu-west-1
+  defaultStage: dev${env:SLSUSER, ""}
+package:
+  individually: true
+
+functions:
+  httpV2CorsSample:
+    handler: Voxel.MiddyNet.HttpV2CorsSample::Voxel.MiddyNet.HttpV2CorsSample.HttpCorsHeaders::Handler
+    package:
+      artifact: bin/Release/netcoreapp3.1/Voxel.MiddyNet.HttpV2CorsSample.zip
+    events:
+      - http: GET testHttp
