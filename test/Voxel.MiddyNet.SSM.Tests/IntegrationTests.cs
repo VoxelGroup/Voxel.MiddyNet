@@ -47,8 +47,7 @@ namespace Voxel.MiddyNet.SSM.Tests
 
             Func<Task> act = async () => await lambda.Handler(1, new FakeLambdaContext());
 
-            act.Should().Throw<AggregateException>().Where(a =>
-                a.InnerExceptions.Count == 1 && a.InnerExceptions[0] is Amazon.SimpleSystemsManagement.Model.ParameterNotFoundException);
+            act.Should().Throw<Amazon.SimpleSystemsManagement.Model.ParameterNotFoundException>();
         }
     }
 
