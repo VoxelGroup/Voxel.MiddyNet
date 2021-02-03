@@ -24,13 +24,17 @@ namespace Voxel.MiddyNet.Tests
             private readonly bool withFailingHandler;
 
             public TestLambdaFunction(List<string> logLines, List<string> contextLogLines, int numberOfMiddlewares, bool withFailingMiddleware = false, bool withFailingHandler = false)
+                : this(logLines, contextLogLines, numberOfMiddlewares, withFailingMiddleware, withFailingMiddleware, withFailingHandler) { }
+
+            public TestLambdaFunction(List<string> logLines, List<string> contextLogLines, int numberOfMiddlewares, bool withFailingBeforeMiddleware, bool withFailingAfterMiddleware, bool withFailingHandler)
+
             {
                 LogLines = logLines;
                 ContextLogLines = contextLogLines;
                 for (var i = 0; i < numberOfMiddlewares; i++)
                 {
-                    Use(new TestBeforeMiddleware(logLines, i + 1, withFailingMiddleware));
-                    Use(new TestAfterMiddleware(logLines, i + 1, withFailingMiddleware));
+                    Use(new TestBeforeMiddleware(logLines, i + 1, withFailingBeforeMiddleware));
+                    Use(new TestAfterMiddleware(logLines, i + 1, withFailingAfterMiddleware));
                 }
 
                 this.withFailingHandler = withFailingHandler;
@@ -47,7 +51,7 @@ namespace Voxel.MiddyNet.Tests
                 ContextLogLines.AddRange(context.AdditionalContext.Select(kv => $"{kv.Key}-{kv.Value}"));
                 MiddyContext = context;
 
-                if (withFailingHandler) throw new Exception("Handle throws an exception");
+                if (withFailingHandler) throw new MiddlewareException();
 
                 return Task.FromResult(0);
             }
@@ -193,6 +197,19 @@ namespace Voxel.MiddyNet.Tests
                 .Where(a => a.InnerExceptions.Count == numberOfMiddlewares * 2 + 1)
                 .Where(a => a.InnerExceptions.Take(numberOfMiddlewares).All(e => e is MiddlewareException))
                 .Where(a => a.InnerExceptions.Skip(numberOfMiddlewares + 1).All(e => e is MiddlewareException));
+        }
+
+        [Theory]
+        [InlineData(true, false, false)]
+        [InlineData(false, true, false)]
+        [InlineData(false, false, true)]
+        public void ThrowSpecificExceptionWhenOnlyOnePresent(bool throwBeforeException, bool throwAfterException, bool throwHandlerException)
+        {
+            var lambdaFunction = new TestLambdaFunction(logLines, contextLines, 1, throwBeforeException, throwAfterException, throwHandlerException);
+            Func<Task> act = async () => await lambdaFunction.Handler(0, new FakeLambdaContext());
+
+            act.Should().NotThrow<AggregateException>();
+            act.Should().Throw<MiddlewareException>();
         }
 
         [Fact]

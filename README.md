@@ -81,7 +81,7 @@ When an exception is thrown by the function in its `Handle` method and before th
 #### Errors on After
 When an exception is thrown by a middleware in the `After` method, the exception is captured and added to the `MiddlewareAfterExceptions` list, so that the following middlewares can react to it.
 
-When all the middlewares have run, if these lists or property have any items, an `AggregateException` with all of them is thrown.
+When all the middlewares have run, if these lists or property have any items, an `AggregateException` with all of them is thrown unless there is only one exception in which case it throws an exception of that specific type.
 
 ## How to write a middleware
 To write a new Middleware, you just need to implement the interface `ILambdaMiddleware` and implement the `Before` and `After` methods, although normally you will only implement one of them. If you need to store data so that the `Handle` method can use it, you can use the `AdditionalContext` dictionary inside the `MiddyContext` object.

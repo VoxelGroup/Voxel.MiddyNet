@@ -22,7 +22,15 @@ namespace Voxel.MiddyNet
             response = await ExecuteAfterMiddlewares(response);
 
             if (MiddyContext.HasExceptions)
+            {
+                var exceptions = MiddyContext.GetAllExceptions();
+                if (exceptions.Count == 1)
+                {
+                    throw (dynamic)exceptions.Single();
+                }
                 throw new AggregateException(MiddyContext.GetAllExceptions());
+            }
+                
 
             return response;
         }
