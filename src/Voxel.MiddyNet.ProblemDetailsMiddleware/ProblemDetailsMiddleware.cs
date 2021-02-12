@@ -24,25 +24,37 @@ namespace Voxel.MiddyNet.ProblemDetailsMiddleware
         {
             var statusCode = lambdaResponse?.StatusCode ?? 500;
             return (IsProblem(statusCode) || context.HasExceptions) 
-                ? Task.FromResult(BuildProblemDetailsContent(statusCode, context)) 
+                ? Task.FromResult(BuildProblemDetailsContent(statusCode, context, lambdaResponse.Headers)) 
                 : Task.FromResult(lambdaResponse);
         }
 
         private bool IsProblem(int statusCode) => statusCode >= 400 && statusCode < 600;
 
-        private APIGatewayProxyResponse BuildProblemDetailsContent(int statusCode, MiddyNetContext context) => context.HasExceptions
+        private APIGatewayProxyResponse BuildProblemDetailsContent(int statusCode, MiddyNetContext context, IDictionary<string,string> responseHeaders) => context.HasExceptions
             ? new APIGatewayProxyResponse
             {
                 StatusCode = 500,
-                Headers = noCacheHeaders,
+                Headers = Merge(responseHeaders),
                 Body = BuildProblemDetailsExceptionsContent(statusCode, context.GetAllExceptions(), context.LambdaContext.InvokedFunctionArn)
             }
             : new APIGatewayProxyResponse
             {
                 StatusCode = statusCode,
-                Headers = noCacheHeaders,
+                Headers = Merge(responseHeaders),
                 Body = BuildProblemDetailsProblemContent(statusCode, context.LambdaContext.InvokedFunctionArn, ReasonPhrases.GetReasonPhrase(statusCode))
             };
+
+        private IDictionary<string, string> Merge(IDictionary<string, string> responseHeaders)
+        {
+            var merged = responseHeaders == null
+                ? new Dictionary<string, string>()
+                : new Dictionary<string, string>(responseHeaders);
+            foreach(var kv in noCacheHeaders)
+            {
+                merged[kv.Key] = kv.Value;
+            }
+            return merged;
+        }
 
         private static string BuildProblemDetailsProblemContent(int statusCode, string instance, string statusDescription) => $"{{\"Type\": \"https://httpstatuses.com/{statusCode}\",\"Title\":\"{statusDescription}\",\"Status\":\"{statusCode}\",\"Instance\":\"{instance}\"}}";
 
