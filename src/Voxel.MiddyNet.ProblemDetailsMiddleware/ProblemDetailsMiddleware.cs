@@ -24,24 +24,24 @@ namespace Voxel.MiddyNet.ProblemDetailsMiddleware
         {
             var statusCode = lambdaResponse?.StatusCode ?? 500;
             return (IsProblem(statusCode) || context.HasExceptions) 
-                ? Task.FromResult(BuildProblemDetailsContent(statusCode, context, lambdaResponse.Headers)) 
+                ? Task.FromResult(BuildProblemDetailsContent(statusCode, context, lambdaResponse))
                 : Task.FromResult(lambdaResponse);
         }
 
         private bool IsProblem(int statusCode) => statusCode >= 400 && statusCode < 600;
 
-        private APIGatewayProxyResponse BuildProblemDetailsContent(int statusCode, MiddyNetContext context, IDictionary<string,string> responseHeaders) => context.HasExceptions
+        private APIGatewayProxyResponse BuildProblemDetailsContent(int statusCode, MiddyNetContext context, APIGatewayProxyResponse lambdaResponse) => context.HasExceptions
             ? new APIGatewayProxyResponse
             {
                 StatusCode = 500,
-                Headers = Merge(responseHeaders),
+                Headers = Merge(lambdaResponse.Headers),
                 Body = BuildProblemDetailsExceptionsContent(statusCode, context.GetAllExceptions(), context.LambdaContext.InvokedFunctionArn)
             }
             : new APIGatewayProxyResponse
             {
                 StatusCode = statusCode,
-                Headers = Merge(responseHeaders),
-                Body = BuildProblemDetailsProblemContent(statusCode, context.LambdaContext.InvokedFunctionArn, ReasonPhrases.GetReasonPhrase(statusCode))
+                Headers = Merge(lambdaResponse.Headers),
+                Body = BuildProblemDetailsProblemContent(statusCode, context.LambdaContext.InvokedFunctionArn, ReasonPhrases.GetReasonPhrase(statusCode), lambdaResponse.Body)
             };
 
         private IDictionary<string, string> Merge(IDictionary<string, string> responseHeaders)
@@ -56,7 +56,8 @@ namespace Voxel.MiddyNet.ProblemDetailsMiddleware
             return merged;
         }
 
-        private static string BuildProblemDetailsProblemContent(int statusCode, string instance, string statusDescription) => $"{{\"Type\": \"https://httpstatuses.com/{statusCode}\",\"Title\":\"{statusDescription}\",\"Status\":\"{statusCode}\",\"Instance\":\"{instance}\"}}";
+        private static string BuildProblemDetailsProblemContent(int statusCode, string instance, string statusDescription, string content) => 
+            $"{{\"Type\": \"https://httpstatuses.com/{statusCode}\",\"Title\":\"{statusDescription}\",\"Status\":\"{statusCode}\",\"Instance\":\"{instance}\",\"Details\":\"{content}\"}}";
 
         private static string BuildProblemDetailsExceptionsContent(int statusCode, List<Exception> exceptions, string instance)
         {

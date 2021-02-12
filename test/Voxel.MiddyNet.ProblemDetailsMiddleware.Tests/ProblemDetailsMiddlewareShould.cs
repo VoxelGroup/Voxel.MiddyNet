@@ -1,5 +1,7 @@
 using Amazon.Lambda.APIGatewayEvents;
 using Amazon.Lambda.Core;
+using ApprovalTests;
+using ApprovalTests.Reporters;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Net.Http.Headers;
@@ -11,6 +13,7 @@ using Xunit;
 
 namespace Voxel.MiddyNet.ProblemDetailsMiddleware.Tests
 {
+    [UseReporter(typeof(DiffReporter))]
     public class ProblemDetailsMiddlewareShould
     {
         private readonly ProblemDetailsMiddleware middleware;
@@ -20,6 +23,7 @@ namespace Voxel.MiddyNet.ProblemDetailsMiddleware.Tests
         {
             middleware = new ProblemDetailsMiddleware();
             context = new MiddyNetContext(Substitute.For<ILambdaContext>());
+            context.LambdaContext.InvokedFunctionArn.Returns("some-instance-reference");
         }
 
         [Fact]
@@ -89,6 +93,19 @@ namespace Voxel.MiddyNet.ProblemDetailsMiddleware.Tests
             context.MiddlewareAfterExceptions.Add(new InvalidOperationException());
             var response = await middleware.After(new APIGatewayProxyResponse(), context);
             response.Headers.Should().Contain(noCacheHeaders);
+        }
+
+        [Fact]
+        public async Task FormatProblemsThatAreNotCausedByExceptions()
+        {
+            var givenResponse = new APIGatewayProxyResponse
+            {
+                Body = "some body",
+                Headers = new Dictionary<string, string>(),
+                StatusCode = 503
+            };
+            var response = await middleware.After(givenResponse, context);
+            Approvals.Verify(response.Body);
         }
     }
 }
