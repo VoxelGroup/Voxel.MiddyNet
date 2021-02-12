@@ -16,28 +16,44 @@ namespace Voxel.MiddyNet.ProblemDetailsMiddleware.Tests
 
         public ProblemDetailsMiddlewareShould()
         {
-            middleware = new ProblemDetailsMiddleware(null);
+            middleware = new ProblemDetailsMiddleware();
             context = new MiddyNetContext(Substitute.For<ILambdaContext>());
         }
 
         [Fact]
         public async Task BeTransparentWhenNoExceptionsOccur()
         {
-            var expectedResponse = new APIGatewayProxyResponse
+            var givenResponse = new APIGatewayProxyResponse
             {
                 Body = "some body",
                 Headers = new Dictionary<string, string>()
             };
-
-            var actualResponse = await middleware.After(expectedResponse, context);
-
-            actualResponse.Should().BeEquivalentTo(expectedResponse);
+            var actualResponse = await middleware.After(givenResponse, context);
+            actualResponse.Should().BeEquivalentTo(givenResponse);
         }
 
         [Fact]
         public async Task OverrideResponseWhenAnExceptionOccursDuringBeforeMiddlewares()
         {
+            context.MiddlewareBeforeExceptions.Add(new InvalidOperationException());
+            var response = await middleware.After(new APIGatewayProxyResponse(), context);
+            response.StatusCode.Should().Be(500);
+        }
 
+        [Fact]
+        public async Task OverrideResponseWhenAnExceptionOccursDuringAfterMiddlewares()
+        {
+            context.MiddlewareAfterExceptions.Add(new InvalidOperationException());
+            var response = await middleware.After(new APIGatewayProxyResponse(), context);
+            response.StatusCode.Should().Be(500);
+        }
+
+        [Fact]
+        public async Task OverrideResponseWhenAnExceptionOccursInHandler()
+        {
+            context.HandlerException = new InvalidOperationException();
+            var response = await middleware.After(new APIGatewayProxyResponse(), context);
+            response.StatusCode.Should().Be(500);
         }
     }
 }
