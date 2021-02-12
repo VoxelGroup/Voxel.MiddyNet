@@ -23,8 +23,9 @@ namespace Voxel.MiddyNet.ProblemDetailsMiddleware
         public Task<APIGatewayProxyResponse> After(APIGatewayProxyResponse lambdaResponse, MiddyNetContext context)
         {
             var statusCode = lambdaResponse?.StatusCode ?? 500;
-            if (IsProblem(statusCode) || context.HasExceptions) return Task.FromResult(BuildProblemDetailsContent(statusCode, context));
-            return Task.FromResult(lambdaResponse);
+            return (IsProblem(statusCode) || context.HasExceptions) 
+                ? Task.FromResult(BuildProblemDetailsContent(statusCode, context)) 
+                : Task.FromResult(lambdaResponse);
         }
 
         private bool IsProblem(int statusCode) => statusCode >= 400 && statusCode < 600;
