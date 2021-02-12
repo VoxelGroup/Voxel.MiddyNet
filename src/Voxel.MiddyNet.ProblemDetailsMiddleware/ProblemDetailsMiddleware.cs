@@ -33,14 +33,12 @@ namespace Voxel.MiddyNet.ProblemDetailsMiddleware
         private APIGatewayProxyResponse BuildProblemDetailsContent(int statusCode, MiddyNetContext context) => context.HasExceptions
             ? new APIGatewayProxyResponse
             {
-                IsBase64Encoded = false,
                 StatusCode = 500,
                 Headers = noCacheHeaders,
                 Body = BuildProblemDetailsExceptionsContent(statusCode, context.GetAllExceptions(), context.LambdaContext.InvokedFunctionArn)
             }
             : new APIGatewayProxyResponse
             {
-                IsBase64Encoded = false,
                 StatusCode = statusCode,
                 Headers = noCacheHeaders,
                 Body = BuildProblemDetailsProblemContent(statusCode, context.LambdaContext.InvokedFunctionArn, ReasonPhrases.GetReasonPhrase(statusCode))
