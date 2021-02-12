@@ -30,31 +30,25 @@ namespace Voxel.MiddyNet.ProblemDetailsMiddleware
 
         private bool IsProblem(int statusCode) => statusCode >= 400 && statusCode < 600;
 
-        private APIGatewayProxyResponse BuildProblemDetailsContent(int statusCode, MiddyNetContext context)
-        {
-            if (context.HasExceptions)
+        private APIGatewayProxyResponse BuildProblemDetailsContent(int statusCode, MiddyNetContext context) => context.HasExceptions
+            ? new APIGatewayProxyResponse
             {
-                var detailsJson = BuildProblemDetailsContent(statusCode, context.GetAllExceptions(), context.LambdaContext.InvokedFunctionArn);
-                return new APIGatewayProxyResponse
-                {
-                    IsBase64Encoded = false,
-                    StatusCode = 500,
-                    Headers = noCacheHeaders,
-                    Body = detailsJson
-                };
+                IsBase64Encoded = false,
+                StatusCode = 500,
+                Headers = noCacheHeaders,
+                Body = BuildProblemDetailsExceptionsContent(statusCode, context.GetAllExceptions(), context.LambdaContext.InvokedFunctionArn)
             }
-
-            var statusDescription = ReasonPhrases.GetReasonPhrase(statusCode);
-            return new APIGatewayProxyResponse
+            : new APIGatewayProxyResponse
             {
                 IsBase64Encoded = false,
                 StatusCode = statusCode,
                 Headers = noCacheHeaders,
-                Body = $"{{\"Type\": \"https://httpstatuses.com/{statusCode}\",\"Title\":\"{statusDescription}\",\"Status\":\"{statusCode}\",\"Instance\":\"{context.LambdaContext.InvokedFunctionArn}\"}}"
+                Body = BuildProblemDetailsProblemContent(statusCode, context.LambdaContext.InvokedFunctionArn, ReasonPhrases.GetReasonPhrase(statusCode))
             };
-        }
 
-        private static string BuildProblemDetailsContent(int statusCode, List<Exception> exceptions, string instance)
+        private static string BuildProblemDetailsProblemContent(int statusCode, string instance, string statusDescription) => $"{{\"Type\": \"https://httpstatuses.com/{statusCode}\",\"Title\":\"{statusDescription}\",\"Status\":\"{statusCode}\",\"Instance\":\"{instance}\"}}";
+
+        private static string BuildProblemDetailsExceptionsContent(int statusCode, List<Exception> exceptions, string instance)
         {
             var detailsException = exceptions.Count == 1
                 ? exceptions[0]
