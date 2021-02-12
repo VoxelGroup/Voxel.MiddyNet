@@ -1,6 +1,7 @@
 using Amazon.Lambda.APIGatewayEvents;
 using Amazon.Lambda.Core;
 using FluentAssertions;
+using Microsoft.AspNetCore.Mvc;
 using NSubstitute;
 using System;
 using System.Collections.Generic;

@@ -20,42 +20,45 @@ namespace Voxel.MiddyNet.ProblemDetailsMiddleware
 
         public Task Before(APIGatewayProxyRequest lambdaEvent, MiddyNetContext context) => Task.CompletedTask;
 
-        public async Task<APIGatewayProxyResponse> After(APIGatewayProxyResponse lambdaResponse, MiddyNetContext context)
+        public Task<APIGatewayProxyResponse> After(APIGatewayProxyResponse lambdaResponse, MiddyNetContext context)
         {
-            int statusCode = lambdaResponse?.StatusCode ?? 500;
-            if (IsProblem(statusCode)) return BuildProblemDetailsContent(statusCode, context.LambdaContext?.InvokedFunctionArn);
-            if (!context.HasExceptions) return lambdaResponse;
-            string detailsJson = BuildProblemDetailsContent(statusCode, context);
-            return new APIGatewayProxyResponse
-            {
-                IsBase64Encoded = false,
-                StatusCode = 500,
-                Headers = noCacheHeaders,
-                Body = detailsJson
-            };
+            var statusCode = lambdaResponse?.StatusCode ?? 500;
+            if (IsProblem(statusCode) || context.HasExceptions) return Task.FromResult(BuildProblemDetailsContent(statusCode, context));
+            return Task.FromResult(lambdaResponse);
         }
 
         private bool IsProblem(int statusCode) => statusCode >= 400 && statusCode < 600;
 
-        private APIGatewayProxyResponse BuildProblemDetailsContent(int statusCode, string instance)
+        private APIGatewayProxyResponse BuildProblemDetailsContent(int statusCode, MiddyNetContext context)
         {
+            if (context.HasExceptions)
+            {
+                var detailsJson = BuildProblemDetailsContent(statusCode, context.GetAllExceptions(), context.LambdaContext.InvokedFunctionArn);
+                return new APIGatewayProxyResponse
+                {
+                    IsBase64Encoded = false,
+                    StatusCode = 500,
+                    Headers = noCacheHeaders,
+                    Body = detailsJson
+                };
+            }
+
             var statusDescription = ReasonPhrases.GetReasonPhrase(statusCode);
             return new APIGatewayProxyResponse
             {
                 IsBase64Encoded = false,
                 StatusCode = statusCode,
                 Headers = noCacheHeaders,
-                Body = $"{{\"Type\": \"https://httpstatuses.com/{statusCode}\",\"Title\":\"{statusDescription}\",\"Status\":\"{statusCode}\",\"Instance\":\"{instance}\"}}"
+                Body = $"{{\"Type\": \"https://httpstatuses.com/{statusCode}\",\"Title\":\"{statusDescription}\",\"Status\":\"{statusCode}\",\"Instance\":\"{context.LambdaContext.InvokedFunctionArn}\"}}"
             };
         }
 
-        private static string BuildProblemDetailsContent(int statusCode, MiddyNetContext context)
+        private static string BuildProblemDetailsContent(int statusCode, List<Exception> exceptions, string instance)
         {
-            var exceptions = context.GetAllExceptions();
             var detailsException = exceptions.Count == 1
                 ? exceptions[0]
                 : new AggregateException(exceptions);
-            var detailsObject = BuildDetailsObject((dynamic)detailsException, statusCode, context.LambdaContext?.InvokedFunctionArn);
+            var detailsObject = BuildDetailsObject((dynamic)detailsException, statusCode, instance);
             return JsonSerializer.Serialize(detailsObject, new JsonSerializerOptions { WriteIndented = true });
         }
 
