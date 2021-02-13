@@ -95,6 +95,28 @@ namespace Voxel.MiddyNet.ProblemDetailsMiddleware.Tests
         }
 
         [Fact]
+        public async Task KeepOriginalMultivaluedHeadersInProblemDetails()
+        {
+            var givenHeaders = new Dictionary<string, IList<string>>
+            {
+                ["some-header"] = new List<string> { "a-value", "another-value" }
+            };
+            var response = await middleware.After(new APIGatewayProxyResponse { MultiValueHeaders = givenHeaders }, context);
+            response.MultiValueHeaders.Should().Contain(givenHeaders);
+        }
+
+        [Fact]
+        public async Task AlwaysIncludeProblemDetailsContentType()
+        {
+            var expectedHeaders = new Dictionary<string, IList<string>>
+            {
+                [HeaderNames.ContentType] = new List<string> { "application/problem+json" }
+            };
+            var response = await middleware.After(new APIGatewayProxyResponse { StatusCode = 500 }, context);
+            response.MultiValueHeaders.Should().BeEquivalentTo(expectedHeaders);
+        }
+
+        [Fact]
         public async Task FormatProblemsThatAreNotCausedByExceptions()
         {
             var givenResponse = new APIGatewayProxyResponse
