@@ -3,7 +3,6 @@ using Amazon.Lambda.Core;
 using ApprovalTests;
 using ApprovalTests.Reporters;
 using FluentAssertions;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Net.Http.Headers;
 using NSubstitute;
 using System;
@@ -23,7 +22,7 @@ namespace Voxel.MiddyNet.ProblemDetailsMiddleware.Tests
         {
             middleware = new ProblemDetailsMiddleware();
             context = new MiddyNetContext(Substitute.For<ILambdaContext>());
-            context.LambdaContext.InvokedFunctionArn.Returns("some-instance-reference");
+            context.LambdaContext.AwsRequestId.Returns("some-request-id");
         }
 
         [Fact]

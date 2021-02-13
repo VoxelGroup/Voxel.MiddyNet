@@ -35,14 +35,28 @@ namespace Voxel.MiddyNet.ProblemDetailsMiddleware
             {
                 StatusCode = 500,
                 Headers = Merge(lambdaResponse.Headers),
-                Body = BuildProblemDetailsExceptionsContent(statusCode, context.GetAllExceptions(), context.LambdaContext.InvokedFunctionArn)
+                MultiValueHeaders = Merge(lambdaResponse.MultiValueHeaders),
+                Body = BuildProblemDetailsExceptionsContent(statusCode, context.GetAllExceptions(), context.LambdaContext.AwsRequestId)
             }
             : new APIGatewayProxyResponse
             {
                 StatusCode = statusCode,
                 Headers = Merge(lambdaResponse.Headers),
-                Body = BuildProblemDetailsProblemContent(statusCode, context.LambdaContext.InvokedFunctionArn, ReasonPhrases.GetReasonPhrase(statusCode), lambdaResponse.Body)
+                MultiValueHeaders = Merge(lambdaResponse.MultiValueHeaders),
+                Body = BuildProblemDetailsProblemContent(statusCode, context.LambdaContext.AwsRequestId, ReasonPhrases.GetReasonPhrase(statusCode), lambdaResponse.Body)
             };
+
+        private IDictionary<string, IList<string>> Merge(IDictionary<string, IList<string>> multiValueHeaders)
+        {
+            var merged = multiValueHeaders == null 
+                ? new Dictionary<string, IList<string>>() 
+                : new Dictionary<string, IList<string>>(multiValueHeaders);
+            var contentTypes = merged.ContainsKey(HeaderNames.ContentType) ? merged[HeaderNames.ContentType] : new List<string>();
+            if (!contentTypes.Contains("application/problem+json"))
+                contentTypes.Add("application/problem+json");
+            merged[HeaderNames.ContentType] = contentTypes;
+            return merged;
+        }
 
         private IDictionary<string, string> Merge(IDictionary<string, string> responseHeaders)
         {
