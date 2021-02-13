@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Voxel.MiddyNet.ProblemDetailsMiddleware.Tests
+namespace Voxel.MiddyNet.ProblemDetails.Tests
 {
     [UseReporter(typeof(DiffReporter))]
     public class ProblemDetailsMiddlewareShould

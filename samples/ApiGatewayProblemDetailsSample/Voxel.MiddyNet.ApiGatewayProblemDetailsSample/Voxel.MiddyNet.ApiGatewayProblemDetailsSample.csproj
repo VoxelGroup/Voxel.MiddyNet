@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>$(NetCoreTargetVersion)</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Amazon.Lambda.Serialization.SystemTextJson" Version="2.0.1" />
+    <ProjectReference Include="..\..\..\src\Voxel.MiddyNet.ProblemDetailsMiddleware\Voxel.MiddyNet.ProblemDetails.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace Voxel.MiddyNet.ProblemDetailsMiddleware
+namespace Voxel.MiddyNet.ProblemDetails
 {
     public class ProblemDetailsMiddleware : ILambdaMiddleware<APIGatewayProxyRequest, APIGatewayProxyResponse>
     {
