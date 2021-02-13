@@ -43,6 +43,7 @@ namespace Voxel.MiddyNet.ProblemDetailsMiddleware.Tests
             context.MiddlewareBeforeExceptions.Add(new InvalidOperationException());
             var response = await middleware.After(new APIGatewayProxyResponse(), context);
             response.StatusCode.Should().Be(500);
+            Approvals.Verify(response.Body);
         }
 
         [Fact]
@@ -51,6 +52,7 @@ namespace Voxel.MiddyNet.ProblemDetailsMiddleware.Tests
             context.MiddlewareAfterExceptions.Add(new InvalidOperationException());
             var response = await middleware.After(new APIGatewayProxyResponse(), context);
             response.StatusCode.Should().Be(500);
+            Approvals.Verify(response.Body);
         }
 
         [Fact]
@@ -59,6 +61,7 @@ namespace Voxel.MiddyNet.ProblemDetailsMiddleware.Tests
             context.HandlerException = new InvalidOperationException();
             var response = await middleware.After(new APIGatewayProxyResponse(), context);
             response.StatusCode.Should().Be(500);
+            Approvals.Verify(response.Body);
         }
 
         [Fact]
