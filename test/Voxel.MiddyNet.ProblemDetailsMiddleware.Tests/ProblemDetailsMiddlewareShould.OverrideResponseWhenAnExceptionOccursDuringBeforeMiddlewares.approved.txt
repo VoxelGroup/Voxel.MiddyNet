@@ -3,5 +3,6 @@
   "Title": "InvalidOperationException",
   "Status": 500,
   "Detail": "Operation is not valid due to the current state of the object.",
-  "Instance": "some-request-id"
+  "Instance": "some-function-arn",
+  "AwsRequestId": "some-request-id"
 }

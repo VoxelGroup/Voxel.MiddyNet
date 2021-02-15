@@ -22,6 +22,7 @@ namespace Voxel.MiddyNet.ProblemDetails.Tests
         {
             middleware = new ProblemDetailsMiddleware();
             context = new MiddyNetContext(Substitute.For<ILambdaContext>());
+            context.LambdaContext.InvokedFunctionArn.Returns("some-function-arn");
             context.LambdaContext.AwsRequestId.Returns("some-request-id");
         }
 
@@ -60,6 +61,19 @@ namespace Voxel.MiddyNet.ProblemDetails.Tests
         {
             context.HandlerException = new InvalidOperationException();
             var response = await middleware.After(new APIGatewayProxyResponse(), context);
+            response.StatusCode.Should().Be(500);
+            Approvals.Verify(response.Body);
+        }
+
+        [Fact]
+        public async Task AggregateMultipleExceptionsInDetails()
+        {
+            context.MiddlewareBeforeExceptions.Add(new InvalidOperationException("middleware Before exception"));
+            context.HandlerException = new InvalidOperationException("Handler exception");
+            context.MiddlewareAfterExceptions.Add(new InvalidOperationException("middleware After exception"));
+
+            var response = await middleware.After(new APIGatewayProxyResponse(), context);
+
             response.StatusCode.Should().Be(500);
             Approvals.Verify(response.Body);
         }
@@ -130,6 +144,16 @@ namespace Voxel.MiddyNet.ProblemDetails.Tests
             };
             var response = await middleware.After(givenResponse, context);
             Approvals.Verify(response.Body);
+        }
+
+        [Fact]
+        public async Task CleanupExceptionsFromContext()
+        {
+            context.HandlerException = new InvalidOperationException();
+            _ = await middleware.After(new APIGatewayProxyResponse(), context);
+            context.MiddlewareBeforeExceptions.Should().BeEmpty();
+            context.HandlerException.Should().BeNull();
+            context.MiddlewareAfterExceptions.Should().BeEmpty();
         }
     }
 }

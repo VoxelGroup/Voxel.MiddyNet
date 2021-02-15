@@ -23,9 +23,12 @@ namespace Voxel.MiddyNet.ProblemDetails
         public Task<APIGatewayProxyResponse> After(APIGatewayProxyResponse lambdaResponse, MiddyNetContext context)
         {
             var statusCode = lambdaResponse?.StatusCode;
-            return (IsProblem(statusCode) || context.HasExceptions) 
-                ? Task.FromResult(BuildProblemDetailsContent(statusCode, context, lambdaResponse))
-                : Task.FromResult(lambdaResponse);
+            if (!IsProblem(statusCode) && !context.HasExceptions) return Task.FromResult(lambdaResponse);
+            var formattedResponse = Task.FromResult(BuildProblemDetailsContent(statusCode, context, lambdaResponse));
+            context.MiddlewareBeforeExceptions.Clear();
+            context.MiddlewareAfterExceptions.Clear();
+            context.HandlerException = null;
+            return formattedResponse;
         }
 
         private bool IsProblem(int? statusCode) => statusCode == null || (statusCode >= 400 && statusCode < 600);
@@ -36,14 +39,14 @@ namespace Voxel.MiddyNet.ProblemDetails
                 StatusCode = 500,
                 Headers = Merge(lambdaResponse?.Headers),
                 MultiValueHeaders = Merge(lambdaResponse?.MultiValueHeaders),
-                Body = BuildProblemDetailsExceptionsContent(500, context.GetAllExceptions(), context.LambdaContext.AwsRequestId)
+                Body = BuildProblemDetailsExceptionsContent(500, context)
             }
             : new APIGatewayProxyResponse
             {
                 StatusCode = statusCode ?? 500,
                 Headers = Merge(lambdaResponse?.Headers),
                 MultiValueHeaders = Merge(lambdaResponse?.MultiValueHeaders),
-                Body = BuildProblemDetailsProblemContent(statusCode ?? 500, context.LambdaContext.AwsRequestId, ReasonPhrases.GetReasonPhrase(statusCode??500), lambdaResponse?.Body)
+                Body = BuildProblemDetailsProblemContent(statusCode ?? 500, context.LambdaContext.InvokedFunctionArn, context.LambdaContext.AwsRequestId, ReasonPhrases.GetReasonPhrase(statusCode??500), lambdaResponse?.Body)
             };
 
         private IDictionary<string, IList<string>> Merge(IDictionary<string, IList<string>> multiValueHeaders)
@@ -51,10 +54,16 @@ namespace Voxel.MiddyNet.ProblemDetails
             var merged = multiValueHeaders == null 
                 ? new Dictionary<string, IList<string>>() 
                 : new Dictionary<string, IList<string>>(multiValueHeaders);
-            var contentTypes = merged.ContainsKey(HeaderNames.ContentType) ? merged[HeaderNames.ContentType] : new List<string>();
+
+            var contentTypes = merged.ContainsKey(HeaderNames.ContentType)
+                ? merged[HeaderNames.ContentType]
+                : new List<string>();
+
             if (!contentTypes.Contains("application/problem+json"))
                 contentTypes.Add("application/problem+json");
+
             merged[HeaderNames.ContentType] = contentTypes;
+            
             return merged;
         }
 
@@ -70,34 +79,54 @@ namespace Voxel.MiddyNet.ProblemDetails
             return merged;
         }
 
-        private static string BuildProblemDetailsProblemContent(int statusCode, string instance, string statusDescription, string content) => 
-            $"{{\"Type\": \"https://httpstatuses.com/{statusCode}\",\"Title\":\"{statusDescription}\",\"Status\":\"{statusCode}\",\"Instance\":\"{instance}\",\"Details\":\"{content}\"}}";
+        private static string BuildProblemDetailsProblemContent(int statusCode, string instance, string requestId, string statusDescription, string content) => 
+            $"{{\"Type\": \"https://httpstatuses.com/{statusCode}\",\"Title\":\"{statusDescription}\",\"Status\":\"{statusCode}\",\"Details\":\"{content}\",\"Instance\":\"{instance}\",\"AwsRequestId\":\"{requestId}\"}}";
 
-        private static string BuildProblemDetailsExceptionsContent(int statusCode, List<Exception> exceptions, string instance)
+        private static string BuildProblemDetailsExceptionsContent(int statusCode, MiddyNetContext context)
         {
+            var exceptions = context.GetAllExceptions();
+            var instance = context.LambdaContext.InvokedFunctionArn;
+            var requestId = context.LambdaContext.AwsRequestId;
+
             var detailsException = exceptions.Count == 1
                 ? exceptions[0]
                 : new AggregateException(exceptions);
-            var detailsObject = BuildDetailsObject((dynamic)detailsException, statusCode, instance);
+
+            var detailsObject = BuildDetailsObject((dynamic)detailsException, statusCode, instance, requestId);
+
             return JsonSerializer.Serialize(detailsObject, new JsonSerializerOptions { WriteIndented = true });
         }
 
-        private static object BuildDetailsObject(AggregateException exception, int statusCode, string instance) => new
+        private static DetailsObject BuildDetailsObject(AggregateException exception, int statusCode, string instance, string requestId) => new DetailsObject
         {
             Type = $"https://httpstatuses.com/{statusCode}",
             Title = nameof(AggregateException),
             Status = statusCode,
-            Detail = exception.InnerExceptions.Select(ex => BuildDetailsObject((dynamic)ex, statusCode, instance)).ToArray(),
-            Instance = instance
+            Detail = ComposeDetail(exception.InnerExceptions),
+            Instance = instance,
+            AwsRequestId = requestId
         };
 
-        private static object BuildDetailsObject(Exception exception, int statusCode, string instance) => new
+        private static DetailsObject BuildDetailsObject(Exception exception, int statusCode, string instance, string requestId) => new DetailsObject
         {
             Type = $"https://httpstatuses.com/{statusCode}",
             Title = exception.GetType().Name,
             Status = statusCode,
             Detail = exception.Message,
-            Instance = instance
+            Instance = instance,
+            AwsRequestId = requestId
         };
+
+        private static string ComposeDetail(IEnumerable<Exception> exceptions) => string.Join(", ", exceptions.Select(e => $"{e.GetType().Name}: {e.Message}"));
+
+        private class DetailsObject
+        {
+            public string Type { get; set; }
+            public string Title { get; set; }
+            public int Status { get; set; }
+            public string Detail { get; set; }
+            public string Instance { get; set; }
+            public string AwsRequestId { get; set; }
+        }
     }
 }
