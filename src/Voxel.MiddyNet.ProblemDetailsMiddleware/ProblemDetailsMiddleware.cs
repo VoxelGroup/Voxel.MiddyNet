@@ -23,11 +23,16 @@ namespace Voxel.MiddyNet.ProblemDetails
         public Task<APIGatewayProxyResponse> After(APIGatewayProxyResponse lambdaResponse, MiddyNetContext context)
         {
             var statusCode = lambdaResponse?.StatusCode;
-            if (!IsProblem(statusCode) && !context.HasExceptions) return Task.FromResult(lambdaResponse);
+            
+            if (!IsProblem(statusCode) && !context.HasExceptions) 
+                return Task.FromResult(lambdaResponse);
+
             var formattedResponse = Task.FromResult(BuildProblemDetailsContent(statusCode, context, lambdaResponse));
+
             context.MiddlewareBeforeExceptions.Clear();
             context.MiddlewareAfterExceptions.Clear();
             context.HandlerException = null;
+
             return formattedResponse;
         }
 
