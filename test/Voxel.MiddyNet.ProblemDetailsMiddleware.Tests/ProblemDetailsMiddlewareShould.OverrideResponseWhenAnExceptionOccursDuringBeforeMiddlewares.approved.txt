@@ -1,7 +1,7 @@
 {
-  "Type": "https://httpstatuses.com/0",
+  "Type": "https://httpstatuses.com/500",
   "Title": "InvalidOperationException",
-  "Status": 0,
+  "Status": 500,
   "Detail": "Operation is not valid due to the current state of the object.",
   "Instance": "some-request-id"
 }

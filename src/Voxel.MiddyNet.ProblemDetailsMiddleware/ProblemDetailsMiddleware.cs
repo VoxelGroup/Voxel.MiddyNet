@@ -22,28 +22,28 @@ namespace Voxel.MiddyNet.ProblemDetails
 
         public Task<APIGatewayProxyResponse> After(APIGatewayProxyResponse lambdaResponse, MiddyNetContext context)
         {
-            var statusCode = lambdaResponse?.StatusCode ?? 500;
+            var statusCode = lambdaResponse?.StatusCode;
             return (IsProblem(statusCode) || context.HasExceptions) 
                 ? Task.FromResult(BuildProblemDetailsContent(statusCode, context, lambdaResponse))
                 : Task.FromResult(lambdaResponse);
         }
 
-        private bool IsProblem(int statusCode) => statusCode >= 400 && statusCode < 600;
+        private bool IsProblem(int? statusCode) => statusCode == null || (statusCode >= 400 && statusCode < 600);
 
-        private APIGatewayProxyResponse BuildProblemDetailsContent(int statusCode, MiddyNetContext context, APIGatewayProxyResponse lambdaResponse) => context.HasExceptions
+        private APIGatewayProxyResponse BuildProblemDetailsContent(int? statusCode, MiddyNetContext context, APIGatewayProxyResponse lambdaResponse) => context.HasExceptions
             ? new APIGatewayProxyResponse
             {
                 StatusCode = 500,
-                Headers = Merge(lambdaResponse.Headers),
-                MultiValueHeaders = Merge(lambdaResponse.MultiValueHeaders),
-                Body = BuildProblemDetailsExceptionsContent(statusCode, context.GetAllExceptions(), context.LambdaContext.AwsRequestId)
+                Headers = Merge(lambdaResponse?.Headers),
+                MultiValueHeaders = Merge(lambdaResponse?.MultiValueHeaders),
+                Body = BuildProblemDetailsExceptionsContent(500, context.GetAllExceptions(), context.LambdaContext.AwsRequestId)
             }
             : new APIGatewayProxyResponse
             {
-                StatusCode = statusCode,
-                Headers = Merge(lambdaResponse.Headers),
-                MultiValueHeaders = Merge(lambdaResponse.MultiValueHeaders),
-                Body = BuildProblemDetailsProblemContent(statusCode, context.LambdaContext.AwsRequestId, ReasonPhrases.GetReasonPhrase(statusCode), lambdaResponse.Body)
+                StatusCode = statusCode ?? 500,
+                Headers = Merge(lambdaResponse?.Headers),
+                MultiValueHeaders = Merge(lambdaResponse?.MultiValueHeaders),
+                Body = BuildProblemDetailsProblemContent(statusCode ?? 500, context.LambdaContext.AwsRequestId, ReasonPhrases.GetReasonPhrase(statusCode??500), lambdaResponse?.Body)
             };
 
         private IDictionary<string, IList<string>> Merge(IDictionary<string, IList<string>> multiValueHeaders)
