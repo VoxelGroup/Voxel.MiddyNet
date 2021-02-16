@@ -22,13 +22,11 @@ namespace Voxel.MiddyNet.ProblemDetails
         public Task Before(APIGatewayProxyRequest lambdaEvent, MiddyNetContext context) => Task.CompletedTask;
 
         public Task<APIGatewayProxyResponse> After(APIGatewayProxyResponse lambdaResponse, MiddyNetContext context)
-        {
-            var statusCode = lambdaResponse?.StatusCode;
-            
-            if (!IsProblem(statusCode) && !context.HasExceptions) 
+        {            
+            if (!IsProblem(lambdaResponse?.StatusCode) && !context.HasExceptions) 
                 return Task.FromResult(lambdaResponse);
 
-            var formattedResponse = BuildProblemDetailsContent(statusCode, context, lambdaResponse);
+            var formattedResponse = BuildProblemDetailsContent(context, lambdaResponse);
 
             context.MiddlewareBeforeExceptions.Clear();
             context.MiddlewareAfterExceptions.Clear();
@@ -39,21 +37,25 @@ namespace Voxel.MiddyNet.ProblemDetails
 
         private bool IsProblem(int? statusCode) => statusCode == null || (statusCode >= 400 && statusCode < 600);
 
-        private APIGatewayProxyResponse BuildProblemDetailsContent(int? statusCode, MiddyNetContext context, APIGatewayProxyResponse lambdaResponse) => context.HasExceptions
-            ? new APIGatewayProxyResponse
-            {
-                StatusCode = 500,
-                Headers = Merge(lambdaResponse?.Headers),
-                MultiValueHeaders = Merge(lambdaResponse?.MultiValueHeaders),
-                Body = BuildProblemDetailsExceptionsContent(500, context)
-            }
-            : new APIGatewayProxyResponse
-            {
-                StatusCode = statusCode ?? 500,
-                Headers = Merge(lambdaResponse?.Headers),
-                MultiValueHeaders = Merge(lambdaResponse?.MultiValueHeaders),
-                Body = BuildProblemDetailsProblemContent(statusCode ?? 500, context.LambdaContext.InvokedFunctionArn, context.LambdaContext.AwsRequestId, ReasonPhrases.GetReasonPhrase(statusCode??500), lambdaResponse?.Body)
-            };
+        private APIGatewayProxyResponse BuildProblemDetailsContent(MiddyNetContext context, APIGatewayProxyResponse lambdaResponse)
+        {
+            var statusCode = lambdaResponse?.StatusCode ?? 500;
+            return context.HasExceptions
+                ? new APIGatewayProxyResponse
+                {
+                    StatusCode = 500,
+                    Headers = Merge(lambdaResponse?.Headers),
+                    MultiValueHeaders = Merge(lambdaResponse?.MultiValueHeaders),
+                    Body = BuildProblemDetailsExceptionsContent(500, context)
+                }
+                : new APIGatewayProxyResponse
+                {
+                    StatusCode = statusCode ,
+                    Headers = Merge(lambdaResponse?.Headers),
+                    MultiValueHeaders = Merge(lambdaResponse?.MultiValueHeaders),
+                    Body = BuildProblemDetailsProblemContent(statusCode, context.LambdaContext.InvokedFunctionArn, context.LambdaContext.AwsRequestId, ReasonPhrases.GetReasonPhrase(statusCode), lambdaResponse?.Body)
+                };
+        }
 
         private IDictionary<string, IList<string>> Merge(IDictionary<string, IList<string>> multiValueHeaders)
         {
