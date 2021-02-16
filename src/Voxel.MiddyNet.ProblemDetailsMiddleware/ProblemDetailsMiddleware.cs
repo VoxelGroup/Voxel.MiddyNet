@@ -27,13 +27,13 @@ namespace Voxel.MiddyNet.ProblemDetails
             if (!IsProblem(statusCode) && !context.HasExceptions) 
                 return Task.FromResult(lambdaResponse);
 
-            var formattedResponse = Task.FromResult(BuildProblemDetailsContent(statusCode, context, lambdaResponse));
+            var formattedResponse = BuildProblemDetailsContent(statusCode, context, lambdaResponse);
 
             context.MiddlewareBeforeExceptions.Clear();
             context.MiddlewareAfterExceptions.Clear();
             context.HandlerException = null;
 
-            return formattedResponse;
+            return Task.FromResult(formattedResponse);
         }
 
         private bool IsProblem(int? statusCode) => statusCode == null || (statusCode >= 400 && statusCode < 600);
