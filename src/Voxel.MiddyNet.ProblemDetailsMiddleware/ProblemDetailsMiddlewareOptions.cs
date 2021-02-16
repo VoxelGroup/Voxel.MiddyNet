@@ -12,7 +12,7 @@ namespace Voxel.MiddyNet.ProblemDetails
             mappings = new Dictionary<Type, int>();
         }
 
-        public void Map<T>(int statusCode) where T:Exception
+        public void Map<T>(int statusCode) where T: Exception
         {
             mappings[typeof(T)] = statusCode;
         }
@@ -26,7 +26,7 @@ namespace Voxel.MiddyNet.ProblemDetails
                     statusCode = map.Value;
                     return true;
                 }
-            };
+            }
             statusCode = 500;
             return false;
         }
