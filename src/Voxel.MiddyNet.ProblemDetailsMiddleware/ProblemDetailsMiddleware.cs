@@ -85,7 +85,7 @@ namespace Voxel.MiddyNet.ProblemDetails
         }
 
         private static string BuildProblemDetailsProblemContent(int statusCode, string instance, string requestId, string statusDescription, string content) => 
-            $"{{\"Type\": \"https://httpstatuses.com/{statusCode}\",\"Title\":\"{statusDescription}\",\"Status\":\"{statusCode}\",\"Details\":\"{content}\",\"Instance\":\"{instance}\",\"AwsRequestId\":\"{requestId}\"}}";
+            $"{{\"Type\": \"https://httpstatuses.com/{statusCode}\",\"Title\":\"{statusDescription}\",\"Status\":\"{statusCode}\",\"Detail\":\"{content}\",\"Instance\":\"{instance}\",\"AwsRequestId\":\"{requestId}\"}}";
 
         private static string BuildProblemDetailsExceptionsContent(int statusCode, MiddyNetContext context)
         {

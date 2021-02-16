@@ -1,1 +1,1 @@
-{"Type": "https://httpstatuses.com/503","Title":"Service Unavailable","Status":"503","Details":"some body","Instance":"some-function-arn","AwsRequestId":"some-request-id"}
+{"Type": "https://httpstatuses.com/503","Title":"Service Unavailable","Status":"503","Detail":"some body","Instance":"some-function-arn","AwsRequestId":"some-request-id"}
