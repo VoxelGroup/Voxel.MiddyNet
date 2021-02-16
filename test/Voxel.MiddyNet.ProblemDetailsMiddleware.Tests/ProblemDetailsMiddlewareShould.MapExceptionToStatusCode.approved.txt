@@ -1,0 +1,8 @@
+{
+  "Type": "https://httpstatuses.com/409",
+  "Title": "Conflict",
+  "Status": 409,
+  "Detail": "InvalidOperationException: suppose this is a duplicate key exception",
+  "Instance": "some-function-arn",
+  "AwsRequestId": "some-request-id"
+}

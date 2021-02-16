@@ -20,7 +20,7 @@ namespace Voxel.MiddyNet.ProblemDetails.Tests
 
         public ProblemDetailsMiddlewareShould()
         {
-            middleware = new ProblemDetailsMiddleware();
+            middleware = new ProblemDetailsMiddleware(null);
             context = new MiddyNetContext(Substitute.For<ILambdaContext>());
             context.LambdaContext.InvokedFunctionArn.Returns("some-function-arn");
             context.LambdaContext.AwsRequestId.Returns("some-request-id");
@@ -155,5 +155,22 @@ namespace Voxel.MiddyNet.ProblemDetails.Tests
             context.HandlerException.Should().BeNull();
             context.MiddlewareAfterExceptions.Should().BeEmpty();
         }
+
+        [Fact]
+        public async Task MapExceptionToStatusCode()
+        {
+            context.HandlerException = new InvalidOperationException("suppose this is a duplicate key exception");
+
+            var options = new ProblemDetailsMiddlewareOptions();
+            options.Map<InvalidOperationException>(409);
+
+            var optionsMiddleware = new ProblemDetailsMiddleware(options);
+
+            var response = await optionsMiddleware.After(new APIGatewayProxyResponse(), context);
+            response.StatusCode.Should().Be(409);
+            Approvals.Verify(response.Body);
+        }
     }
+
+
 }

@@ -12,18 +12,23 @@ namespace Voxel.MiddyNet.ProblemDetails
     public class ProblemDetailsMiddleware : ILambdaMiddleware<APIGatewayProxyRequest, APIGatewayProxyResponse>
     {
         private static readonly JsonSerializerOptions jsonSerializerOptions = new JsonSerializerOptions { WriteIndented = true };
-        private readonly Dictionary<string, string> noCacheHeaders = new Dictionary<string, string>
+        private static readonly Dictionary<string, string> noCacheHeaders = new Dictionary<string, string>
         {
             [HeaderNames.CacheControl] = "no-cache, no-store, must-revalidate",
             [HeaderNames.Pragma] = "no-cache",
             [HeaderNames.Expires] = "0"
         };
 
+        private readonly ProblemDetailsMiddlewareOptions options;
+
+        public ProblemDetailsMiddleware(ProblemDetailsMiddlewareOptions options) =>
+            this.options = options ?? new ProblemDetailsMiddlewareOptions();
+
         public Task Before(APIGatewayProxyRequest lambdaEvent, MiddyNetContext context) => Task.CompletedTask;
 
         public Task<APIGatewayProxyResponse> After(APIGatewayProxyResponse lambdaResponse, MiddyNetContext context)
-        {            
-            if (!IsProblem(lambdaResponse?.StatusCode) && !context.HasExceptions) 
+        {
+            if (!IsProblem(lambdaResponse?.StatusCode) && !context.HasExceptions)
                 return Task.FromResult(lambdaResponse);
 
             var formattedResponse = BuildProblemDetailsContent(context, lambdaResponse);
@@ -39,28 +44,39 @@ namespace Voxel.MiddyNet.ProblemDetails
 
         private APIGatewayProxyResponse BuildProblemDetailsContent(MiddyNetContext context, APIGatewayProxyResponse lambdaResponse)
         {
-            var statusCode = lambdaResponse?.StatusCode ?? 500;
             return context.HasExceptions
-                ? new APIGatewayProxyResponse
-                {
-                    StatusCode = 500,
-                    Headers = Merge(lambdaResponse?.Headers),
-                    MultiValueHeaders = Merge(lambdaResponse?.MultiValueHeaders),
-                    Body = BuildProblemDetailsExceptionsContent(500, context)
-                }
-                : new APIGatewayProxyResponse
-                {
-                    StatusCode = statusCode ,
-                    Headers = Merge(lambdaResponse?.Headers),
-                    MultiValueHeaders = Merge(lambdaResponse?.MultiValueHeaders),
-                    Body = BuildProblemDetailsProblemContent(statusCode, context.LambdaContext.InvokedFunctionArn, context.LambdaContext.AwsRequestId, ReasonPhrases.GetReasonPhrase(statusCode), lambdaResponse?.Body)
-                };
+                ? CreateExceptionResponse(context, lambdaResponse)
+                : CreateProblemResponse(context, lambdaResponse);
+        }
+
+        private APIGatewayProxyResponse CreateProblemResponse(MiddyNetContext context, APIGatewayProxyResponse lambdaResponse)
+        {
+            var statusCode = lambdaResponse?.StatusCode ?? 500;
+            return new APIGatewayProxyResponse
+            {
+                StatusCode = statusCode,
+                Headers = Merge(lambdaResponse?.Headers),
+                MultiValueHeaders = Merge(lambdaResponse?.MultiValueHeaders),
+                Body = BuildProblemDetailsProblemContent(statusCode, context.LambdaContext.InvokedFunctionArn, context.LambdaContext.AwsRequestId, ReasonPhrases.GetReasonPhrase(statusCode), lambdaResponse?.Body)
+            };
+        }
+
+        private APIGatewayProxyResponse CreateExceptionResponse(MiddyNetContext context, APIGatewayProxyResponse lambdaResponse)
+        {
+            (int statusCode, string body) = BuildProblemDetailsExceptions(context);
+            return new APIGatewayProxyResponse
+            {
+                StatusCode = statusCode,
+                Headers = Merge(lambdaResponse?.Headers),
+                MultiValueHeaders = Merge(lambdaResponse?.MultiValueHeaders),
+                Body = body
+            };
         }
 
         private IDictionary<string, IList<string>> Merge(IDictionary<string, IList<string>> multiValueHeaders)
         {
-            var merged = multiValueHeaders == null 
-                ? new Dictionary<string, IList<string>>() 
+            var merged = multiValueHeaders == null
+                ? new Dictionary<string, IList<string>>()
                 : new Dictionary<string, IList<string>>(multiValueHeaders);
 
             var contentTypes = merged.ContainsKey(HeaderNames.ContentType)
@@ -80,11 +96,31 @@ namespace Voxel.MiddyNet.ProblemDetails
             var merged = responseHeaders == null
                 ? new Dictionary<string, string>()
                 : new Dictionary<string, string>(responseHeaders);
+
             foreach(var kv in noCacheHeaders)
             {
                 merged[kv.Key] = kv.Value;
             }
+
             return merged;
+        }
+
+        private (int statusCode, string body) BuildProblemDetailsExceptions(MiddyNetContext context)
+        {
+            var exceptions = context.GetAllExceptions();
+            var instance = context.LambdaContext.InvokedFunctionArn;
+            var requestId = context.LambdaContext.AwsRequestId;
+
+            var detailsException = exceptions.Count == 1
+                ? exceptions[0]
+                : new AggregateException(exceptions);
+
+            if (options.TryMap(detailsException.GetType(), out int statusCode))
+                return (statusCode, BuildProblemDetailsProblemContent(statusCode, instance, requestId, ReasonPhrases.GetReasonPhrase(statusCode), ComposeDetail(new[] { detailsException })));
+
+            var detailsObject = BuildDetailsObject((dynamic)detailsException, statusCode, instance, requestId);
+                        
+            return (statusCode, JsonSerializer.Serialize(detailsObject, jsonSerializerOptions));
         }
 
         private static string BuildProblemDetailsProblemContent(int statusCode, string instance, string requestId, string statusDescription, string content) =>
@@ -97,21 +133,6 @@ namespace Voxel.MiddyNet.ProblemDetails
                 Instance = instance,
                 AwsRequestId = requestId
             }, jsonSerializerOptions);
-
-        private static string BuildProblemDetailsExceptionsContent(int statusCode, MiddyNetContext context)
-        {
-            var exceptions = context.GetAllExceptions();
-            var instance = context.LambdaContext.InvokedFunctionArn;
-            var requestId = context.LambdaContext.AwsRequestId;
-
-            var detailsException = exceptions.Count == 1
-                ? exceptions[0]
-                : new AggregateException(exceptions);
-
-            var detailsObject = BuildDetailsObject((dynamic)detailsException, statusCode, instance, requestId);
-                        
-            return JsonSerializer.Serialize(detailsObject, jsonSerializerOptions);
-        }
 
         private static DetailsObject BuildDetailsObject(AggregateException exception, int statusCode, string instance, string requestId) => new DetailsObject
         {
@@ -133,7 +154,8 @@ namespace Voxel.MiddyNet.ProblemDetails
             AwsRequestId = requestId
         };
 
-        private static string ComposeDetail(IEnumerable<Exception> exceptions) => string.Join(", ", exceptions.Select(e => $"{e.GetType().Name}: {e.Message}"));
+        private static string ComposeDetail(IEnumerable<Exception> exceptions) =>
+            string.Join(", ", exceptions.Select(e => $"{e.GetType().Name}: {e.Message}"));
 
         private class DetailsObject
         {
