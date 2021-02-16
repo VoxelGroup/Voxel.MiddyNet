@@ -11,12 +11,12 @@ namespace Voxel.MiddyNet.ApiGatewayProblemDetailsSample
     {
         public ApiGatewayProblemDetails()
         {
-            Use(new ProblemDetailsMiddleware());
+            Use(new ProblemDetailsMiddleware(new ProblemDetailsMiddlewareOptions().Map<NotImplementedException>(123)));
         }
 
         protected override Task<APIGatewayProxyResponse> Handle(APIGatewayProxyRequest lambdaEvent, MiddyNetContext context)
         {
-            throw new NotImplementedException("this will be used as the problem details description");
+            throw new NotImplementedException("this will be used in the problem details description");
         }
     }
 }

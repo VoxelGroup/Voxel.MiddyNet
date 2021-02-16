@@ -12,9 +12,10 @@ namespace Voxel.MiddyNet.ProblemDetails
             mappings = new Dictionary<Type, int>();
         }
 
-        public void Map<T>(int statusCode) where T: Exception
+        public ProblemDetailsMiddlewareOptions Map<T>(int statusCode) where T: Exception
         {
             mappings[typeof(T)] = statusCode;
+            return this;
         }
 
         public bool TryMap(Type type, out int statusCode)
