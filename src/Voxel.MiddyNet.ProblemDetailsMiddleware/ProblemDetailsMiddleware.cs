@@ -11,6 +11,7 @@ namespace Voxel.MiddyNet.ProblemDetails
 {
     public class ProblemDetailsMiddleware : ILambdaMiddleware<APIGatewayProxyRequest, APIGatewayProxyResponse>
     {
+        private static readonly JsonSerializerOptions jsonSerializerOptions = new JsonSerializerOptions { WriteIndented = true };
         private readonly Dictionary<string, string> noCacheHeaders = new Dictionary<string, string>
         {
             [HeaderNames.CacheControl] = "no-cache, no-store, must-revalidate",
@@ -84,8 +85,16 @@ namespace Voxel.MiddyNet.ProblemDetails
             return merged;
         }
 
-        private static string BuildProblemDetailsProblemContent(int statusCode, string instance, string requestId, string statusDescription, string content) => 
-            $"{{\"Type\": \"https://httpstatuses.com/{statusCode}\",\"Title\":\"{statusDescription}\",\"Status\":\"{statusCode}\",\"Detail\":\"{content}\",\"Instance\":\"{instance}\",\"AwsRequestId\":\"{requestId}\"}}";
+        private static string BuildProblemDetailsProblemContent(int statusCode, string instance, string requestId, string statusDescription, string content) =>
+            JsonSerializer.Serialize(new DetailsObject
+            {
+                Type = $"https://httpstatuses.com/{statusCode}",
+                Title = statusDescription,
+                Status = statusCode,
+                Detail = content,
+                Instance = instance,
+                AwsRequestId = requestId
+            }, jsonSerializerOptions);
 
         private static string BuildProblemDetailsExceptionsContent(int statusCode, MiddyNetContext context)
         {
@@ -98,8 +107,8 @@ namespace Voxel.MiddyNet.ProblemDetails
                 : new AggregateException(exceptions);
 
             var detailsObject = BuildDetailsObject((dynamic)detailsException, statusCode, instance, requestId);
-
-            return JsonSerializer.Serialize(detailsObject, new JsonSerializerOptions { WriteIndented = true });
+                        
+            return JsonSerializer.Serialize(detailsObject, jsonSerializerOptions);
         }
 
         private static DetailsObject BuildDetailsObject(AggregateException exception, int statusCode, string instance, string requestId) => new DetailsObject
