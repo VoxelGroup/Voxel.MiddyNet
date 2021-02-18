@@ -20,17 +20,11 @@ namespace Voxel.MiddyNet.ProblemDetails
 
         private readonly ProblemDetailsMiddlewareOptions options;
 
-        public ResponseBuilder(ProblemDetailsMiddlewareOptions options)
-        {
-            this.options = options;
-        }
+        public ResponseBuilder(ProblemDetailsMiddlewareOptions options) => this.options = options;
 
-        public APIGatewayProxyResponse BuildProblemDetailsContent(MiddyNetContext context, APIGatewayProxyResponse lambdaResponse)
-        {
-            return context.HasExceptions
-                ? CreateExceptionResponse(context, lambdaResponse)
-                : CreateProblemResponse(context, lambdaResponse);
-        }
+        public APIGatewayProxyResponse BuildProblemDetailsContent(MiddyNetContext context, APIGatewayProxyResponse lambdaResponse) => context.HasExceptions
+            ? CreateExceptionResponse(context, lambdaResponse)
+            : CreateProblemResponse(context, lambdaResponse);
 
         private APIGatewayProxyResponse CreateProblemResponse(MiddyNetContext context, APIGatewayProxyResponse lambdaResponse)
         {
@@ -40,7 +34,7 @@ namespace Voxel.MiddyNet.ProblemDetails
                 StatusCode = statusCode,
                 Headers = Merge(lambdaResponse?.Headers),
                 MultiValueHeaders = Merge(lambdaResponse?.MultiValueHeaders),
-                Body = BuildProblemDetailsProblemContent(statusCode, context.LambdaContext.InvokedFunctionArn, context.LambdaContext.AwsRequestId, ReasonPhrases.GetReasonPhrase(statusCode), lambdaResponse?.Body)
+                Body = JsonSerializer.Serialize(BuildProblemDetailsProblemContent(statusCode, context.LambdaContext.InvokedFunctionArn, context.LambdaContext.AwsRequestId, ReasonPhrases.GetReasonPhrase(statusCode), lambdaResponse?.Body), jsonSerializerOptions)
             };
         }
 
@@ -98,15 +92,14 @@ namespace Voxel.MiddyNet.ProblemDetails
                 ? exceptions[0]
                 : new AggregateException(exceptions);
 
-            if (options.TryMap(detailsException.GetType(), out int statusCode))
-                return (statusCode, BuildProblemDetailsProblemContent(statusCode, instance, requestId, ReasonPhrases.GetReasonPhrase(statusCode), ComposeDetail(new[] { detailsException })));
-
-            var detailsObject = BuildDetailsObject((dynamic)detailsException, statusCode, instance, requestId);
+            var detailsObject = options.TryMap(detailsException.GetType(), out int statusCode)
+                ? BuildProblemDetailsProblemContent(statusCode, instance, requestId, ReasonPhrases.GetReasonPhrase(statusCode), ComposeDetail(new[] { detailsException }))
+                : BuildDetailsObject((dynamic)detailsException, statusCode, instance, requestId);
 
             return (statusCode, JsonSerializer.Serialize(detailsObject, jsonSerializerOptions));
         }
 
-        private static string BuildProblemDetailsProblemContent(int statusCode, string instance, string requestId, string statusDescription, string content) => JsonSerializer.Serialize(new DetailsObject
+        private static DetailsObject BuildProblemDetailsProblemContent(int statusCode, string instance, string requestId, string statusDescription, string content) => new DetailsObject
         {
             Type = $"https://httpstatuses.com/{statusCode}",
             Title = statusDescription,
@@ -114,7 +107,7 @@ namespace Voxel.MiddyNet.ProblemDetails
             Detail = content,
             Instance = instance,
             AwsRequestId = requestId
-        }, jsonSerializerOptions);
+        };
 
         private static DetailsObject BuildDetailsObject(AggregateException exception, int statusCode, string instance, string requestId) => new DetailsObject
         {

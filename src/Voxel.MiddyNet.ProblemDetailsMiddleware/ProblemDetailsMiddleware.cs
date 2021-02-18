@@ -27,7 +27,5 @@ namespace Voxel.MiddyNet.ProblemDetails
         }
 
         private bool IsProblem(int? statusCode) => statusCode == null || (statusCode >= 400 && statusCode < 600);
-
-        
     }
 }
