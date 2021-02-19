@@ -8,7 +8,7 @@ provider:
 
 custom:
   defaultRegion: eu-west-1
-  defaultStage: dev${env:SLSUSER, "fsaez"}
+  defaultStage: dev${env:SLSUSER, ""}
 
 package:
   individually: true
