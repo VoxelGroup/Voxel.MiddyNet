@@ -7,7 +7,7 @@ using System.Text.Json;
 
 namespace Voxel.MiddyNet.ProblemDetails
 {
-    internal class ExceptionResponseBuilder: ProxyResponseBuilder
+    public class ExceptionResponseBuilder: ProxyResponseBuilder
     {
         private readonly ProblemDetailsMiddlewareOptions options;
 

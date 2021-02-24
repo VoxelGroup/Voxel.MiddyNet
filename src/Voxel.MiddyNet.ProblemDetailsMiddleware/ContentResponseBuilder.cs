@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.WebUtilities;
 
 namespace Voxel.MiddyNet.ProblemDetails
 {
-    internal class ContentResponseBuilder : ProxyResponseBuilder
+    public class ContentResponseBuilder : ProxyResponseBuilder
     {
         public APIGatewayProxyResponse CreateProblemResponse(MiddyNetContext context, APIGatewayProxyResponse lambdaResponse)
         {

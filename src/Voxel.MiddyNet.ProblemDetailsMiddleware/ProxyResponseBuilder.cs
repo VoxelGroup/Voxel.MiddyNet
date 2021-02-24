@@ -4,7 +4,7 @@ using System.Text.Json;
 
 namespace Voxel.MiddyNet.ProblemDetails
 {
-    internal abstract class ProxyResponseBuilder
+    public abstract class ProxyResponseBuilder
     {
         private static readonly Dictionary<string, string> noCacheHeaders = new Dictionary<string, string>
         {
