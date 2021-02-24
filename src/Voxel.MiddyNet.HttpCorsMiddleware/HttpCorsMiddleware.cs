@@ -40,9 +40,9 @@ namespace Voxel.MiddyNet.HttpCorsMiddleware
         private string GetOriginHeader(APIGatewayProxyRequest lambdaEvent)
         {
             var capitalCaseOriginHeaderValue =
-                lambdaEvent.Headers.ContainsKey("Origin") ? lambdaEvent.Headers["Origin"] : Empty;
+                lambdaEvent.Headers.ContainsKey("Origin") ? lambdaEvent.Headers["Origin"] : String.Empty;
             var lowerCaseOriginHeaderValue =
-                lambdaEvent.Headers.ContainsKey("origin") ? lambdaEvent.Headers["origin"] : Empty;
+                lambdaEvent.Headers.ContainsKey("origin") ? lambdaEvent.Headers["origin"] : String.Empty;
 
             return !IsNullOrWhiteSpace(capitalCaseOriginHeaderValue)
                 ? capitalCaseOriginHeaderValue
