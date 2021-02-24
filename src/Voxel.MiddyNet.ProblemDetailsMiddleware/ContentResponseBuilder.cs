@@ -17,5 +17,19 @@ namespace Voxel.MiddyNet.ProblemDetails
                 Body = JsonSerializer.Serialize(BuildProblemDetailsProblemContent(statusCode, context.LambdaContext.InvokedFunctionArn, context.LambdaContext.AwsRequestId, ReasonPhrases.GetReasonPhrase(statusCode), lambdaResponse?.Body), jsonSerializerOptions)
             };
         }
+        
+        public APIGatewayHttpApiV2ProxyResponse CreateProblemResponse(MiddyNetContext context, APIGatewayHttpApiV2ProxyResponse lambdaResponse)
+        {
+            var statusCode = lambdaResponse?.StatusCode ?? 500;
+            return new APIGatewayHttpApiV2ProxyResponse
+            {
+                StatusCode = statusCode,
+                Headers = Merge(lambdaResponse?.Headers),
+                Cookies = lambdaResponse?.Cookies,
+                Body = JsonSerializer.Serialize(BuildProblemDetailsProblemContent(statusCode, context.LambdaContext.InvokedFunctionArn, context.LambdaContext.AwsRequestId, ReasonPhrases.GetReasonPhrase(statusCode), lambdaResponse?.Body), jsonSerializerOptions)
+            };
+        }
+
+
     }
 }

@@ -27,4 +27,37 @@
     <ProjectReference Include="..\..\src\Voxel.MiddyNet.ProblemDetailsMiddleware\Voxel.MiddyNet.ProblemDetails.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="ProblemDetailsMiddlewareV2Should.AggregateMultipleExceptionsInDetails.approved.txt">
+      <ParentFile>$([System.String]::Copy('%(FileName)').Split('.')[0])</ParentFile>
+      <ParentExtension>$(ProjectExt.Replace('proj', ''))</ParentExtension>
+      <DependentUpon>ProblemDetailsMiddlewareV2Should.cs</DependentUpon>
+    </None>
+    <None Update="ProblemDetailsMiddlewareV2Should.FormatProblemsThatAreNotCausedByExceptions.approved.txt">
+      <ParentFile>$([System.String]::Copy('%(FileName)').Split('.')[0])</ParentFile>
+      <ParentExtension>$(ProjectExt.Replace('proj', ''))</ParentExtension>
+      <DependentUpon>ProblemDetailsMiddlewareV2Should.cs</DependentUpon>
+    </None>
+    <None Update="ProblemDetailsMiddlewareV2Should.MapExceptionToStatusCode.approved.txt">
+      <ParentFile>$([System.String]::Copy('%(FileName)').Split('.')[0])</ParentFile>
+      <ParentExtension>$(ProjectExt.Replace('proj', ''))</ParentExtension>
+      <DependentUpon>ProblemDetailsMiddlewareV2Should.cs</DependentUpon>
+    </None>
+    <None Update="ProblemDetailsMiddlewareV2Should.OverrideResponseWhenAnExceptionOccursDuringAfterMiddlewares.approved.txt">
+      <ParentFile>$([System.String]::Copy('%(FileName)').Split('.')[0])</ParentFile>
+      <ParentExtension>$(ProjectExt.Replace('proj', ''))</ParentExtension>
+      <DependentUpon>ProblemDetailsMiddlewareV2Should.cs</DependentUpon>
+    </None>
+    <None Update="ProblemDetailsMiddlewareV2Should.OverrideResponseWhenAnExceptionOccursDuringBeforeMiddlewares.approved.txt">
+      <ParentFile>$([System.String]::Copy('%(FileName)').Split('.')[0])</ParentFile>
+      <ParentExtension>$(ProjectExt.Replace('proj', ''))</ParentExtension>
+      <DependentUpon>ProblemDetailsMiddlewareV2Should.cs</DependentUpon>
+    </None>
+    <None Update="ProblemDetailsMiddlewareV2Should.OverrideResponseWhenAnExceptionOccursInHandler.approved.txt">
+      <ParentFile>$([System.String]::Copy('%(FileName)').Split('.')[0])</ParentFile>
+      <ParentExtension>$(ProjectExt.Replace('proj', ''))</ParentExtension>
+      <DependentUpon>ProblemDetailsMiddlewareV2Should.cs</DependentUpon>
+    </None>
+  </ItemGroup>
+
 </Project>

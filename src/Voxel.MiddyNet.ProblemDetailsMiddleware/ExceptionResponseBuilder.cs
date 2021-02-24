@@ -25,6 +25,18 @@ namespace Voxel.MiddyNet.ProblemDetails
             };
         }
 
+        public APIGatewayHttpApiV2ProxyResponse CreateExceptionResponse(MiddyNetContext context, APIGatewayHttpApiV2ProxyResponse lambdaResponse)
+        {
+            (int statusCode, string body) = BuildProblemDetailsExceptions(context);
+            return new APIGatewayHttpApiV2ProxyResponse
+            {
+                StatusCode = statusCode,
+                Headers = Merge(lambdaResponse?.Headers),
+                Cookies = lambdaResponse?.Cookies,
+                Body = body
+            };
+        }
+
         private (int statusCode, string body) BuildProblemDetailsExceptions(MiddyNetContext context)
         {
             var exceptions = context.GetAllExceptions();
