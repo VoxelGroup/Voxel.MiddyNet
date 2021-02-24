@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Voxel.MiddyNet.HttpCors
+namespace Voxel.MiddyNet.HttpCorsMiddleware
 {
     public class CorsOptions
     {

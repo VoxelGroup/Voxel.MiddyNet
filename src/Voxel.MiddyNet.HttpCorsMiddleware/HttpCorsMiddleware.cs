@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Amazon.Lambda.APIGatewayEvents;
-using static System.String;
 
-namespace Voxel.MiddyNet.HttpCors
+namespace Voxel.MiddyNet.HttpCorsMiddleware
 {
     public class HttpCorsMiddleware : ILambdaMiddleware<APIGatewayProxyRequest, APIGatewayProxyResponse>
     {
