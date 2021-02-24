@@ -17,15 +17,17 @@ namespace Voxel.MiddyNet.ProblemDetails
             if (!IsProblem(lambdaResponse?.StatusCode) && !context.HasExceptions)
                 return Task.FromResult(lambdaResponse);
 
-            var formattedResponse = new ResponseBuilder(options).BuildProblemDetailsContent(context, lambdaResponse);
+            var problemDetailsResponse = context.HasExceptions
+                ? new ExceptionResponseBuilder(options).CreateExceptionResponse(context, lambdaResponse)
+                : new ContentResponseBuilder().CreateProblemResponse(context, lambdaResponse);
 
             context.MiddlewareBeforeExceptions.Clear();
             context.MiddlewareAfterExceptions.Clear();
             context.HandlerException = null;
 
-            return Task.FromResult(formattedResponse);
+            return Task.FromResult(problemDetailsResponse);
         }
 
-        private bool IsProblem(int? statusCode) => statusCode == null || (statusCode >= 400 && statusCode < 600);
+        private static bool IsProblem(int? statusCode) => statusCode == null || (statusCode >= 400 && statusCode < 600);
     }
 }
