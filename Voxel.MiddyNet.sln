@@ -45,7 +45,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Voxel.MiddyNet.SQSTracingSa
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Voxel.MiddyNet.HttpCors", "src\Voxel.MiddyNet.HttpCorsMiddleware\Voxel.MiddyNet.HttpCors.csproj", "{85D83A71-7201-40DB-8D1E-9ABBA4B754D6}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Voxel.MiddyNet.HttpCors.Tests", "test\Voxel.MiddyNet.HttpCorsMiddleware.Tests\Voxel.MiddyNet.HttpCors.Tests.csproj", "{363B2095-FBDF-43C1-A9FE-2623BF7166C4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Voxel.MiddyNet.HttpCorsMiddleware.Tests", "test\Voxel.MiddyNet.HttpCorsMiddleware.Tests\Voxel.MiddyNet.HttpCorsMiddleware.Tests.csproj", "{363B2095-FBDF-43C1-A9FE-2623BF7166C4}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "HttpCors", "HttpCors", "{3F5F443F-6AED-4435-8FFF-660B48B37388}"
 EndProject
@@ -65,7 +65,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Voxel.MiddyNet.HttpApiV2Tra
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "HttpV2Cors", "HttpV2Cors", "{764F4959-1FF5-4C2B-AA5D-2419B06A7B46}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Voxel.MiddyNet.HttpV2CorsSample", "samples\HttpV2Cors\Voxel.MiddyNet.HttpV2CorsSample\Voxel.MiddyNet.HttpV2CorsSample.csproj", "{97101C9F-AC3E-4BD8-86A3-968B65A6720A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Voxel.MiddyNet.HttpV2CorsSample", "samples\HttpV2Cors\Voxel.MiddyNet.HttpV2CorsSample\Voxel.MiddyNet.HttpV2CorsSample.csproj", "{97101C9F-AC3E-4BD8-86A3-968B65A6720A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

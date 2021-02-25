@@ -4,9 +4,10 @@ using Amazon.Lambda.APIGatewayEvents;
 using Amazon.Lambda.Core;
 using FluentAssertions;
 using NSubstitute;
+using Voxel.MiddyNet.HttpCors;
 using Xunit;
 
-namespace Voxel.MiddyNet.HttpCors.Tests
+namespace Voxel.MiddyNet.HttpCorsMiddleware.Tests
 {
     public class HttpV2CorsMiddlewareShould
     {
