@@ -9,7 +9,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Xunit;
 
-namespace Voxel.MiddyNet.SSM.Tests
+namespace Voxel.MiddyNet.SSMMiddleware.Tests
 {
 
     public class IntegrationTests : IClassFixture<LaunchSettingsFixture>

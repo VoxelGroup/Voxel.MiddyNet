@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Voxel.MiddyNet.SSM
+namespace Voxel.MiddyNet.SSMMiddleware
 {
     public class CachedParameter
     {
