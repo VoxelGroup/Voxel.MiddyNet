@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Amazon.Lambda.APIGatewayEvents;
 using static System.String;
 
-namespace Voxel.MiddyNet.HttpCors
+namespace Voxel.MiddyNet.HttpCorsMiddleware
 {
     public class HttpCorsMiddleware : ILambdaMiddleware<APIGatewayProxyRequest, APIGatewayProxyResponse>
     {

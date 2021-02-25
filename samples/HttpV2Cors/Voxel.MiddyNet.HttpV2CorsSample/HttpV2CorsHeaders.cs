@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Amazon.Lambda.Core;
 using Amazon.Lambda.APIGatewayEvents;
-using Voxel.MiddyNet.HttpCors;
+using Voxel.MiddyNet.HttpCorsMiddleware;
 
 [assembly: LambdaSerializer(typeof(Amazon.Lambda.Serialization.SystemTextJson.DefaultLambdaJsonSerializer))]
 namespace Voxel.MiddyNet.HttpV2CorsSample

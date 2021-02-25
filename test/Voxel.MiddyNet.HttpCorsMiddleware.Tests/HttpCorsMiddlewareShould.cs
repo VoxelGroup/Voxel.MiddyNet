@@ -6,7 +6,7 @@ using FluentAssertions;
 using NSubstitute;
 using Xunit;
 
-namespace Voxel.MiddyNet.HttpCors.Tests
+namespace Voxel.MiddyNet.HttpCorsMiddleware.Tests
 {
     public class HttpCorsMiddlewareShould
     {
