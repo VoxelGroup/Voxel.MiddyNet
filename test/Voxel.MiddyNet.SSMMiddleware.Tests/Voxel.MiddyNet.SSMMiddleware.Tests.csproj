@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Voxel.MiddyNet.SSM\Voxel.MiddyNet.SSM.csproj" />
+    <ProjectReference Include="..\..\src\Voxel.MiddyNet.SSMMiddleware\Voxel.MiddyNet.SSMMiddleware.csproj" />
   </ItemGroup>
 
   <ItemGroup>

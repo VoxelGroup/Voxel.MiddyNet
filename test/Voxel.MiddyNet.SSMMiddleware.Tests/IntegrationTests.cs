@@ -7,7 +7,6 @@ using Amazon.Lambda.Core;
 using FluentAssertions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Voxel.MiddyNet.SSM;
 using Xunit;
 
 namespace Voxel.MiddyNet.SSMMiddleware.Tests

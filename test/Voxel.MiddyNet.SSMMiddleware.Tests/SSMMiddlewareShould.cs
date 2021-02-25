@@ -5,7 +5,6 @@ using Amazon.SimpleSystemsManagement;
 using Amazon.SimpleSystemsManagement.Model;
 using FluentAssertions;
 using NSubstitute;
-using Voxel.MiddyNet.SSM;
 using Xunit;
 
 namespace Voxel.MiddyNet.SSMMiddleware.Tests
