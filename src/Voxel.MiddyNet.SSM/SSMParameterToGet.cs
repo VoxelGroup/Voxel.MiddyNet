@@ -1,4 +1,4 @@
-﻿namespace Voxel.MiddyNet.SSM
+﻿namespace Voxel.MiddyNet.SSMMiddleware
 {
     public class SSMParameterToGet
     {

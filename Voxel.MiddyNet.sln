@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.30225.117
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Voxel.MiddyNet", "src\Voxel.MiddyNet\Voxel.MiddyNet.csproj", "{32031CD7-A5CE-4C42-9F4A-4D28550C7144}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Voxel.MiddyNet.SSM", "src\Voxel.MiddyNet.SSM\Voxel.MiddyNet.SSM.csproj", "{F987185E-B537-494B-8B1A-F17F24F9FB08}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Voxel.MiddyNet.SSMMiddleware", "src\Voxel.MiddyNet.SSM\Voxel.MiddyNet.SSMMiddleware.csproj", "{F987185E-B537-494B-8B1A-F17F24F9FB08}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Middlewares", "Middlewares", "{202D1DF0-62D6-4006-99DC-BBFBE59428B1}"
 EndProject
