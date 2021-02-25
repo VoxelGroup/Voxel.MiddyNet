@@ -4,7 +4,6 @@ using Amazon.Lambda.APIGatewayEvents;
 using Amazon.Lambda.Core;
 using FluentAssertions;
 using NSubstitute;
-using Voxel.MiddyNet.HttpCors;
 using Xunit;
 
 namespace Voxel.MiddyNet.HttpCorsMiddleware.Tests
@@ -27,7 +26,7 @@ namespace Voxel.MiddyNet.HttpCorsMiddleware.Tests
         [Fact]
         public async Task DefaultAccessControlAllowOriginHeaderToAsterisk()
         {
-            var middleware = new HttpCors.HttpCorsMiddleware();
+            var middleware = new HttpCorsMiddleware();
 
             var previousResponse = new APIGatewayProxyResponse();
 
@@ -40,7 +39,7 @@ namespace Voxel.MiddyNet.HttpCorsMiddleware.Tests
         [Fact]
         public async Task NotOverrideAlreadyDeclaredAccessControlAllowOriginHeader()
         {
-            var middleware = new HttpCors.HttpCorsMiddleware();
+            var middleware = new HttpCorsMiddleware();
 
             var previousResponse = new APIGatewayProxyResponse
             {
@@ -59,7 +58,7 @@ namespace Voxel.MiddyNet.HttpCorsMiddleware.Tests
         [Fact]
         public async Task UseOriginSpecifiedInOptions()
         {
-            var middleware = new HttpCors.HttpCorsMiddleware(new CorsOptions{Origin = "http://example.com"});
+            var middleware = new HttpCorsMiddleware(new CorsOptions{Origin = "http://example.com"});
 
             var previousResponse = new APIGatewayProxyResponse();
 
@@ -74,7 +73,7 @@ namespace Voxel.MiddyNet.HttpCorsMiddleware.Tests
         [InlineData("origin")]
         public async Task ReturnWhitelistedOrigin(string headerName)
         {
-            var middleware = new HttpCors.HttpCorsMiddleware(new CorsOptions { Origins = new []{ "http://example.com", "http://another-example.com"} });
+            var middleware = new HttpCorsMiddleware(new CorsOptions { Origins = new []{ "http://example.com", "http://another-example.com"} });
 
             var previousResponse = new APIGatewayProxyResponse();
             request.Headers.Add(headerName, "http://another-example.com");
@@ -90,7 +89,7 @@ namespace Voxel.MiddyNet.HttpCorsMiddleware.Tests
         [InlineData("origin")]
         public async Task ReturnFirstOriginAsDefaultIfNoMatch(string headerName)
         {
-            var middleware = new HttpCors.HttpCorsMiddleware(new CorsOptions { Origins = new[] { "http://example.com", "http://another-example.com" } });
+            var middleware = new HttpCorsMiddleware(new CorsOptions { Origins = new[] { "http://example.com", "http://another-example.com" } });
 
             var previousResponse = new APIGatewayProxyResponse();
             request.Headers.Add(headerName, "http://yet-another-example.com");
@@ -104,7 +103,7 @@ namespace Voxel.MiddyNet.HttpCorsMiddleware.Tests
         [Fact]
         public async Task UseAllowedHeadersSpecifiedInOptions()
         {
-            var middleware = new HttpCors.HttpCorsMiddleware(new CorsOptions
+            var middleware = new HttpCorsMiddleware(new CorsOptions
             {
                 Headers = "x-example"
             });
@@ -121,7 +120,7 @@ namespace Voxel.MiddyNet.HttpCorsMiddleware.Tests
         [Fact]
         public async Task NotOverrideAlreadyDeclaredAccessControlAllowHeadersHeader()
         {
-            var middleware = new HttpCors.HttpCorsMiddleware(new CorsOptions
+            var middleware = new HttpCorsMiddleware(new CorsOptions
             {
                 Headers = "x-another-example"
             });
@@ -147,7 +146,7 @@ namespace Voxel.MiddyNet.HttpCorsMiddleware.Tests
         public async Task NotOverrideAlreadyDeclaredAccessControlAllowCredentialsHeader(string incomingHeader,
             bool configValue)
         {
-            var middleware = new HttpCors.HttpCorsMiddleware(new CorsOptions
+            var middleware = new HttpCorsMiddleware(new CorsOptions
             {
                 Credentials = configValue
             });
@@ -172,7 +171,7 @@ namespace Voxel.MiddyNet.HttpCorsMiddleware.Tests
         [InlineData(false, "false")]
         public async Task UseChangeCredentialsAsSpecifiedInOptions(bool configValue, string expectedHeader)
         {
-            var middleware = new HttpCors.HttpCorsMiddleware(new CorsOptions
+            var middleware = new HttpCorsMiddleware(new CorsOptions
             {
                 Credentials = configValue
             });
@@ -189,7 +188,7 @@ namespace Voxel.MiddyNet.HttpCorsMiddleware.Tests
         [Fact]
         public async Task NotChangeAnythingIfHttpMethodIsNotPresentInTheRequest()
         {
-            var middleware = new HttpCors.HttpCorsMiddleware(new CorsOptions());
+            var middleware = new HttpCorsMiddleware(new CorsOptions());
 
             var previousResponse = new APIGatewayProxyResponse();
 
@@ -209,7 +208,7 @@ namespace Voxel.MiddyNet.HttpCorsMiddleware.Tests
         [InlineData("max-age=3600, s-maxage=3600, proxy-revalidate", "PATCH", "")]
         public async Task SetCacheControlHeaderIfPresentInConfigAndHttpMethodIsOptions(string configValue, string httpMethod, string expectedHeader)
         {
-            var middleware = new HttpCors.HttpCorsMiddleware(new CorsOptions
+            var middleware = new HttpCorsMiddleware(new CorsOptions
             {
                 CacheControl = configValue
             });
@@ -229,7 +228,7 @@ namespace Voxel.MiddyNet.HttpCorsMiddleware.Tests
         [Fact]
         public async Task NotOverwriteCacheControlHeaderIfAlreadySet()
         {
-            var middleware = new HttpCors.HttpCorsMiddleware(new CorsOptions
+            var middleware = new HttpCorsMiddleware(new CorsOptions
             {
                 CacheControl = "max-age=3600, s-maxage=3600, proxy-revalidate"
             });
@@ -254,7 +253,7 @@ namespace Voxel.MiddyNet.HttpCorsMiddleware.Tests
         [Fact]
         public async Task SetAccessControlMaxAgeHeaderIfPresentInConfig()
         {
-            var middleware = new HttpCors.HttpCorsMiddleware(new CorsOptions
+            var middleware = new HttpCorsMiddleware(new CorsOptions
             {
                 MaxAge = "3600"
             });
@@ -270,7 +269,7 @@ namespace Voxel.MiddyNet.HttpCorsMiddleware.Tests
         [Fact]
         public async Task NotOverwriteAccessControlMaxAgeHeaderIfAlreadySet()
         {
-            var middleware = new HttpCors.HttpCorsMiddleware(new CorsOptions
+            var middleware = new HttpCorsMiddleware(new CorsOptions
             {
                 MaxAge = "3600"
             });

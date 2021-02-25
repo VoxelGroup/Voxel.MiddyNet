@@ -43,7 +43,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SQSTracing", "SQSTracing", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Voxel.MiddyNet.SQSTracingSample", "samples\SQSTracing\Voxel.MiddyNet.SQSTracingSample\Voxel.MiddyNet.SQSTracingSample.csproj", "{D0BB25EE-3326-4941-96BE-99922BC4A48E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Voxel.MiddyNet.HttpCors", "src\Voxel.MiddyNet.HttpCorsMiddleware\Voxel.MiddyNet.HttpCors.csproj", "{85D83A71-7201-40DB-8D1E-9ABBA4B754D6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Voxel.MiddyNet.HttpCorsMiddleware", "src\Voxel.MiddyNet.HttpCorsMiddleware\Voxel.MiddyNet.HttpCorsMiddleware.csproj", "{85D83A71-7201-40DB-8D1E-9ABBA4B754D6}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Voxel.MiddyNet.HttpCorsMiddleware.Tests", "test\Voxel.MiddyNet.HttpCorsMiddleware.Tests\Voxel.MiddyNet.HttpCorsMiddleware.Tests.csproj", "{363B2095-FBDF-43C1-A9FE-2623BF7166C4}"
 EndProject
