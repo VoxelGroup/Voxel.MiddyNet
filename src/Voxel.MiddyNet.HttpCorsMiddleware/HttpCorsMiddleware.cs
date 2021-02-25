@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Amazon.Lambda.APIGatewayEvents;
+using static System.String;
 
 namespace Voxel.MiddyNet.HttpCorsMiddleware
 {
     public class HttpCorsMiddleware : ILambdaMiddleware<APIGatewayProxyRequest, APIGatewayProxyResponse>
     {
         private readonly CorsOptions corsOptions;
-        private string incomingOrigin = String.Empty;
+        private string incomingOrigin = Empty;
         private string httpMethod;
 
         public HttpCorsMiddleware() : this(new CorsOptions())
@@ -40,9 +41,9 @@ namespace Voxel.MiddyNet.HttpCorsMiddleware
         private string GetOriginHeader(APIGatewayProxyRequest lambdaEvent)
         {
             var capitalCaseOriginHeaderValue =
-                lambdaEvent.Headers.ContainsKey("Origin") ? lambdaEvent.Headers["Origin"] : String.Empty;
+                lambdaEvent.Headers.ContainsKey("Origin") ? lambdaEvent.Headers["Origin"] : Empty;
             var lowerCaseOriginHeaderValue =
-                lambdaEvent.Headers.ContainsKey("origin") ? lambdaEvent.Headers["origin"] : String.Empty;
+                lambdaEvent.Headers.ContainsKey("origin") ? lambdaEvent.Headers["origin"] : Empty;
 
             return !String.IsNullOrWhiteSpace(capitalCaseOriginHeaderValue)
                 ? capitalCaseOriginHeaderValue
@@ -51,7 +52,7 @@ namespace Voxel.MiddyNet.HttpCorsMiddleware
 
         public Task<APIGatewayProxyResponse> After(APIGatewayProxyResponse lambdaResponse, MiddyNetContext context)
         {
-            if (String.IsNullOrWhiteSpace(httpMethod)) return Task.FromResult(lambdaResponse);
+            if (IsNullOrWhiteSpace(httpMethod)) return Task.FromResult(lambdaResponse);
 
             InitialiseHeaders(lambdaResponse);
 
@@ -70,7 +71,7 @@ namespace Voxel.MiddyNet.HttpCorsMiddleware
 
         private void SetMaxAgeHeader(APIGatewayProxyResponse lambdaResponse)
         {
-            if (!String.IsNullOrWhiteSpace(corsOptions.MaxAge) && !lambdaResponse.Headers.ContainsKey(MaxAgeHeader))
+            if (!IsNullOrWhiteSpace(corsOptions.MaxAge) && !lambdaResponse.Headers.ContainsKey(MaxAgeHeader))
             {
                 lambdaResponse.Headers.Add(MaxAgeHeader, corsOptions.MaxAge);
             }
@@ -78,7 +79,7 @@ namespace Voxel.MiddyNet.HttpCorsMiddleware
 
         private void SetCacheControlHeader(APIGatewayProxyResponse lambdaResponse)
         {
-            if (httpMethod == "OPTIONS" && !String.IsNullOrWhiteSpace(corsOptions.CacheControl) &&
+            if (httpMethod == "OPTIONS" && !IsNullOrWhiteSpace(corsOptions.CacheControl) &&
                 !lambdaResponse.Headers.ContainsKey(CacheControlHeader))
             {
                 lambdaResponse.Headers.Add(CacheControlHeader, corsOptions.CacheControl);
@@ -95,7 +96,7 @@ namespace Voxel.MiddyNet.HttpCorsMiddleware
 
         private void SetAllowHeadersHeader(APIGatewayProxyResponse lambdaResponse)
         {
-            if (!lambdaResponse.Headers.ContainsKey(AllowHeadersHeader) && !String.IsNullOrWhiteSpace(corsOptions.Headers))
+            if (!lambdaResponse.Headers.ContainsKey(AllowHeadersHeader) && !IsNullOrWhiteSpace(corsOptions.Headers))
             {
                 lambdaResponse.Headers.Add(AllowHeadersHeader, corsOptions.Headers);
             }
@@ -113,7 +114,7 @@ namespace Voxel.MiddyNet.HttpCorsMiddleware
                 {
                     lambdaResponse.Headers.Add(AllowOriginHeader, corsOptions.Origins[0]);
                 }
-                else if (!String.IsNullOrWhiteSpace(corsOptions.Origin))
+                else if (!IsNullOrWhiteSpace(corsOptions.Origin))
                 {
                     lambdaResponse.Headers.Add(AllowOriginHeader, corsOptions.Origin);
                 }
