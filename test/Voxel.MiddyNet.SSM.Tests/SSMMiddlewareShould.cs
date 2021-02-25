@@ -5,9 +5,10 @@ using Amazon.SimpleSystemsManagement;
 using Amazon.SimpleSystemsManagement.Model;
 using FluentAssertions;
 using NSubstitute;
+using Voxel.MiddyNet.SSM;
 using Xunit;
 
-namespace Voxel.MiddyNet.SSM.Tests
+namespace Voxel.MiddyNet.SSMMiddleware.Tests
 {
     public class SSMMiddlewareShould
     {

@@ -7,9 +7,10 @@ using Amazon.Lambda.Core;
 using FluentAssertions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Voxel.MiddyNet.SSM;
 using Xunit;
 
-namespace Voxel.MiddyNet.SSM.Tests
+namespace Voxel.MiddyNet.SSMMiddleware.Tests
 {
 
     public class IntegrationTests : IClassFixture<LaunchSettingsFixture>

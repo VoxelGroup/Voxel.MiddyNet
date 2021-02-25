@@ -11,7 +11,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Middlewares", "Middlewares"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Voxel.MiddyNet.Tests", "test\Voxel.MiddyNet.Tests\Voxel.MiddyNet.Tests.csproj", "{ECBAEEC0-38E9-4423-B141-50BF5F3F1B53}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Voxel.MiddyNet.SSM.Tests", "test\Voxel.MiddyNet.SSM.Tests\Voxel.MiddyNet.SSM.Tests.csproj", "{D74B9EF4-4B97-4D2C-B1E6-38D06CDEC157}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Voxel.MiddyNet.SSMMiddleware.Tests", "test\Voxel.MiddyNet.SSM.Tests\Voxel.MiddyNet.SSMMiddleware.Tests.csproj", "{D74B9EF4-4B97-4D2C-B1E6-38D06CDEC157}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Voxel.MiddyNet.Tracing.Core", "src\Voxel.MiddyNet.Tracing.Core\Voxel.MiddyNet.Tracing.Core.csproj", "{DD2A5A54-06C7-4945-A17A-6A7D8B7A6E66}"
 EndProject
@@ -65,7 +65,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Voxel.MiddyNet.HttpApiV2Tra
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "HttpV2Cors", "HttpV2Cors", "{764F4959-1FF5-4C2B-AA5D-2419B06A7B46}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Voxel.MiddyNet.HttpV2CorsSample", "samples\HttpV2Cors\Voxel.MiddyNet.HttpV2CorsSample\Voxel.MiddyNet.HttpV2CorsSample.csproj", "{97101C9F-AC3E-4BD8-86A3-968B65A6720A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Voxel.MiddyNet.HttpV2CorsSample", "samples\HttpV2Cors\Voxel.MiddyNet.HttpV2CorsSample\Voxel.MiddyNet.HttpV2CorsSample.csproj", "{97101C9F-AC3E-4BD8-86A3-968B65A6720A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
