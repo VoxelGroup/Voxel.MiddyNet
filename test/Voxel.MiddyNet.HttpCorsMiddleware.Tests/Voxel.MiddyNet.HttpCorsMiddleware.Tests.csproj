@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Voxel.MiddyNet.HttpCorsMiddleware\Voxel.MiddyNet.HttpCors.csproj" />
+    <ProjectReference Include="..\..\src\Voxel.MiddyNet.HttpCorsMiddleware\Voxel.MiddyNet.HttpCorsMiddleware.csproj" />
     <ProjectReference Include="..\..\src\Voxel.MiddyNet\Voxel.MiddyNet.csproj" />
   </ItemGroup>
 
