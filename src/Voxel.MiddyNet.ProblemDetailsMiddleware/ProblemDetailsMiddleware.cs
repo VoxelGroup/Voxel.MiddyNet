@@ -1,7 +1,7 @@
 ﻿using Amazon.Lambda.APIGatewayEvents;
 using System.Threading.Tasks;
 
-namespace Voxel.MiddyNet.ProblemDetails
+namespace Voxel.MiddyNet.ProblemDetailsMiddleware
 {
     public class ProblemDetailsMiddleware : ILambdaMiddleware<APIGatewayProxyRequest, APIGatewayProxyResponse>
     {

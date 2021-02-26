@@ -7,7 +7,7 @@ using FluentAssertions;
 using NSubstitute;
 using Xunit;
 
-namespace Voxel.MiddyNet.SSM.Tests
+namespace Voxel.MiddyNet.SSMMiddleware.Tests
 {
     public class SSMMiddlewareShould
     {

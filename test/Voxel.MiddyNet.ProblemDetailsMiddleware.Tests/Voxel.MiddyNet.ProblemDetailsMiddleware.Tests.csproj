@@ -24,7 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Voxel.MiddyNet.ProblemDetailsMiddleware\Voxel.MiddyNet.ProblemDetails.csproj" />
+    <ProjectReference Include="..\..\src\Voxel.MiddyNet.ProblemDetailsMiddleware\Voxel.MiddyNet.ProblemDetailsMiddleware.csproj" />
   </ItemGroup>
 
   <ItemGroup>

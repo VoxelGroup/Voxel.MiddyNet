@@ -1,7 +1,7 @@
 ﻿using Amazon.Lambda.APIGatewayEvents;
 using Microsoft.AspNetCore.WebUtilities;
 
-namespace Voxel.MiddyNet.ProblemDetails
+namespace Voxel.MiddyNet.ProblemDetailsMiddleware
 {
     public class ContentResponseBuilder : ProxyResponseBuilder
     {

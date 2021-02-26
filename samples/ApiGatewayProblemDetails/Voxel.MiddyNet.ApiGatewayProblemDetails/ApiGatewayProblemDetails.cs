@@ -2,7 +2,7 @@
 using Amazon.Lambda.Core;
 using System;
 using System.Threading.Tasks;
-using Voxel.MiddyNet.ProblemDetails;
+using Voxel.MiddyNet.ProblemDetailsMiddleware;
 
 [assembly: LambdaSerializer(typeof(Amazon.Lambda.Serialization.SystemTextJson.DefaultLambdaJsonSerializer))]
 namespace Voxel.MiddyNet.ApiGatewayProblemDetailsSample
@@ -11,7 +11,7 @@ namespace Voxel.MiddyNet.ApiGatewayProblemDetailsSample
     {
         public ApiGatewayProblemDetails()
         {
-            Use(new ProblemDetailsMiddleware(new ProblemDetailsMiddlewareOptions().Map<NotImplementedException>(123)));
+            Use(new ProblemDetailsMiddleware.ProblemDetailsMiddleware(new ProblemDetailsMiddlewareOptions().Map<NotImplementedException>(123)));
         }
 
         protected override Task<APIGatewayProxyResponse> Handle(APIGatewayProxyRequest lambdaEvent, MiddyNetContext context)

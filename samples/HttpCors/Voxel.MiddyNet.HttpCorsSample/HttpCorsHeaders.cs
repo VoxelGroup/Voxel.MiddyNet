@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Amazon.Lambda.Core;
 using Amazon.Lambda.APIGatewayEvents;
-using Voxel.MiddyNet.HttpCors;
+using Voxel.MiddyNet.HttpCorsMiddleware;
 
 [assembly: LambdaSerializer(typeof(Amazon.Lambda.Serialization.SystemTextJson.DefaultLambdaJsonSerializer))]
 namespace Voxel.MiddyNet.HttpCorsSample
@@ -10,7 +10,7 @@ namespace Voxel.MiddyNet.HttpCorsSample
     {
         public HttpCorsHeaders()
         {
-            Use(new HttpCorsMiddleware(new CorsOptions
+            Use(new HttpCorsMiddleware.HttpCorsMiddleware(new CorsOptions
             {
                 Origin = "*",
                 Headers = "x-example",

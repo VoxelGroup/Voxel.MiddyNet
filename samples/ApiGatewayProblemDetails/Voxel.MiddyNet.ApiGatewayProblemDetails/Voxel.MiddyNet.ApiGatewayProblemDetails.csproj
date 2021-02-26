@@ -6,7 +6,7 @@
 
   <ItemGroup>
     <PackageReference Include="Amazon.Lambda.Serialization.SystemTextJson" Version="2.0.1" />
-    <ProjectReference Include="..\..\..\src\Voxel.MiddyNet.ProblemDetailsMiddleware\Voxel.MiddyNet.ProblemDetails.csproj" />
+    <ProjectReference Include="..\..\..\src\Voxel.MiddyNet.ProblemDetailsMiddleware\Voxel.MiddyNet.ProblemDetailsMiddleware.csproj" />
   </ItemGroup>
 
 </Project>

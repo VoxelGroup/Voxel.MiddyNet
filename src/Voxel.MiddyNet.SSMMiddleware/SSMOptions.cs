@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Voxel.MiddyNet.SSM
+namespace Voxel.MiddyNet.SSMMiddleware
 {
     public class SSMOptions
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Voxel.MiddyNet.ProblemDetails
+namespace Voxel.MiddyNet.ProblemDetailsMiddleware
 {
     public class ProblemDetailsMiddlewareOptions
     {

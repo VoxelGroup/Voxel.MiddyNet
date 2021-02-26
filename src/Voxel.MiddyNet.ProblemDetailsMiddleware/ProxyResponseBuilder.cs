@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text.Json;
 
-namespace Voxel.MiddyNet.ProblemDetails
+namespace Voxel.MiddyNet.ProblemDetailsMiddleware
 {
     public abstract class ProxyResponseBuilder
     {

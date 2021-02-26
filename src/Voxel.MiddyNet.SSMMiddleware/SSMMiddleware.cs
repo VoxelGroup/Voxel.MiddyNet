@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Amazon.SimpleSystemsManagement;
 using Amazon.SimpleSystemsManagement.Model;
 
-namespace Voxel.MiddyNet.SSM
+namespace Voxel.MiddyNet.SSMMiddleware
 {
     public class SSMMiddleware<TReq, TRes> : ILambdaMiddleware<TReq, TRes>
     {
