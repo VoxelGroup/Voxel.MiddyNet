@@ -13,8 +13,6 @@ namespace Voxel.MiddyNet.ProblemDetails
             [HeaderNames.Expires] = "0"
         };
 
-        protected static readonly JsonSerializerOptions jsonSerializerOptions = new JsonSerializerOptions { WriteIndented = true };
-
         protected IDictionary<string, IList<string>> Merge(IDictionary<string, IList<string>> multiValueHeaders)
         {
             var merged = multiValueHeaders == null
@@ -59,12 +57,15 @@ namespace Voxel.MiddyNet.ProblemDetails
 
         protected class DetailsObject
         {
+            private readonly JsonSerializerOptions jsonSerializerOptions = new JsonSerializerOptions { WriteIndented = true };
             public string Type { get; set; }
             public string Title { get; set; }
             public int Status { get; set; }
             public string Detail { get; set; }
             public string Instance { get; set; }
             public string AwsRequestId { get; set; }
+
+            public string ToJsonString() => JsonSerializer.Serialize(this, jsonSerializerOptions);
         }
     }
 }

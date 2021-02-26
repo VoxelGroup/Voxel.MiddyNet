@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.WebUtilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.Json;
 
 namespace Voxel.MiddyNet.ProblemDetails
 {
@@ -15,29 +14,29 @@ namespace Voxel.MiddyNet.ProblemDetails
 
         public APIGatewayProxyResponse CreateExceptionResponse(MiddyNetContext context, APIGatewayProxyResponse lambdaResponse)
         {
-            (int statusCode, string body) = BuildProblemDetailsExceptions(context);
+            var detailsObject = BuildProblemDetailsExceptions(context);
             return new APIGatewayProxyResponse
             {
-                StatusCode = statusCode,
+                StatusCode = detailsObject.Status,
                 Headers = Merge(lambdaResponse?.Headers),
                 MultiValueHeaders = Merge(lambdaResponse?.MultiValueHeaders),
-                Body = body
+                Body = detailsObject.ToJsonString()
             };
         }
 
         public APIGatewayHttpApiV2ProxyResponse CreateExceptionResponse(MiddyNetContext context, APIGatewayHttpApiV2ProxyResponse lambdaResponse)
         {
-            (int statusCode, string body) = BuildProblemDetailsExceptions(context);
+            var detailsObject = BuildProblemDetailsExceptions(context);
             return new APIGatewayHttpApiV2ProxyResponse
             {
-                StatusCode = statusCode,
+                StatusCode = detailsObject.Status,
                 Headers = Merge(lambdaResponse?.Headers),
                 Cookies = lambdaResponse?.Cookies,
-                Body = body
+                Body = detailsObject.ToJsonString()
             };
         }
 
-        private (int statusCode, string body) BuildProblemDetailsExceptions(MiddyNetContext context)
+        private DetailsObject BuildProblemDetailsExceptions(MiddyNetContext context)
         {
             var exceptions = context.GetAllExceptions();
             var instance = context.LambdaContext.InvokedFunctionArn;
@@ -47,11 +46,9 @@ namespace Voxel.MiddyNet.ProblemDetails
                 ? exceptions[0]
                 : new AggregateException(exceptions);
 
-            var detailsObject = options.TryMap(detailsException.GetType(), out int statusCode)
+            return options.TryMap(detailsException.GetType(), out int statusCode)
                 ? BuildProblemDetailsProblemContent(statusCode, instance, requestId, ReasonPhrases.GetReasonPhrase(statusCode), ComposeDetail(new[] { detailsException }))
                 : BuildDetailsObject((dynamic)detailsException, statusCode, instance, requestId);
-
-            return (statusCode, JsonSerializer.Serialize(detailsObject, jsonSerializerOptions));
         }
 
         private static DetailsObject BuildDetailsObject(AggregateException exception, int statusCode, string instance, string requestId) => new DetailsObject

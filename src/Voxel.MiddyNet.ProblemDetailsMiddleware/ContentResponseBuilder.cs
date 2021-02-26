@@ -1,5 +1,4 @@
-﻿using System.Text.Json;
-using Amazon.Lambda.APIGatewayEvents;
+﻿using Amazon.Lambda.APIGatewayEvents;
 using Microsoft.AspNetCore.WebUtilities;
 
 namespace Voxel.MiddyNet.ProblemDetails
@@ -14,7 +13,7 @@ namespace Voxel.MiddyNet.ProblemDetails
                 StatusCode = statusCode,
                 Headers = Merge(lambdaResponse?.Headers),
                 MultiValueHeaders = Merge(lambdaResponse?.MultiValueHeaders),
-                Body = JsonSerializer.Serialize(BuildProblemDetailsProblemContent(statusCode, context.LambdaContext.InvokedFunctionArn, context.LambdaContext.AwsRequestId, ReasonPhrases.GetReasonPhrase(statusCode), lambdaResponse?.Body), jsonSerializerOptions)
+                Body = BuildProblemDetailsProblemContent(statusCode, context.LambdaContext.InvokedFunctionArn, context.LambdaContext.AwsRequestId, ReasonPhrases.GetReasonPhrase(statusCode), lambdaResponse?.Body).ToJsonString()
             };
         }
         
@@ -26,7 +25,7 @@ namespace Voxel.MiddyNet.ProblemDetails
                 StatusCode = statusCode,
                 Headers = Merge(lambdaResponse?.Headers),
                 Cookies = lambdaResponse?.Cookies,
-                Body = JsonSerializer.Serialize(BuildProblemDetailsProblemContent(statusCode, context.LambdaContext.InvokedFunctionArn, context.LambdaContext.AwsRequestId, ReasonPhrases.GetReasonPhrase(statusCode), lambdaResponse?.Body), jsonSerializerOptions)
+                Body = BuildProblemDetailsProblemContent(statusCode, context.LambdaContext.InvokedFunctionArn, context.LambdaContext.AwsRequestId, ReasonPhrases.GetReasonPhrase(statusCode), lambdaResponse?.Body).ToJsonString()
             };
         }
 
