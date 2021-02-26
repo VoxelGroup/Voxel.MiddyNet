@@ -29,6 +29,7 @@ jobs:
         AWS_DEFAULT_REGION: eu-west-1
         AWS_REGION: eu-west-1
         IGNORE_LAUNCH_SETTINGS: true
+        ACTIONS_ALLOW_UNSECURE_COMMANDS: true
       run: dotnet test --no-restore --verbosity normal
     - name: dotnet pack [MiddyNet]
       run: dotnet pack src/Voxel.MiddyNet/Voxel.MiddyNet.csproj -c $BUILD_CONFIG --version-suffix $VERSION_SUFFIX --no-build --include-source --include-symbols -o ./artifacts
