@@ -21,13 +21,20 @@ jobs:
       run: dotnet restore
     - name: Build
       run: dotnet build -c $BUILD_CONFIG --no-restore
+    - name: Set environment variables for Test
+      #env: # Or as an environment variable
+       # AWS_ACCESS_KEY_ID: ${{ secrets.AWS_SECRET_KEY_ID }}
+        # AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        # AWS_DEFAULT_REGION: eu-west-1
+        # AWS_REGION: eu-west-1
+        # IGNORE_LAUNCH_SETTINGS: true
+      run: |
+        echo "AWS_ACCESS_KEY_ID=${{ secrets.AWS_SECRET_KEY_ID }}" >> $GITHUB_ENV
+        echo "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" >> $GITHUB_ENV
+        echo "AWS_DEFAULT_REGION=eu-west-1" >> $GITHUB_ENV
+        echo "AWS_REGION=eu-west-1" >> $GITHUB_ENV
+        echo "IGNORE_LAUNCH_SETTINGS=true" >> $GITHUB_ENV
     - name: Test
-      env: # Or as an environment variable
-        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_SECRET_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        AWS_DEFAULT_REGION: eu-west-1
-        AWS_REGION: eu-west-1
-        IGNORE_LAUNCH_SETTINGS: true
       run: dotnet test --no-restore --verbosity normal
     - name: dotnet pack [MiddyNet]
       run: dotnet pack src/Voxel.MiddyNet/Voxel.MiddyNet.csproj -c $BUILD_CONFIG --version-suffix $VERSION_SUFFIX --no-build --include-source --include-symbols -o ./artifacts
