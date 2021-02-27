@@ -32,7 +32,7 @@ jobs:
         ACTIONS_ALLOW_UNSECURE_COMMANDS: true
       run: dotnet test --no-restore --verbosity normal
     - name: dotnet pack [MiddyNet]
-      run: dotnet pack src/Voxel.MiddyNet/Voxel.MiddyNet.csproj -c $BUILD_CONFIG --version-suffix $VERSION_SUFFIX --no-build --include-source --include-symbols -o ./artifacts
+      run: dotnet pack src/Voxel.MiddyNet/Voxel.MiddyNet.csproj -c $BUILD_CONFIG --version-suffix $VERSION_SUFFIX --no-build --include-source --include-symbols -o ./artifacts/Voxel.MiddyNet
     - name: dotnet pack [MiddyNet SSM Middleware]
       run: dotnet pack src/Voxel.MiddyNet.SSMMiddleware/Voxel.MiddyNet.SSMMiddleware.csproj -c $BUILD_CONFIG --version-suffix $VERSION_SUFFIX --no-build --include-source --include-symbols -o ./artifacts
     - name: dotnet pack [MiddyNet Tracing ApiGatewayMiddleware]
@@ -53,7 +53,7 @@ jobs:
       uses: brandedoutcast/publish-nuget@v2.5.5
       with:
         # Filepath of the project to be packaged, relative to root of repository
-        PROJECT_FILE_PATH: ./artifacts/Voxel.MiddyNet.*.nupkg
+        PROJECT_FILE_PATH: ./artifacts/Voxel.MiddyNet/*.nupkg
         TAG_COMMIT: false
         # Format of the git tag, [*] gets replaced with actual version
         NUGET_KEY: ${{secrets.NUGET_API_KEY}}
