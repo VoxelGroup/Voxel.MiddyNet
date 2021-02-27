@@ -38,8 +38,8 @@ jobs:
       run: dotnet test --no-restore --verbosity normal
     - name: dotnet pack [MiddyNet]
       run: dotnet pack src/Voxel.MiddyNet/Voxel.MiddyNet.csproj -c $BUILD_CONFIG --version-suffix $VERSION_SUFFIX --no-build --include-source --include-symbols -o ./artifacts
-    - name: dotnet pack [MiddyNet SSM]
-      run: dotnet pack src/Voxel.MiddyNet.SSM/Voxel.MiddyNet.SSM.csproj -c $BUILD_CONFIG --version-suffix $VERSION_SUFFIX --no-build --include-source --include-symbols -o ./artifacts
+    - name: dotnet pack [MiddyNet SSM Middleware]
+      run: dotnet pack src/Voxel.MiddyNet.SSMMiddleware/Voxel.MiddyNet.SSMMiddleware.csproj -c $BUILD_CONFIG --version-suffix $VERSION_SUFFIX --no-build --include-source --include-symbols -o ./artifacts
     - name: dotnet pack [MiddyNet Tracing ApiGatewayMiddleware]
       run: dotnet pack src/Voxel.MiddyNet.Tracing.ApiGatewayMiddleware/Voxel.MiddyNet.Tracing.ApiGatewayMiddleware.csproj -c $BUILD_CONFIG --version-suffix $VERSION_SUFFIX --no-build --include-source --include-symbols -o ./artifacts
     - name: dotnet pack [MiddyNet Tracing Core]
@@ -56,8 +56,8 @@ jobs:
         nuget-version: latest
     - name: Publish Voxel.MiddyNet nuget
       run: dotnet nuget push ./artifacts/Voxel.MiddyNet.*.nupkg -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json --skip-duplicate
-    - name: Publish Voxel.MiddyNet.SSM nuget
-      run: dotnet nuget push ./artifacts/Voxel.MiddyNet.SSM.*.nupkg -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json --skip-duplicate
+    - name: Publish Voxel.MiddyNet.SSMMiddleware nuget
+      run: dotnet nuget push ./artifacts/Voxel.MiddyNet.SSMMiddleware.*.nupkg -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json --skip-duplicate
     - name: Publish Voxel.MiddyNet.Tracing.ApiGatewayMiddleware nuget
       run: dotnet nuget push ./artifacts/Voxel.MiddyNet.Tracing.ApiGatewayMiddleware.*.nupkg -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json --skip-duplicate
     - name: Publish Voxel.Tracing.Core nuget
