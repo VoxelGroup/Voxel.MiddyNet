@@ -3,6 +3,8 @@ on:
   workflow_run:
     workflows: 
       - "MiddyNet Continuous Integration"
+    branches:
+      - main
     types:
       - completed
     tags:       
