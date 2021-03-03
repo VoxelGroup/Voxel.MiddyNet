@@ -1,5 +1,7 @@
 ![MiddyNet Continuous Integration](https://github.com/VoxelGroup/Voxel.MiddyNet/workflows/MiddyNet%20Continuous%20Integration/badge.svg)
 
+[![MiddyNet Release Continous Deployment](https://github.com/VoxelGroup/Voxel.MiddyNet/actions/workflows/release.yml/badge.svg)](https://github.com/VoxelGroup/Voxel.MiddyNet/actions/workflows/release.yml)
+
 [![Documentation Status](https://readthedocs.org/projects/voxelmiddynet/badge/?version=latest)](https://voxelmiddynet.readthedocs.io/en/latest/?badge=latest)
 
 # Voxel.MiddyNet
