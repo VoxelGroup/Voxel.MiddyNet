@@ -30,7 +30,6 @@ namespace Voxel.MiddyNet
                 }
                 throw new AggregateException(MiddyContext.GetAllExceptions());
             }
-                
 
             return response;
         }
