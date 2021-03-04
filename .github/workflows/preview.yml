@@ -1,11 +1,19 @@
 name: MiddyNet Preview Continous Deployment
 on: 
-  push:
+  workflow_run:
+    workflows: 
+      - "MiddyNet Continuous Integration"
+    branches:
+      - main
+    types:
+      - completed
     tags:       
       - preview-*
 
 jobs:
   build:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+  
     env:
       BUILD_CONFIG: Release
       VERSION_SUFFIX: -rc1.${{ github.run_number }}
