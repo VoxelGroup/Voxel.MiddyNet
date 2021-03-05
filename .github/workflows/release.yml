@@ -56,20 +56,4 @@ jobs:
       run: dotnet pack src/Voxel.MiddyNet.Tracing.SQSMiddleware/Voxel.MiddyNet.Tracing.SQSMiddleware.csproj -c $BUILD_CONFIG --no-build --include-source --include-symbols -o ./artifacts/Voxel.MiddyNet.Tracing.SQSMiddleware
     - name: setup nuget
       uses: NuGet/setup-nuget@v1.0.5
-      with:
-        nuget-version: latest
-    - name: Publish Voxel.MiddyNet nuget
-      run: dotnet nuget push ./artifacts/Voxel.MiddyNet/*.nupkg -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json --skip-duplicate
-    - name: Publish Voxel.MiddyNet.SSMMiddleware nuget
-      run: dotnet nuget push ./artifacts/Voxel.MiddyNet.SSMMiddleware/*.nupkg -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json --skip-duplicate
-    - name: Publish Voxel.MiddyNet.Tracing.ApiGatewayMiddleware nuget
-      run: dotnet nuget push ./artifacts/Voxel.MiddyNet.Tracing.ApiGatewayMiddleware/*.nupkg -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json --skip-duplicate
-    - name: Publish Voxel.Tracing.Core nuget
-      run: dotnet nuget push ./artifacts/Voxel.MiddyNet.Tracing.Core/*.nupkg -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json --skip-duplicate
-    - name: Publish Voxel.MiddyNet.Tracing.SNS nuget
-      run: dotnet nuget push ./artifacts/Voxel.MiddyNet.Tracing.SNS/*.nupkg -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json --skip-duplicate
-    - name: Publish Voxel.MiddyNet.Tracing.SNSMiddleware nuget
-      run: dotnet nuget push ./artifacts/Voxel.MiddyNet.Tracing.SNSMiddleware/*.nupkg -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json --skip-duplicate
-    - name: Publish Voxel.MiddyNet.Tracing.SQSMiddleware nuget
-      run: dotnet nuget push ./artifacts/Voxel.MiddyNet.Tracing.SQSMiddleware/*.nupkg -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json --skip-duplicate
-    
+      
