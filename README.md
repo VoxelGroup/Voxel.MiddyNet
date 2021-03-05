@@ -1,7 +1,5 @@
 ![MiddyNet Continuous Integration](https://github.com/VoxelGroup/Voxel.MiddyNet/workflows/MiddyNet%20Continuous%20Integration/badge.svg)
 
-[![MiddyNet Release Continous Deployment](https://github.com/VoxelGroup/Voxel.MiddyNet/actions/workflows/release.yml/badge.svg)](https://github.com/VoxelGroup/Voxel.MiddyNet/actions/workflows/release.yml)
-
 [![Documentation Status](https://readthedocs.org/projects/voxelmiddynet/badge/?version=latest)](https://voxelmiddynet.readthedocs.io/en/latest/?badge=latest)
 
 # Voxel.MiddyNet
@@ -94,13 +92,15 @@ There's a simple logger implemented in the package. This logger is a wrapper of 
 ```
 protected override async Task<int> Handle(SNSEvent lambdaEvent, MiddyNetContext context)
 {
-    context.Logger.Log(LogLevel.Debug, $"There's been {context.MiddlewareExceptions.Count} exceptions", new LogProperty("key", "value"));
+    context.Logger.Log(LogLevel.Debug, $"There's been {context.GetAllExceptions().Count} exceptions", new LogProperty("key", "value"));
 
     return await Task.FromResult(0);
 }
 ```
-
+## Middlewares
 Right now, there's a middleware to extract `traceparent` and `tracestate` headers from an `SNSEvent` (from the `MessageAttributes` of the first record), from an `SQSEvent` (from the `MessageAttributes` of the first record), and from an `ApiGatewayProxyRequest` (from the headers). The headers should follow the format described [here](https://www.w3.org/TR/trace-context/). The current implementation doesn't mutate `tracestate` and changes the `parent-id` section of the `traceparent` in case a valid `traceparent` header is provided. If the `traceparent` header provided is not valid, it creates a new one.
+
+There are also middlewares to manage [CORS headers](https://www.w3.org/TR/2020/SPSD-cors-20200602/) and to format exceptions as [ProblemDetails](https://tools.ietf.org/html/rfc7807).
 
 ## Maintainers
 
