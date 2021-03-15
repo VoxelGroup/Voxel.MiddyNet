@@ -263,3 +263,54 @@ And like this for Http API::
             return Task.FromResult(result);
         }
     }
+
+Voxel.MiddyNet.ProblemDetailsMiddleware
+---------------------------------------
+The middleware contained in this package formats Api exceptions as ProblemDetails following [RFC7807](https://tools.ietf.org/html/rfc7807).
+
+There are two versions avalaible: 
+
+* One for REST Api (APIGatewayProxyRequest and APIGatewayProxyResponse).
+* And another for Http Api (APIGatewayHttpApiV2ProxyRequest and APIGatewayHttpApiV2ProxyResponse).
+
+Configuration
+^^^^^^^^^^^^^
+It can receive a ``ProblemDetailsMiddlewareOptions`` to specify mappings from a particular exception type to an Http status code. E.g: 
+
+    var options = new ProblemDetailsMiddlewareOptions();
+    options.Map<NotImplementedException>(501)));
+    
+When a ``NotImplementedException`` is thrown, ProblemDetailsMiddleware will return the exception message with a 501 Http status code.
+
+Sample code
+^^^^^^^^^^^
+A typical usage of the ProblemDetailsMiddleware for REST Api whould look something like:
+
+    public class ApiGatewayProblemDetails : MiddyNet<APIGatewayProxyRequest, APIGatewayProxyResponse>
+    {
+        public ApiGatewayProblemDetails()
+        {
+            Use(new ProblemDetailsMiddleware.ProblemDetailsMiddleware(new ProblemDetailsMiddlewareOptions().Map<NotImplementedException>(501)));
+        }
+
+        protected override Task<APIGatewayProxyResponse> Handle(APIGatewayProxyRequest lambdaEvent, MiddyNetContext context)
+        {
+            throw new NotImplementedException("this will be used in the problem details description");
+        }
+    }
+
+And for Http Api:
+
+    public class ApiGatewayProblemDetails : MiddyNet<APIGatewayHttpApiV2ProxyRequest, APIGatewayHttpApiV2ProxyResponse>
+    {
+        public ApiGatewayProblemDetails()
+        {
+            Use(new ProblemDetailsMiddleware.ProblemDetailsMiddleware(new ProblemDetailsMiddlewareOptions().Map<NotImplementedException>(501)));
+        }
+
+        protected override Task<APIGatewayHttpApiV2ProxyResponse> Handle(APIGatewayHttpApiV2ProxyRequest lambdaEvent, MiddyNetContext context)
+        {
+            throw new NotImplementedException("this will be used in the problem details description");
+        }
+    }
+
