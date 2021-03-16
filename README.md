@@ -70,13 +70,13 @@ As you can see, you need to derive from MiddyNet, and specify the type of event 
 After your code is executed, Middy .NET will call the after methods of the middlewares in reverse order. You can use this to, for example, alter the response in some way (adding headers, for example).
 
 ### Handling errors
-Errors can happen in the `Before` method of the middleware or in the `After` method of them. Although we capture those errors, we treat those them slightly different.
+Errors can happen in the `Before` method of the middleware or in the `After` method of them. Although we capture those errors, we treat them slightly differently.
 
 #### Errors on Before
 When an exception is thrown by a middleware in the `Before` method, the exception is captured and added to the `MiddlewareBeforeExceptions` list, so that the following middlewares and the function can react to it.
 
 #### Errors on Handler
-When an exception is thrown by the function in its `Handle` method and before the `After` middlewares are called, the exception is captured in the `HandlerException` property of the context, so that the following middlewares can react to it.
+When an exception is thrown by the function in its `Handle` method and before the `After` middlewares are called, the exception is captured in the `HandlerException` property of the context, so that the following middlewares' `After` method can react to it.
 
 #### Errors on After
 When an exception is thrown by a middleware in the `After` method, the exception is captured and added to the `MiddlewareAfterExceptions` list, so that the following middlewares can react to it.
