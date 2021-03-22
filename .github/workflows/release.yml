@@ -1,12 +1,8 @@
 name: MiddyNet Release Continous Deployment
 on: 
-  workflow_run:
-    workflows: 
-      - "MiddyNet Continuous Integration"
+  push:
     branches:
       - main
-    types:
-      - completed
     tags:       
       - release-*
 
