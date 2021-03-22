@@ -1,0 +1,63 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>$(NetCoreTargetVersion)</TargetFramework>
+
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="ApprovalTests" Version="5.4.6" />
+    <PackageReference Include="FluentAssertions" Version="5.10.3" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.9.1" />
+    <PackageReference Include="NSubstitute" Version="4.2.2" />
+    <PackageReference Include="xunit" Version="2.4.1" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="coverlet.collector" Version="3.0.3">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Voxel.MiddyNet.ProblemDetailsMiddleware\Voxel.MiddyNet.ProblemDetailsMiddleware.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="ProblemDetailsMiddlewareV2Should.AggregateMultipleExceptionsInDetails.approved.txt">
+      <ParentFile>$([System.String]::Copy('%(FileName)').Split('.')[0])</ParentFile>
+      <ParentExtension>$(ProjectExt.Replace('proj', ''))</ParentExtension>
+      <DependentUpon>ProblemDetailsMiddlewareV2Should.cs</DependentUpon>
+    </None>
+    <None Update="ProblemDetailsMiddlewareV2Should.FormatProblemsThatAreNotCausedByExceptions.approved.txt">
+      <ParentFile>$([System.String]::Copy('%(FileName)').Split('.')[0])</ParentFile>
+      <ParentExtension>$(ProjectExt.Replace('proj', ''))</ParentExtension>
+      <DependentUpon>ProblemDetailsMiddlewareV2Should.cs</DependentUpon>
+    </None>
+    <None Update="ProblemDetailsMiddlewareV2Should.MapExceptionToStatusCode.approved.txt">
+      <ParentFile>$([System.String]::Copy('%(FileName)').Split('.')[0])</ParentFile>
+      <ParentExtension>$(ProjectExt.Replace('proj', ''))</ParentExtension>
+      <DependentUpon>ProblemDetailsMiddlewareV2Should.cs</DependentUpon>
+    </None>
+    <None Update="ProblemDetailsMiddlewareV2Should.OverrideResponseWhenAnExceptionOccursDuringAfterMiddlewares.approved.txt">
+      <ParentFile>$([System.String]::Copy('%(FileName)').Split('.')[0])</ParentFile>
+      <ParentExtension>$(ProjectExt.Replace('proj', ''))</ParentExtension>
+      <DependentUpon>ProblemDetailsMiddlewareV2Should.cs</DependentUpon>
+    </None>
+    <None Update="ProblemDetailsMiddlewareV2Should.OverrideResponseWhenAnExceptionOccursDuringBeforeMiddlewares.approved.txt">
+      <ParentFile>$([System.String]::Copy('%(FileName)').Split('.')[0])</ParentFile>
+      <ParentExtension>$(ProjectExt.Replace('proj', ''))</ParentExtension>
+      <DependentUpon>ProblemDetailsMiddlewareV2Should.cs</DependentUpon>
+    </None>
+    <None Update="ProblemDetailsMiddlewareV2Should.OverrideResponseWhenAnExceptionOccursInHandler.approved.txt">
+      <ParentFile>$([System.String]::Copy('%(FileName)').Split('.')[0])</ParentFile>
+      <ParentExtension>$(ProjectExt.Replace('proj', ''))</ParentExtension>
+      <DependentUpon>ProblemDetailsMiddlewareV2Should.cs</DependentUpon>
+    </None>
+  </ItemGroup>
+
+</Project>

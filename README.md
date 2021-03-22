@@ -70,13 +70,13 @@ As you can see, you need to derive from MiddyNet, and specify the type of event 
 After your code is executed, Middy .NET will call the after methods of the middlewares in reverse order. You can use this to, for example, alter the response in some way (adding headers, for example).
 
 ### Handling errors
-Errors can happen in the `Before` method of the middleware or in the `After` method of them. Although we capture those errors, we treat those them slightly different.
+Errors can happen in the `Before` method of the middleware or in the `After` method of them. Although we capture those errors, we treat them slightly differently.
 
 #### Errors on Before
 When an exception is thrown by a middleware in the `Before` method, the exception is captured and added to the `MiddlewareBeforeExceptions` list, so that the following middlewares and the function can react to it.
 
 #### Errors on Handler
-When an exception is thrown by the function in its `Handle` method and before the `After` middlewares are called, the exception is captured in the `HandlerException` property of the context, so that the following middlewares can react to it.
+When an exception is thrown by the function in its `Handle` method and before the `After` middlewares are called, the exception is captured in the `HandlerException` property of the context, so that the following middlewares' `After` method can react to it.
 
 #### Errors on After
 When an exception is thrown by a middleware in the `After` method, the exception is captured and added to the `MiddlewareAfterExceptions` list, so that the following middlewares can react to it.
@@ -92,13 +92,15 @@ There's a simple logger implemented in the package. This logger is a wrapper of 
 ```
 protected override async Task<int> Handle(SNSEvent lambdaEvent, MiddyNetContext context)
 {
-    context.Logger.Log(LogLevel.Debug, $"There's been {context.MiddlewareExceptions.Count} exceptions", new LogProperty("key", "value"));
+    context.Logger.Log(LogLevel.Debug, $"There's been {context.GetAllExceptions().Count} exceptions", new LogProperty("key", "value"));
 
     return await Task.FromResult(0);
 }
 ```
-
+## Middlewares
 Right now, there's a middleware to extract `traceparent` and `tracestate` headers from an `SNSEvent` (from the `MessageAttributes` of the first record), from an `SQSEvent` (from the `MessageAttributes` of the first record), and from an `ApiGatewayProxyRequest` (from the headers). The headers should follow the format described [here](https://www.w3.org/TR/trace-context/). The current implementation doesn't mutate `tracestate` and changes the `parent-id` section of the `traceparent` in case a valid `traceparent` header is provided. If the `traceparent` header provided is not valid, it creates a new one.
+
+There are also middlewares to manage [CORS headers](https://www.w3.org/TR/2020/SPSD-cors-20200602/) and to format exceptions as [ProblemDetails](https://tools.ietf.org/html/rfc7807).
 
 ## Maintainers
 

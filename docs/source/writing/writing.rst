@@ -34,4 +34,4 @@ The value of the property can be whatever you want, from a single type to a comp
 
 Exceptions
 ----------
-You don't need to catch exceptions in the middleware. The library will catch them for you and add them to the ``MiddlewareExceptions`` property.
+You don't need to catch exceptions in the middleware. The library will catch them for you and add them to the context's corresponding exceptions collection (``MiddlewareBeforeExceptions``, ``HandlerException`` or ``MiddlewareAfterExceptions`` depending on where was the exception thrown).

@@ -1,0 +1,8 @@
+{
+  "Type": "https://httpstatuses.com/500",
+  "Title": "AggregateException",
+  "Status": 500,
+  "Detail": "InvalidOperationException: middleware Before exception, InvalidOperationException: Handler exception, InvalidOperationException: middleware After exception",
+  "Instance": "some-function-arn",
+  "AwsRequestId": "some-request-id"
+}
