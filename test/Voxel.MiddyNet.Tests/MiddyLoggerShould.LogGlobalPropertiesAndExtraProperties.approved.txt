@@ -2,5 +2,9 @@
   "Message": "hello world",
   "Level": "Info",
   "key": "value",
+  "AwsRequestId": "12345",
+  "FunctionName": "FunctionName",
+  "FunctionVersion": "1.0",
+  "MemoryLimitInMB": 1024,
   "key2": "value2"
 }
