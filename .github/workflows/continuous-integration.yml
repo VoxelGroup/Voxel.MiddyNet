@@ -2,6 +2,8 @@ name: MiddyNet Continuous Integration
 
 on: 
   push:
+    branches:
+      - '**'
     tags-ignore:       
       - preview-* # Don't run the CI build when publishing the preview nugets
       - release-* # Don't run the CI build when publishing the release nugets
