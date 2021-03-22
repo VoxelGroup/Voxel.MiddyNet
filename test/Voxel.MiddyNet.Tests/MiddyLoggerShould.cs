@@ -59,12 +59,43 @@ namespace Voxel.MiddyNet.Tests
 
             Approvals.Verify(receivedLog);
         }
+
+        [Fact]
+        public void LogEnrichWithDynamicProperties()
+        {
+            var logger = new MiddyLogger(lambdaLogger);
+            logger.EnrichWith(new object(), o => o.ToString());
+            logger.Log(LogLevel.Info, "hello world");
+
+            Approvals.Verify(receivedLog);
+        }
+
         [Fact]
         public void LogGlobalPropertiesAndExtraProperties()
         {
             var logger = new MiddyLogger(lambdaLogger);
             logger.EnrichWith(new LogProperty("key", "value"));
             logger.Log(LogLevel.Info, "hello world", new LogProperty("key2", "value2"));
+
+            Approvals.Verify(receivedLog);
+        }
+
+        [Fact]
+        public void LogDynamicPropertiesFromProperty()
+        {
+            var someObject = new { SomeProperty = "some value" };
+            var logger = new MiddyLogger(lambdaLogger);
+            logger.Log(LogLevel.Info, "hello world", someObject, so => so.SomeProperty);
+
+            Approvals.Verify(receivedLog);
+        }
+
+        [Fact]
+        public void LogDynamicPropertiesFromMethod()
+        {
+            var someObject = new object();
+            var logger = new MiddyLogger(lambdaLogger);
+            logger.Log(LogLevel.Info, "hello world", someObject, so => so.ToString());
 
             Approvals.Verify(receivedLog);
         }
