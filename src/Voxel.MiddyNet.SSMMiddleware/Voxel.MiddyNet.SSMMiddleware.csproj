@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AWSSDK.SimpleSystemsManagement" Version="3.3.127.1" />
+    <PackageReference Include="AWSSDK.SimpleSystemsManagement" Version="3.5.11.2" />
   </ItemGroup>
 
   <ItemGroup>
