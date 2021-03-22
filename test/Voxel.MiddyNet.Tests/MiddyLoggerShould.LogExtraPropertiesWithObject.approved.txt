@@ -1,6 +1,10 @@
 {
   "Message": "hello world",
   "Level": "Info",
+  "AwsRequestId": "12345",
+  "FunctionName": "FunctionName",
+  "FunctionVersion": "1.0",
+  "MemoryLimitInMB": 1024,
   "key": {
     "Property1": "The value of property1",
     "Property2": "The value of property2"

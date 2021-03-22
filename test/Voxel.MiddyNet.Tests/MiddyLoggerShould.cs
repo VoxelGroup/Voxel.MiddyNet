@@ -10,17 +10,28 @@ namespace Voxel.MiddyNet.Tests
     public class MiddyLoggerShould
     {
         private readonly ILambdaLogger lambdaLogger = Substitute.For<ILambdaLogger>();
+        private readonly ILambdaContext lambdaContext = Substitute.For<ILambdaContext>();
+        private const string AwsRequestId = "12345";
+        private const string FunctionName = "FunctionName";
+        private const string FunctionVersion = "1.0";
+        private const int MemoryLimitInMb = 1024;
+
         private string receivedLog = string.Empty;
+        
 
         public MiddyLoggerShould()
         {
             lambdaLogger.Log(Arg.Do<string>(a => receivedLog = a));
+            lambdaContext.AwsRequestId.Returns(AwsRequestId);
+            lambdaContext.FunctionName.Returns(FunctionName);
+            lambdaContext.FunctionVersion.Returns(FunctionVersion);
+            lambdaContext.MemoryLimitInMB.Returns(MemoryLimitInMb);
         }
 
         [Fact]
         public void LogLevelAndMessage()
         {
-            var logger = new MiddyLogger(lambdaLogger);
+            var logger = new MiddyLogger(lambdaLogger, lambdaContext);
             logger.Log(LogLevel.Debug, "hello world");
             
             Approvals.Verify(receivedLog);
@@ -29,7 +40,7 @@ namespace Voxel.MiddyNet.Tests
         [Fact]
         public void LogExtraProperties()
         {
-            var logger = new MiddyLogger(lambdaLogger);
+            var logger = new MiddyLogger(lambdaLogger, lambdaContext);
             logger.Log(LogLevel.Info, "hello world", new LogProperty("key", "value"));
             
             Approvals.Verify(receivedLog);
@@ -44,7 +55,7 @@ namespace Voxel.MiddyNet.Tests
                 Property2 = "The value of property2"
             };
 
-            var logger = new MiddyLogger(lambdaLogger);
+            var logger = new MiddyLogger(lambdaLogger, lambdaContext);
             logger.Log(LogLevel.Info, "hello world", new LogProperty("key", classToLog));
             
             Approvals.Verify(receivedLog);
@@ -53,7 +64,7 @@ namespace Voxel.MiddyNet.Tests
         [Fact]
         public void LogEnrichWithExtraProperties()
         {
-            var logger = new MiddyLogger(lambdaLogger);
+            var logger = new MiddyLogger(lambdaLogger, lambdaContext);
             logger.EnrichWith(new LogProperty("key", "value"));
             logger.Log(LogLevel.Info, "hello world");
 
@@ -62,7 +73,7 @@ namespace Voxel.MiddyNet.Tests
         [Fact]
         public void LogGlobalPropertiesAndExtraProperties()
         {
-            var logger = new MiddyLogger(lambdaLogger);
+            var logger = new MiddyLogger(lambdaLogger, lambdaContext);
             logger.EnrichWith(new LogProperty("key", "value"));
             logger.Log(LogLevel.Info, "hello world", new LogProperty("key2", "value2"));
 
