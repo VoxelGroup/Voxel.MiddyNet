@@ -74,7 +74,7 @@ namespace Voxel.MiddyNet.Tests
         [Fact]
         public void LogEnrichWithDynamicProperties()
         {
-            var logger = new MiddyLogger(lambdaLogger);
+            var logger = new MiddyLogger(lambdaLogger, lambdaContext);
             logger.EnrichWith(new object(), o => o.ToString());
             logger.Log(LogLevel.Info, "hello world");
 
@@ -95,7 +95,7 @@ namespace Voxel.MiddyNet.Tests
         public void LogDynamicPropertiesFromProperty()
         {
             var someObject = new { SomeProperty = "some value" };
-            var logger = new MiddyLogger(lambdaLogger);
+            var logger = new MiddyLogger(lambdaLogger, lambdaContext);
             logger.Log(LogLevel.Info, "hello world", someObject, so => so.SomeProperty);
 
             Approvals.Verify(receivedLog);
@@ -105,7 +105,7 @@ namespace Voxel.MiddyNet.Tests
         public void LogDynamicPropertiesFromMethod()
         {
             var someObject = new object();
-            var logger = new MiddyLogger(lambdaLogger);
+            var logger = new MiddyLogger(lambdaLogger, lambdaContext);
             logger.Log(LogLevel.Info, "hello world", someObject, so => so.ToString());
 
             Approvals.Verify(receivedLog);

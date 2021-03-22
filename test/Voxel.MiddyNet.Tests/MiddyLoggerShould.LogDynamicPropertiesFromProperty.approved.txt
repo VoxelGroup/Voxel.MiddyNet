@@ -1,5 +1,9 @@
 {
   "Message": "hello world",
   "Level": "Info",
+  "AwsRequestId": "12345",
+  "FunctionName": "FunctionName",
+  "FunctionVersion": "1.0",
+  "MemoryLimitInMB": 1024,
   "SomeProperty": "some value"
 }
