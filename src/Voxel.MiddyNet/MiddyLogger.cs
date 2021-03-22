@@ -11,16 +11,20 @@ namespace Voxel.MiddyNet
     public class MiddyLogger : IMiddyLogger
     {
         private readonly ILambdaLogger lambdaLogger;
+        private readonly ILambdaContext lambdaContext;
 
         private List<LogProperty> globalProperties = new List<LogProperty>();
 
-        public MiddyLogger(ILambdaLogger lambdaLogger)
+        public MiddyLogger(ILambdaLogger lambdaLogger, ILambdaContext lambdaContext)
         {
             this.lambdaLogger = lambdaLogger;
+            this.lambdaContext = lambdaContext;
         }
 
         public void Log(LogLevel logLevel, string message)
         {
+            AddLambdaContextProperties();
+
             var logMessage = new LogMessage
             {
                 Level = logLevel,
@@ -33,6 +37,8 @@ namespace Voxel.MiddyNet
 
         public void Log(LogLevel logLevel, string message, params LogProperty[] properties)
         {
+            AddLambdaContextProperties();
+
             var logMessage = new LogMessage
             {
                 Level = logLevel,
@@ -43,8 +49,15 @@ namespace Voxel.MiddyNet
             InternalLog(logMessage);
         }
 
+        public void EnrichWith(LogProperty logProperty)
+        {
+            globalProperties.Add(logProperty);
+        }
+
         public void Log<TInstance, TResponse>(LogLevel logLevel, string message, TInstance instance, Expression<Func<TInstance, TResponse>> selector)
         {
+            AddLambdaContextProperties();
+
             var logMessage = new LogMessage
             {
                 Level = logLevel,
@@ -77,9 +90,12 @@ namespace Voxel.MiddyNet
             lambdaLogger.Log(jsonString);
         }
 
-        public void EnrichWith(LogProperty logProperty)
+        private void AddLambdaContextProperties()
         {
-            globalProperties.Add(logProperty);
+            globalProperties.Add(new LogProperty("AwsRequestId", lambdaContext.AwsRequestId));
+            globalProperties.Add(new LogProperty("FunctionName", lambdaContext.FunctionName));
+            globalProperties.Add(new LogProperty("FunctionVersion", lambdaContext.FunctionVersion));
+            globalProperties.Add(new LogProperty("MemoryLimitInMB", lambdaContext.MemoryLimitInMB));
         }
 
         public void EnrichWith<TInstance, TResponse>(TInstance instance, Expression<Func<TInstance, TResponse>> selector)
