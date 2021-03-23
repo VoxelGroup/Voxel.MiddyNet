@@ -58,11 +58,13 @@ namespace Voxel.MiddyNet
         {
             AddLambdaContextProperties();
 
+            var customProperties = GetPropertySelectorLogProperty(instance, selector).ToArray();
+
             var logMessage = new LogMessage
             {
                 Level = logLevel,
                 Message = message,
-                Properties = globalProperties.Concat(GetPropertySelectorLogProperty(instance, selector)).ToDictionary(p => p.Key, p => p.Value)
+                Properties = globalProperties.Concat(customProperties).ToDictionary(p => p.Key, p => p.Value)
             };
 
             InternalLog(logMessage);
@@ -70,9 +72,8 @@ namespace Voxel.MiddyNet
 
         private IEnumerable<LogProperty> GetPropertySelectorLogProperty<TInstance, TResponse>(TInstance instance, Expression<Func<TInstance, TResponse>> selector)
         {
-
-            var getter = new KeyValueConverter<TInstance, TResponse>(instance, selector);
-            yield return new LogProperty(getter.Key, getter.Value);
+            var getter = new LogPropertyKeyCalculator<TInstance, TResponse>(selector);
+            yield return new LogDelayedProperty<TInstance, TResponse>(getter.Key, instance, selector);
         }
 
         private void InternalLog(LogMessage logMessage)
@@ -104,20 +105,16 @@ namespace Voxel.MiddyNet
         }
     }
 
-    internal class KeyValueConverter<TInstance, TResponse>
+    internal class LogPropertyKeyCalculator<TInstance, TResponse>
     {
-        private readonly TInstance instance;
         private readonly Expression<Func<TInstance, TResponse>> selector;
-
-        public KeyValueConverter(TInstance instance, Expression<Func<TInstance, TResponse>> selector)
+        
+        public LogPropertyKeyCalculator(Expression<Func<TInstance, TResponse>> selector)
         {
-            this.instance = instance;
             this.selector = selector;
         }
 
         public string Key => GetMemberName(selector.Body);
-
-        public TResponse Value => selector.Compile().Invoke(instance);
 
         private static string GetMemberName(Expression expression)
         {
@@ -134,7 +131,7 @@ namespace Voxel.MiddyNet
                 return GetMemberName(unaryExpression);
             }
 
-            return string.Empty;
+            return null;
         }
 
         private static string GetMemberName(UnaryExpression unaryExpression)
@@ -159,12 +156,33 @@ namespace Voxel.MiddyNet
     public class LogProperty
     {
         public string Key { get; }
-        public object Value { get; }
+        public virtual object Value { get; }
 
         public LogProperty(string key, object value)
         {
             Key = key;
             Value = value;
+        }
+    }
+
+    public class LogDelayedProperty<TInstance, TResponse> : LogProperty
+    {
+
+        private readonly Expression<Func<TInstance, TResponse>> valueExpression;
+        private readonly TInstance instance;
+
+        public override object Value 
+        {
+            get
+            {
+                return valueExpression.Compile().Invoke(instance);
+            }
+        }
+
+        public LogDelayedProperty(string key, TInstance instance, Expression<Func<TInstance, TResponse>> valueExpression): base(key, null)
+        {
+            this.valueExpression = valueExpression;
+            this.instance = instance;
         }
     }
 

@@ -75,7 +75,8 @@ namespace Voxel.MiddyNet.Tests
         public void LogEnrichWithDynamicProperties()
         {
             var logger = new MiddyLogger(lambdaLogger, lambdaContext);
-            logger.EnrichWith(new object(), o => o.ToString());
+            var someObject = new object();
+            logger.EnrichWith(someObject, o => o.ToString());
             logger.Log(LogLevel.Info, "hello world");
 
             Approvals.Verify(receivedLog);
@@ -96,7 +97,7 @@ namespace Voxel.MiddyNet.Tests
         {
             var someObject = new { SomeProperty = "some value" };
             var logger = new MiddyLogger(lambdaLogger, lambdaContext);
-            logger.Log(LogLevel.Info, "hello world", someObject, so => so.SomeProperty);
+            logger.Log(LogLevel.Info, "hello world", someObject, o => o.SomeProperty);
 
             Approvals.Verify(receivedLog);
         }
@@ -106,8 +107,19 @@ namespace Voxel.MiddyNet.Tests
         {
             var someObject = new object();
             var logger = new MiddyLogger(lambdaLogger, lambdaContext);
-            logger.Log(LogLevel.Info, "hello world", someObject, so => so.ToString());
+            logger.Log(LogLevel.Info, "hello world", someObject, o => o.ToString());
 
+            Approvals.Verify(receivedLog);
+        }
+
+        [Fact]
+        public void LogDynamicPropertiesEvaluatedWhenWriting()
+        {
+            var someObject = new ClassToLog { Property1 = "one", Property2 = "two" };
+            var logger = new MiddyLogger(lambdaLogger, lambdaContext);
+            logger.EnrichWith(someObject, o => o.Property1);
+            someObject.Property1 = "three";
+            logger.Log(LogLevel.Info, "hello world");
             Approvals.Verify(receivedLog);
         }
 
