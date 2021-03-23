@@ -54,26 +54,15 @@ namespace Voxel.MiddyNet
             globalProperties.Add(logProperty);
         }
 
-        public void Log<TInstance, TResponse>(LogLevel logLevel, string message, TInstance instance, Expression<Func<TInstance, TResponse>> selector)
+        public void EnrichWith<TInstance, TResponse>(TInstance instance, Expression<Func<TInstance, TResponse>> selector)
         {
-            AddLambdaContextProperties();
-
-            var customProperties = GetPropertySelectorLogProperty(instance, selector).ToArray();
-
-            var logMessage = new LogMessage
-            {
-                Level = logLevel,
-                Message = message,
-                Properties = globalProperties.Concat(customProperties).ToDictionary(p => p.Key, p => p.Value)
-            };
-
-            InternalLog(logMessage);
+            globalProperties.Add(GetPropertySelectorLogProperty(instance, selector));
         }
 
-        private IEnumerable<LogProperty> GetPropertySelectorLogProperty<TInstance, TResponse>(TInstance instance, Expression<Func<TInstance, TResponse>> selector)
+        private LogProperty GetPropertySelectorLogProperty<TInstance, TResponse>(TInstance instance, Expression<Func<TInstance, TResponse>> selector)
         {
             var getter = new LogPropertyKeyCalculator<TInstance, TResponse>(selector);
-            yield return new LogDelayedProperty<TInstance, TResponse>(getter.Key, instance, selector);
+            return new LogDelayedProperty<TInstance, TResponse>(getter.Key, instance, selector);
         }
 
         private void InternalLog(LogMessage logMessage)
@@ -97,11 +86,6 @@ namespace Voxel.MiddyNet
             globalProperties.Add(new LogProperty("FunctionName", lambdaContext.FunctionName));
             globalProperties.Add(new LogProperty("FunctionVersion", lambdaContext.FunctionVersion));
             globalProperties.Add(new LogProperty("MemoryLimitInMB", lambdaContext.MemoryLimitInMB));
-        }
-
-        public void EnrichWith<TInstance, TResponse>(TInstance instance, Expression<Func<TInstance, TResponse>> selector)
-        {
-            globalProperties.Add(GetPropertySelectorLogProperty(instance, selector).FirstOrDefault());
         }
     }
 
