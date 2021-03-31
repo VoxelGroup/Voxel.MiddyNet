@@ -51,7 +51,7 @@ jobs:
     - name: dotnet pack [MiddyNet Tracing SQS Middleware]
       run: dotnet pack src/Voxel.MiddyNet.Tracing.SQSMiddleware/Voxel.MiddyNet.Tracing.SQSMiddleware.csproj -c $BUILD_CONFIG --no-build --include-source --include-symbols -o ./artifacts/Voxel.MiddyNet.Tracing.SQSMiddleware
     - name: dotnet pack [MiddyNet ProblemDetails]
-      run: dotnet pack src/Voxel.MiddyNet.ProblemDetailsMiddleware/Voxel.MiddyNet.ProblemDetailsMiddleware.csproj -c $BUILD_CONFIG --version-suffix $VERSION_SUFFIX --no-build --include-source --include-symbols -o ./artifacts/Voxel.MiddyNet.ProblemDetailsMiddleware
+      run: dotnet pack src/Voxel.MiddyNet.ProblemDetailsMiddleware/Voxel.MiddyNet.ProblemDetailsMiddleware.csproj -c $BUILD_CONFIG --no-build --include-source --include-symbols -o ./artifacts/Voxel.MiddyNet.ProblemDetailsMiddleware
     - name: setup nuget
       uses: NuGet/setup-nuget@v1.0.5
       with:
