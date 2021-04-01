@@ -69,10 +69,18 @@ namespace Voxel.MiddyNet
 
         private void AddLambdaContextProperties()
         {
-            globalProperties.Add(new LogProperty("AwsRequestId", lambdaContext.AwsRequestId));
-            globalProperties.Add(new LogProperty("FunctionName", lambdaContext.FunctionName));
-            globalProperties.Add(new LogProperty("FunctionVersion", lambdaContext.FunctionVersion));
-            globalProperties.Add(new LogProperty("MemoryLimitInMB", lambdaContext.MemoryLimitInMB));
+            AddOrReplaceProperty("AwsRequestId", lambdaContext.AwsRequestId);
+            AddOrReplaceProperty("FunctionName", lambdaContext.FunctionName);
+            AddOrReplaceProperty("FunctionVersion", lambdaContext.FunctionVersion);
+            AddOrReplaceProperty("MemoryLimitInMB", lambdaContext.MemoryLimitInMB);
+        }
+
+        private void AddOrReplaceProperty(string name, object value)
+        {
+            var index = globalProperties.FindIndex(p => p.Key == name);
+            if (index != -1) globalProperties.RemoveAt(index);
+
+            globalProperties.Add(new LogProperty(name, value));
         }
     }
 
