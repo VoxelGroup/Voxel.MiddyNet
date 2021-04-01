@@ -21,7 +21,7 @@ namespace Voxel.MiddyNet.Tests
 
         public MiddyLoggerShould()
         {
-            lambdaLogger.Log(Arg.Do<string>(a => receivedLog = a));
+            lambdaLogger.Log(Arg.Do<string>(a => receivedLog += a));
             lambdaContext.AwsRequestId.Returns(AwsRequestId);
             lambdaContext.FunctionName.Returns(FunctionName);
             lambdaContext.FunctionVersion.Returns(FunctionVersion);
@@ -80,10 +80,25 @@ namespace Voxel.MiddyNet.Tests
             Approvals.Verify(receivedLog);
         }
 
+        [Fact]
+        public void LogTwiceWithNoErrors()
+        {
+            var logger = new MiddyLogger(lambdaLogger, lambdaContext);
+            logger.Log(LogLevel.Debug, "hello world");
+            logger.Log(LogLevel.Debug, "hello world");
+
+            Approvals.Verify(receivedLog);
+        }
+
         internal class ClassToLog
         {
             public string Property1 { get; set; }
             public string Property2 { get; set; }
+        }
+
+        ~MiddyLoggerShould()
+        {
+            receivedLog = string.Empty;
         }
     }
 }

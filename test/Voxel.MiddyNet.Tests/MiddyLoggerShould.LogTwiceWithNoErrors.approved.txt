@@ -1,0 +1,15 @@
+{
+  "Message": "hello world",
+  "Level": "Debug",
+  "AwsRequestId": "12345",
+  "FunctionName": "FunctionName",
+  "FunctionVersion": "1.0",
+  "MemoryLimitInMB": 1024
+}{
+  "Message": "hello world",
+  "Level": "Debug",
+  "AwsRequestId": "12345",
+  "FunctionName": "FunctionName",
+  "FunctionVersion": "1.0",
+  "MemoryLimitInMB": 1024
+}
