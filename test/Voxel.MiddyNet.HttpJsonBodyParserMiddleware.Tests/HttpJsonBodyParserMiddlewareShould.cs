@@ -40,7 +40,7 @@ namespace Voxel.MiddyNet.HttpJsonBodyParserMiddleware.Tests
         }
 
         [Fact]
-        public async Task ErrorWhenJsonNotMapsToObject()
+        public void ErrorWhenJsonNotMapsToObject()
         {
             var source = "Make it broken" + serializedExpectation;
             var request = new APIGatewayProxyRequest()
@@ -88,7 +88,7 @@ namespace Voxel.MiddyNet.HttpJsonBodyParserMiddleware.Tests
         }
 
         [Fact]
-        public async Task HandleInvalidBase64Body()
+        public void HandleInvalidBase64Body()
         {
             var source = "Make it broken" + serializedExpectation;
             string base64Serialized = Convert.ToBase64String(Encoding.UTF8.GetBytes(source));
