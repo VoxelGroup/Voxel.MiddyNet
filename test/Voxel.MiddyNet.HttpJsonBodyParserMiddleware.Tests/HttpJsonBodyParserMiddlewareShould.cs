@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Text;
 using System.Threading.Tasks;
 using Amazon.Lambda.APIGatewayEvents;
 using Amazon.Lambda.Core;
@@ -41,7 +42,7 @@ namespace Voxel.MiddyNet.HttpJsonBodyParserMiddleware.Tests
         [Fact]
         public async Task ErrorWhenJsonNotMapsToObject()
         {
-            var source = "Not Mapped object" + serializedExpectation;
+            var source = "Make it broken" + serializedExpectation;
             var request = new APIGatewayProxyRequest()
             {
                 Headers = new Dictionary<string, string> { { "Content-Type", "application/json" } },
@@ -50,7 +51,7 @@ namespace Voxel.MiddyNet.HttpJsonBodyParserMiddleware.Tests
             var middleware = new HttpJsonBodyParserMiddleware<TestObject>();
             Action action = () => middleware.Before(request, context);
 
-            action.Should().Throw<Exception>().WithMessage($"Error parsing \"{source}\" to type {typeof(TestObject)}");
+            action.Should().Throw<Exception>().WithMessage("Content type defined as JSON but an invalid JSON was provided");
         }
 
         [Fact]
@@ -65,6 +66,44 @@ namespace Voxel.MiddyNet.HttpJsonBodyParserMiddleware.Tests
 
             context.AdditionalContext.ContainsKey("Body").Should().BeTrue();
             context.AdditionalContext["Body"].Should().Be(serializedExpectation);
+        }
+
+        [Fact]
+        public async Task HandleABase64Body()
+        {
+            string base64Serialized = Convert.ToBase64String(Encoding.UTF8.GetBytes(serializedExpectation));
+            
+            var request = new APIGatewayProxyRequest()
+            {
+                Headers = new Dictionary<string, string> { { "Content-Type", "application/json" } },
+                IsBase64Encoded = true,
+                Body = base64Serialized
+            };
+
+            var middleware = new HttpJsonBodyParserMiddleware<TestObject>();
+            await middleware.Before(request, context);
+
+            context.AdditionalContext.ContainsKey("Body").Should().BeTrue();
+            context.AdditionalContext["Body"].Should().BeEquivalentTo(expectation);
+        }
+
+        [Fact]
+        public async Task HandleInvalidBase64Body()
+        {
+            var source = "Make it broken" + serializedExpectation;
+            string base64Serialized = Convert.ToBase64String(Encoding.UTF8.GetBytes(source));
+
+            var request = new APIGatewayProxyRequest()
+            {
+                Headers = new Dictionary<string, string> { { "Content-Type", "application/json" } },
+                IsBase64Encoded = true,
+                Body = base64Serialized
+            };
+
+            var middleware = new HttpJsonBodyParserMiddleware<TestObject>();
+            Action action = () => middleware.Before(request, context);
+
+            action.Should().Throw<Exception>().WithMessage("Content type defined as JSON but an invalid JSON was provided");
         }
     }
 }

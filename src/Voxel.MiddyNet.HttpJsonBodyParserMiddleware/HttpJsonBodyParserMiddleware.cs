@@ -1,4 +1,5 @@
 using System;
+using System.Text;
 using Amazon.Lambda.APIGatewayEvents;
 using Newtonsoft.Json;
 using System.Threading.Tasks;
@@ -9,12 +10,17 @@ namespace Voxel.MiddyNet.HttpJsonBodyParserMiddleware
     {
         public Task Before(APIGatewayProxyRequest lambdaEvent, MiddyNetContext context)
         {
-            if (!HasJSONContentHeaders(lambdaEvent))
+            if (!HasJsonContentHeaders(lambdaEvent))
             {
                 context.AdditionalContext.Add("Body", lambdaEvent.Body);
                 return Task.CompletedTask;
             }
 
+            if (lambdaEvent.IsBase64Encoded)
+            {
+                lambdaEvent.Body = Encoding.UTF8.GetString(Convert.FromBase64String(lambdaEvent.Body));
+            }
+           
             T source;
             try
             {
@@ -22,14 +28,14 @@ namespace Voxel.MiddyNet.HttpJsonBodyParserMiddleware
             }
             catch (JsonReaderException)
             {
-                throw new Exception($"Error parsing \"{lambdaEvent.Body}\" to type {typeof(T)}");
+                throw new Exception("Content type defined as JSON but an invalid JSON was provided");
             }
             
             context.AdditionalContext.Add("Body", source);
             return Task.CompletedTask;
         }
 
-        private static bool HasJSONContentHeaders(APIGatewayProxyRequest lambdaEvent)
+        private static bool HasJsonContentHeaders(APIGatewayProxyRequest lambdaEvent)
         {
             return lambdaEvent.Headers != null &&
                    (lambdaEvent.Headers.ContainsKey("Content-Type") &&
