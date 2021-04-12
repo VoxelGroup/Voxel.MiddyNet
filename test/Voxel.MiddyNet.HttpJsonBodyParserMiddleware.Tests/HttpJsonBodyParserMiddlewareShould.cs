@@ -12,16 +12,24 @@ namespace Voxel.MiddyNet.HttpJsonBodyParserMiddleware.Tests
 {
     public class HttpJsonBodyParserMiddlewareShould
     {
+        private MiddyNetContext context;
+        private TestObject expectation;
+        private string serializedExpectation;
+
+        public HttpJsonBodyParserMiddlewareShould()
+        {
+            context = new MiddyNetContext(Substitute.For<ILambdaContext>());
+            expectation = new TestObject("bar");
+            serializedExpectation = JsonConvert.SerializeObject(expectation);
+        }
+
         [Fact]
         public async Task ProcessTheJsonRequest()
         {
-            var context = new MiddyNetContext(Substitute.For<ILambdaContext>());
-            var expectation = new TestObject("bar");
-            var source = JsonConvert.SerializeObject(expectation);
             var request = new APIGatewayProxyRequest()
             {
                 Headers = new Dictionary<string, string> { { "Content-Type", "application/json" } },
-                Body = source
+                Body = serializedExpectation
             };
             var middleware = new HttpJsonBodyParserMiddleware<TestObject>();
             await middleware.Before(request, context);
@@ -33,9 +41,7 @@ namespace Voxel.MiddyNet.HttpJsonBodyParserMiddleware.Tests
         [Fact]
         public async Task ErrorWhenJsonNotMapsToObject()
         {
-            var context = new MiddyNetContext(Substitute.For<ILambdaContext>());
-            var expectation = new TestObject("bar");
-            var source = "Not Mapped object" + JsonConvert.SerializeObject(expectation);
+            var source = "Not Mapped object" + serializedExpectation;
             var request = new APIGatewayProxyRequest()
             {
                 Headers = new Dictionary<string, string> { { "Content-Type", "application/json" } },
@@ -45,6 +51,20 @@ namespace Voxel.MiddyNet.HttpJsonBodyParserMiddleware.Tests
             Action action = () => middleware.Before(request, context);
 
             action.Should().Throw<Exception>().WithMessage($"Error parsing \"{source}\" to type {typeof(TestObject)}");
+        }
+
+        [Fact]
+        public async Task NotProcessTheBodyIfNoHeaderIsPassed()
+        {
+            var request = new APIGatewayProxyRequest()
+            {
+                Body = serializedExpectation
+            };
+            var middleware = new HttpJsonBodyParserMiddleware<TestObject>();
+            await middleware.Before(request, context);
+
+            context.AdditionalContext.ContainsKey("Body").Should().BeTrue();
+            context.AdditionalContext["Body"].Should().Be(serializedExpectation);
         }
     }
 }
