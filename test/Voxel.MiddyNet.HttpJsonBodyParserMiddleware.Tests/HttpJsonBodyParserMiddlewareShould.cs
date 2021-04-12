@@ -29,5 +29,22 @@ namespace Voxel.MiddyNet.HttpJsonBodyParserMiddleware.Tests
             context.AdditionalContext.ContainsKey("Body").Should().BeTrue();
             context.AdditionalContext["Body"].Should().BeEquivalentTo(expectation);
         }
+
+        [Fact]
+        public async Task ErrorWhenJsonNotMapsToObject()
+        {
+            var context = new MiddyNetContext(Substitute.For<ILambdaContext>());
+            var expectation = new TestObject("bar");
+            var source = "Not Mapped object" + JsonConvert.SerializeObject(expectation);
+            var request = new APIGatewayProxyRequest()
+            {
+                Headers = new Dictionary<string, string> { { "Content-Type", "application/json" } },
+                Body = source
+            };
+            var middleware = new HttpJsonBodyParserMiddleware<TestObject>();
+            Action action = () => middleware.Before(request, context);
+
+            action.Should().Throw<Exception>().WithMessage($"Error parsing \"{source}\" to type {typeof(TestObject)}");
+        }
     }
 }
