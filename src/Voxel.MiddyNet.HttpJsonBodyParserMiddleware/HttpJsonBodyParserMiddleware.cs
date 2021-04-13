@@ -1,7 +1,7 @@
 using System;
 using System.Text;
+using System.Text.Json;
 using Amazon.Lambda.APIGatewayEvents;
-using Newtonsoft.Json;
 using System.Threading.Tasks;
 
 namespace Voxel.MiddyNet.HttpJsonBodyParserMiddleware
@@ -20,16 +20,9 @@ namespace Voxel.MiddyNet.HttpJsonBodyParserMiddleware
             {
                 lambdaEvent.Body = Encoding.UTF8.GetString(Convert.FromBase64String(lambdaEvent.Body));
             }
-           
-            T source;
-            try
-            {
-                source = JsonConvert.DeserializeObject<T>(lambdaEvent.Body);
-            }
-            catch (JsonReaderException)
-            {
-                throw new Exception("Content type defined as JSON but an invalid JSON was provided");
-            }
+
+            var source = JsonSerializer.Deserialize<T>(lambdaEvent.Body);
+            
             
             context.AdditionalContext.Add("Body", source);
             return Task.CompletedTask;

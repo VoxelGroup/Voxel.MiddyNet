@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Amazon.Lambda.APIGatewayEvents;
 using Amazon.Lambda.Core;
 using FluentAssertions;
-using Newtonsoft.Json;
 using NSubstitute;
 using Xunit;
 
@@ -20,8 +20,11 @@ namespace Voxel.MiddyNet.HttpJsonBodyParserMiddleware.Tests
         public HttpJsonBodyParserMiddlewareShould()
         {
             context = new MiddyNetContext(Substitute.For<ILambdaContext>());
-            expectation = new TestObject("bar");
-            serializedExpectation = JsonConvert.SerializeObject(expectation);
+            expectation = new TestObject
+            {
+                foo = "bar"
+            };
+            serializedExpectation = JsonSerializer.Serialize(expectation);
         }
 
         [Fact]
@@ -51,7 +54,7 @@ namespace Voxel.MiddyNet.HttpJsonBodyParserMiddleware.Tests
             var middleware = new HttpJsonBodyParserMiddleware<TestObject>();
             Action action = () => middleware.Before(request, context);
 
-            action.Should().Throw<Exception>().WithMessage("Content type defined as JSON but an invalid JSON was provided");
+            action.Should().Throw<Exception>().WithMessage("'M' is an invalid start of a value.*");
         }
 
         [Fact]
@@ -72,7 +75,7 @@ namespace Voxel.MiddyNet.HttpJsonBodyParserMiddleware.Tests
         public async Task HandleABase64Body()
         {
             string base64Serialized = Convert.ToBase64String(Encoding.UTF8.GetBytes(serializedExpectation));
-            
+
             var request = new APIGatewayProxyRequest()
             {
                 Headers = new Dictionary<string, string> { { "Content-Type", "application/json" } },
@@ -103,7 +106,7 @@ namespace Voxel.MiddyNet.HttpJsonBodyParserMiddleware.Tests
             var middleware = new HttpJsonBodyParserMiddleware<TestObject>();
             Action action = () => middleware.Before(request, context);
 
-            action.Should().Throw<Exception>().WithMessage("Content type defined as JSON but an invalid JSON was provided");
+            action.Should().Throw<Exception>().WithMessage("'M' is an invalid start of a value.*");
         }
     }
 }
