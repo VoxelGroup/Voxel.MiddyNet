@@ -1,0 +1,22 @@
+service: voxel-middynet-httpJsonBodyParserSample
+
+provider:
+  name: aws
+  runtime: dotnetcore3.1
+  region: ${opt:region, self:custom.defaultRegion}
+  stage: ${opt:stage, self:custom.defaultStage}
+
+custom:
+  defaultRegion: eu-west-1
+  defaultStage: dev${env:SLSUSER, ""}
+  sqsTracingSampleQueueName: ${self:service}-${self:provider.stage}-httpJsonBodyParserSample
+package:
+  individually: true
+
+functions:
+  httpJsonParserSample:
+    handler: Voxel.MiddyNet.HttpJsonBodyParserSample::Voxel.MiddyNet.HttpJsonBodyParserSample.HttpJsonBodyParser::Handler
+    package:
+      artifact: bin/Release/netcoreapp3.1/Voxel.MiddyNet.HttpJsonBodyParserSample.zip
+    events:
+      - http: POST testParser

@@ -79,7 +79,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Voxel.MiddyNet.ApiGatewayPr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Voxel.MiddyNet.HttpJsonBodyParserMiddleware.Tests", "test\Voxel.MiddyNet.HttpJsonBodyParserMiddleware.Tests\Voxel.MiddyNet.HttpJsonBodyParserMiddleware.Tests.csproj", "{AD9A0773-EF96-4F4A-890C-337277EDCC2F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Voxel.MiddyNet.HttpJsonBodyParserMiddleware", "src\Voxel.MiddyNet.HttpJsonBodyParserMiddleware\Voxel.MiddyNet.HttpJsonBodyParserMiddleware.csproj", "{111CB170-E682-498D-9E84-42FFFB66CE36}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Voxel.MiddyNet.HttpJsonBodyParserMiddleware", "src\Voxel.MiddyNet.HttpJsonBodyParserMiddleware\Voxel.MiddyNet.HttpJsonBodyParserMiddleware.csproj", "{111CB170-E682-498D-9E84-42FFFB66CE36}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "HttpJsonBodyParser", "HttpJsonBodyParser", "{2B9304CC-B4DD-4DD5-9428-F7D8A0BC39BC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Voxel.MiddyNet.HttpJsonBodyParserSample", "samples\HttpJsonBodyParser\Voxel.MiddyNet.HttpJsonBodyParserSample\Voxel.MiddyNet.HttpJsonBodyParserSample.csproj", "{3E45575F-C260-41FD-B5C9-3D675E5BD0C9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -203,6 +207,14 @@ Global
 		{111CB170-E682-498D-9E84-42FFFB66CE36}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{111CB170-E682-498D-9E84-42FFFB66CE36}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{111CB170-E682-498D-9E84-42FFFB66CE36}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3E45575F-C260-41FD-B5C9-3D675E5BD0C9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3E45575F-C260-41FD-B5C9-3D675E5BD0C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3E45575F-C260-41FD-B5C9-3D675E5BD0C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3E45575F-C260-41FD-B5C9-3D675E5BD0C9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3445910D-DFEB-45F9-8CCC-702129267C4D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3445910D-DFEB-45F9-8CCC-702129267C4D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3445910D-DFEB-45F9-8CCC-702129267C4D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3445910D-DFEB-45F9-8CCC-702129267C4D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -242,6 +254,9 @@ Global
 		{615A99CC-A3ED-4E42-9A9A-AC29B13B095C} = {1F42DBC9-C1FC-4FC7-A5A0-97B47C410C26}
 		{AD9A0773-EF96-4F4A-890C-337277EDCC2F} = {202D1DF0-62D6-4006-99DC-BBFBE59428B1}
 		{111CB170-E682-498D-9E84-42FFFB66CE36} = {202D1DF0-62D6-4006-99DC-BBFBE59428B1}
+		{2B9304CC-B4DD-4DD5-9428-F7D8A0BC39BC} = {B07FEFF7-B407-4792-8C6B-B6D0CC8626D4}
+		{3E45575F-C260-41FD-B5C9-3D675E5BD0C9} = {2B9304CC-B4DD-4DD5-9428-F7D8A0BC39BC}
+		{3445910D-DFEB-45F9-8CCC-702129267C4D} = {B07FEFF7-B407-4792-8C6B-B6D0CC8626D4}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {EFA347F5-761B-44CF-B6DB-8981387C72B3}
