@@ -65,15 +65,6 @@ namespace Voxel.MiddyNet.Tracing.Core.Tests
         }
 
         [Fact]
-        public void UpdateParentIdIfTraceParentIsCorrect()
-        {
-            var traceContext = TraceContext.Handle("00-12345678901234567890123456789012-1234567890123456-00", "a trace state");
-            traceContext.TraceParent.Should().StartWith("00-12345678901234567890123456789012-")
-                .And.EndWith("-00")
-                .And.NotEndWith("-1234567890123456-00");
-        }
-
-        [Fact]
         public void PropagateTraceStateIfTraceParentIsCorrect()
         {
             var traceContext = TraceContext.Handle("00-12345678901234567890123456789012-1234567890123456-00", "a trace state");
