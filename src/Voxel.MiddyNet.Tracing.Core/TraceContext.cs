@@ -95,7 +95,7 @@ namespace Voxel.MiddyNet.Tracing.Core
 
         public static TraceContext ChangeParentId(TraceContext traceContext)
         {
-            throw new NotImplementedException();
+            return new TraceContext(traceContext.version, traceContext.TraceId, RandomString(16), traceContext.traceFlags, traceContext.TraceState);
         }
     }
 }
