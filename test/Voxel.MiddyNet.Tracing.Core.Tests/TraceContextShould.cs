@@ -70,5 +70,20 @@ namespace Voxel.MiddyNet.Tracing.Core.Tests
             var traceContext = TraceContext.Handle("00-12345678901234567890123456789012-1234567890123456-00", "a trace state");
             traceContext.TraceState.Should().Be("a trace state");
         }
+
+        [Fact]
+        public void ObtainANewTraceContextWithTheParentIdChanged()
+        {
+            var traceContext = TraceContext.Handle("00-12345678901234567890123456789012-1234567890123456-00", "a trace state");
+            
+            var newTraceContext = TraceContext.ChangeParentId(traceContext);
+            
+            var splitTraceContext = newTraceContext.TraceParent.Split('-');
+            splitTraceContext[0].Should().Be("00");
+            splitTraceContext[1].Should().Be("12345678901234567890123456789012");
+            splitTraceContext[2].Should().NotBe("1234567890123456");
+            splitTraceContext[3].Should().Be("00");
+        }
+        
     }
 }

@@ -92,5 +92,10 @@ namespace Voxel.MiddyNet.Tracing.Core
             return new string(Enumerable.Repeat(chars, length)
                 .Select(s => s[random.Next(s.Length)]).ToArray());
         }
+
+        public static TraceContext ChangeParentId(TraceContext traceContext)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
