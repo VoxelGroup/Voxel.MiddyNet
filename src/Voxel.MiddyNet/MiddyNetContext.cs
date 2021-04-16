@@ -1,6 +1,7 @@
 ﻿using Amazon.Lambda.Core;
 using System;
 using System.Collections.Generic;
+using Voxel.MiddyNet.Tracing.Core;
 
 namespace Voxel.MiddyNet
 {
@@ -15,6 +16,7 @@ namespace Voxel.MiddyNet
         public Func<ILambdaLogger, IMiddyLogger> LoggerFactory { get; }
 
         public bool HasExceptions => HandlerException != null || MiddlewareBeforeExceptions.Count > 0 || MiddlewareAfterExceptions.Count > 0;
+        public TraceContext TraceContext { get; set; }
 
         public MiddyNetContext(ILambdaContext context)
         {
