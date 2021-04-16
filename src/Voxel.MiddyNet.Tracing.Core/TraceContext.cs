@@ -54,7 +54,7 @@ namespace Voxel.MiddyNet.Tracing.Core
                 return Reset();
             }
 
-            return new TraceContext(version, traceId, RandomString(16), traceFlags, traceState);
+            return new TraceContext(version, traceId, parentId, traceFlags, traceState);
         }
 
         private static bool FlagsAreNotValid(string traceFlags)
