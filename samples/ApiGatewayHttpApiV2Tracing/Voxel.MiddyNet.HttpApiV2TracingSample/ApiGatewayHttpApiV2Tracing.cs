@@ -16,11 +16,16 @@ namespace Voxel.MiddyNet.HttpApiV2TracingSample
 
         protected override Task<APIGatewayHttpApiV2ProxyResponse> Handle(APIGatewayHttpApiV2ProxyRequest proxyRequest, MiddyNetContext context)
         {
-            context.Logger.Log(LogLevel.Info, "Function called. This log will have the traceparent received in the API call");
+            //This log is enriched with the tracing information received in the headers of the request
+            context.Logger.Log(LogLevel.Info, "Function called.");
 
-            context.TraceContext = TraceContext.ChangeParentId(context.TraceContext);
+            //If you need to call another system, you need to obtain a traceparent based on the original traceparent
+            //received but with the ParentId changed
+            var newTraceContext = TraceContext.ChangeParentId(context.TraceContext);
 
-            context.Logger.Log(LogLevel.Info, "This will have a traceparent with the ParentId changed");
+            //Now you can use this newTraceContext in your calls 
+            var traceparentForTheCallToAnotherSystem = newTraceContext.TraceParent;
+            var tracestateForTheCallToAnotherSystem = newTraceContext.TraceState;
 
             return Task.FromResult(new APIGatewayHttpApiV2ProxyResponse
             {
