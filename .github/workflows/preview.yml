@@ -47,6 +47,8 @@ jobs:
       run: dotnet pack src/Voxel.MiddyNet.Tracing.SQSMiddleware/Voxel.MiddyNet.Tracing.SQSMiddleware.csproj -c $BUILD_CONFIG --version-suffix $VERSION_SUFFIX --no-build --include-source --include-symbols -o ./artifacts/Voxel.MiddyNet.Tracing.SQSMiddleware
     - name: dotnet pack [MiddyNet ProblemDetails]
       run: dotnet pack src/Voxel.MiddyNet.ProblemDetailsMiddleware/Voxel.MiddyNet.ProblemDetailsMiddleware.csproj -c $BUILD_CONFIG --version-suffix $VERSION_SUFFIX --no-build --include-source --include-symbols -o ./artifacts/Voxel.MiddyNet.ProblemDetailsMiddleware
+    - name: dotnet pack [MiddyNet HttpJsonBodyParser]
+      run: dotnet pack src\Voxel.MiddyNet.HttpJsonBodyParserMiddleware/Voxel.MiddyNet.HttpJsonBodyParserMiddleware.csproj -c $BUILD_CONFIG --version-suffix $VERSION_SUFFIX --no-build --include-source --include-symbols -o ./artifacts/Voxel.MiddyNet.HttpJsonBodyParserMiddleware
     - name: setup nuget
       uses: NuGet/setup-nuget@v1.0.5
       with:
@@ -67,4 +69,6 @@ jobs:
       run: dotnet nuget push ./artifacts/Voxel.MiddyNet.Tracing.SQSMiddleware/*.nupkg -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json --skip-duplicate
     - name: Publish Voxel.MiddyNet.ProblemDetailsMiddleware nuget
       run: dotnet nuget push ./artifacts/Voxel.MiddyNet.ProblemDetailsMiddleware/*.nupkg -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json --skip-duplicate
+    - name: Publish Voxel.MiddyNet.HttpJsonBodyParserMiddleware nuget
+      run: dotnet nuget push ./artifacts/Voxel.MiddyNet.HttpJsonBodyParserMiddleware/*.nupkg -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json --skip-duplicate
     
