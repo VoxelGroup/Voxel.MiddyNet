@@ -83,7 +83,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Voxel.MiddyNet.HttpJsonBody
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "HttpJsonBodyParser", "HttpJsonBodyParser", "{2B9304CC-B4DD-4DD5-9428-F7D8A0BC39BC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Voxel.MiddyNet.HttpJsonBodyParserSample", "samples\HttpJsonBodyParser\Voxel.MiddyNet.HttpJsonBodyParserSample\Voxel.MiddyNet.HttpJsonBodyParserSample.csproj", "{3E45575F-C260-41FD-B5C9-3D675E5BD0C9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Voxel.MiddyNet.HttpJsonBodyParserSample", "samples\HttpJsonBodyParser\Voxel.MiddyNet.HttpJsonBodyParserSample\Voxel.MiddyNet.HttpJsonBodyParserSample.csproj", "{3E45575F-C260-41FD-B5C9-3D675E5BD0C9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "HttpV2JsonBodyParser", "HttpV2JsonBodyParser", "{308136A6-9610-482A-98E9-D007B6A75437}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Voxel.MiddyNet.HttpV2JsonBodyParserSample", "samples\HttpV2JsonBodyParser\Voxel.MiddyNet.HttpV2JsonBodyParserSample\Voxel.MiddyNet.HttpV2JsonBodyParserSample.csproj", "{ADC380CE-B0FA-4E6A-B12C-F7EB2E4D2DE9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -211,10 +215,10 @@ Global
 		{3E45575F-C260-41FD-B5C9-3D675E5BD0C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3E45575F-C260-41FD-B5C9-3D675E5BD0C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3E45575F-C260-41FD-B5C9-3D675E5BD0C9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3445910D-DFEB-45F9-8CCC-702129267C4D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3445910D-DFEB-45F9-8CCC-702129267C4D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3445910D-DFEB-45F9-8CCC-702129267C4D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3445910D-DFEB-45F9-8CCC-702129267C4D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ADC380CE-B0FA-4E6A-B12C-F7EB2E4D2DE9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ADC380CE-B0FA-4E6A-B12C-F7EB2E4D2DE9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ADC380CE-B0FA-4E6A-B12C-F7EB2E4D2DE9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ADC380CE-B0FA-4E6A-B12C-F7EB2E4D2DE9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -256,7 +260,8 @@ Global
 		{111CB170-E682-498D-9E84-42FFFB66CE36} = {202D1DF0-62D6-4006-99DC-BBFBE59428B1}
 		{2B9304CC-B4DD-4DD5-9428-F7D8A0BC39BC} = {B07FEFF7-B407-4792-8C6B-B6D0CC8626D4}
 		{3E45575F-C260-41FD-B5C9-3D675E5BD0C9} = {2B9304CC-B4DD-4DD5-9428-F7D8A0BC39BC}
-		{3445910D-DFEB-45F9-8CCC-702129267C4D} = {B07FEFF7-B407-4792-8C6B-B6D0CC8626D4}
+		{308136A6-9610-482A-98E9-D007B6A75437} = {B07FEFF7-B407-4792-8C6B-B6D0CC8626D4}
+		{ADC380CE-B0FA-4E6A-B12C-F7EB2E4D2DE9} = {308136A6-9610-482A-98E9-D007B6A75437}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {EFA347F5-761B-44CF-B6DB-8981387C72B3}
