@@ -21,7 +21,7 @@ namespace Voxel.MiddyNet.ApiGatewayTracingSample
 
             //If you need to call another system, you need to obtain a traceparent based on the original traceparent
             //received but with the ParentId changed
-            var newTraceContext = TraceContext.ChangeParentId(context.TraceContext);
+            var newTraceContext = TraceContext.MutateParentId(context.TraceContext);
 
             //Now you can use this newTraceContext in your calls 
             var traceparentForTheCallToAnotherSystem = newTraceContext.TraceParent;

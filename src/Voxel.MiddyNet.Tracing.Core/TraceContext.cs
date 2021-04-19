@@ -93,7 +93,7 @@ namespace Voxel.MiddyNet.Tracing.Core
                 .Select(s => s[random.Next(s.Length)]).ToArray());
         }
 
-        public static TraceContext ChangeParentId(TraceContext traceContext)
+        public static TraceContext MutateParentId(TraceContext traceContext)
         {
             return new TraceContext(traceContext.version, traceContext.TraceId, RandomString(16), traceContext.traceFlags, traceContext.TraceState);
         }
