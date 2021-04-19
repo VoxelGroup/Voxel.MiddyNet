@@ -1,6 +1,5 @@
 using FluentAssertions;
 using Xunit;
-using Voxel.MiddyNet.Tracing.Core;
 
 namespace Voxel.MiddyNet.Tracing.Core.Tests
 {

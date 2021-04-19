@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Amazon.Lambda.APIGatewayEvents;
 using Voxel.MiddyNet.Tracing.Core;
 
