@@ -76,7 +76,7 @@ namespace Voxel.MiddyNet.Tracing.Core.Tests
         {
             var traceContext = TraceContext.Handle("00-12345678901234567890123456789012-1234567890123456-00", "a trace state");
             
-            var newTraceContext = TraceContext.MutateParentId(traceContext);
+            var newTraceContext = TraceContext.MutateParentId(traceContext.TraceParent, traceContext.TraceState);
             
             var splitTraceContext = newTraceContext.TraceParent.Split('-');
             splitTraceContext[0].Should().Be("00");

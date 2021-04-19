@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Runtime.CompilerServices;
 
 namespace Voxel.MiddyNet.Tracing.Core
 {
@@ -93,8 +94,9 @@ namespace Voxel.MiddyNet.Tracing.Core
                 .Select(s => s[random.Next(s.Length)]).ToArray());
         }
 
-        public static TraceContext MutateParentId(TraceContext traceContext)
+        public static TraceContext MutateParentId(string traceparent, string tracestate)
         {
+            var traceContext = Handle(traceparent, tracestate);
             return new TraceContext(traceContext.version, traceContext.TraceId, RandomString(16), traceContext.traceFlags, traceContext.TraceState);
         }
     }
