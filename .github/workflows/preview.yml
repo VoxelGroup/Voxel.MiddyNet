@@ -48,7 +48,7 @@ jobs:
     - name: dotnet pack [MiddyNet ProblemDetails]
       run: dotnet pack src/Voxel.MiddyNet.ProblemDetailsMiddleware/Voxel.MiddyNet.ProblemDetailsMiddleware.csproj -c $BUILD_CONFIG --version-suffix $VERSION_SUFFIX --no-build --include-source --include-symbols -o ./artifacts/Voxel.MiddyNet.ProblemDetailsMiddleware
     - name: dotnet pack [MiddyNet HttpJsonBodyParser]
-      run: dotnet pack src\Voxel.MiddyNet.HttpJsonBodyParserMiddleware/Voxel.MiddyNet.HttpJsonBodyParserMiddleware.csproj -c $BUILD_CONFIG --version-suffix $VERSION_SUFFIX --no-build --include-source --include-symbols -o ./artifacts/Voxel.MiddyNet.HttpJsonBodyParserMiddleware
+      run: dotnet pack src/Voxel.MiddyNet.HttpJsonBodyParserMiddleware/Voxel.MiddyNet.HttpJsonBodyParserMiddleware.csproj -c $BUILD_CONFIG --version-suffix $VERSION_SUFFIX --no-build --include-source --include-symbols -o ./artifacts/Voxel.MiddyNet.HttpJsonBodyParserMiddleware
     - name: setup nuget
       uses: NuGet/setup-nuget@v1.0.5
       with:
