@@ -23,12 +23,14 @@ namespace Voxel.MiddyNet.Tracing.ApiGatewayMiddleware
 
             var traceContext = TraceContext.Handle(traceParentHeaderValue, traceStateHeaderValue);
             
-            context.TraceContext = traceContext;
-            
             context.Logger.EnrichWith(new LogProperty(TraceParentHeaderName, traceContext.TraceParent));
             context.Logger.EnrichWith(new LogProperty(TraceStateHeaderName, traceContext.TraceState));
             context.Logger.EnrichWith(new LogProperty(TraceIdHeaderName, traceContext.TraceId));
-            
+
+            context.AdditionalContext.Add(TraceParentHeaderName, traceContext.TraceParent);
+            context.AdditionalContext.Add(TraceStateHeaderName, traceContext.TraceState);
+            context.AdditionalContext.Add(TraceIdHeaderName, traceContext.TraceId);
+
             return Task.CompletedTask;
         }
 

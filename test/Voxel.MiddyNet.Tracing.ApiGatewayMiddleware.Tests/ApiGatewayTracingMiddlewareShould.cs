@@ -55,9 +55,12 @@ namespace Voxel.MiddyNet.Tracing.ApiGatewayMiddleware.Tests
 
             await middleware.Before(apiGatewayEvent, context);
 
-            context.TraceContext.TraceParent.Should().Be(TraceparentHeaderValue);
-            context.TraceContext.TraceState.Should().Be(TracestateHeaderValue);
-            context.TraceContext.TraceId.Should().Be(TraceIdHeaderValue);
+            context.AdditionalContext.Should().ContainKey(TraceparentHeaderName);
+            context.AdditionalContext[TraceparentHeaderName].Should().Be(TraceparentHeaderValue);
+            context.AdditionalContext.Should().ContainKey(TracestateHeaderName);
+            context.AdditionalContext[TracestateHeaderName].Should().Be(TracestateHeaderValue);
+            context.AdditionalContext.Should().ContainKey(TraceIdHeaderName);
+            context.AdditionalContext[TraceIdHeaderName].Should().Be(TraceIdHeaderValue);
         }
     }
 }
