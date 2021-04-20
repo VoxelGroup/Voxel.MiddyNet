@@ -9,6 +9,8 @@ namespace Voxel.MiddyNet.Tracing.ApiGatewayMiddleware
         private const string TraceContextKey = "TraceContext";
         private const string TraceParentHeaderName = "traceparent";
         private const string TraceStateHeaderName = "tracestate";
+        private const string TraceIdHeaderName = "trace-id";
+
 
         public Task Before(APIGatewayProxyRequest apiGatewayEvent, MiddyNetContext context)
         {
@@ -30,8 +32,6 @@ namespace Voxel.MiddyNet.Tracing.ApiGatewayMiddleware
             
             return Task.CompletedTask;
         }
-
-        private const string TraceIdHeaderName = "trace-id";
 
         public Task<APIGatewayProxyResponse> After(APIGatewayProxyResponse lambdaResponse, MiddyNetContext context)
         {
