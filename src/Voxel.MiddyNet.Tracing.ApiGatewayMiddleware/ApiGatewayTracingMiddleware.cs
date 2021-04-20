@@ -6,11 +6,9 @@ namespace Voxel.MiddyNet.Tracing.ApiGatewayMiddleware
 {
     public class ApiGatewayTracingMiddleware : ILambdaMiddleware<APIGatewayProxyRequest, APIGatewayProxyResponse>
     {
-        private const string TraceContextKey = "TraceContext";
         private const string TraceParentHeaderName = "traceparent";
         private const string TraceStateHeaderName = "tracestate";
         private const string TraceIdHeaderName = "trace-id";
-
 
         public Task Before(APIGatewayProxyRequest apiGatewayEvent, MiddyNetContext context)
         {
@@ -24,7 +22,7 @@ namespace Voxel.MiddyNet.Tracing.ApiGatewayMiddleware
 
             var traceContext = TraceContext.Handle(traceParentHeaderValue, traceStateHeaderValue);
             
-            context.AdditionalContext.Add(TraceContextKey, traceContext);
+            context.AdditionalContext.Add(TraceContext.TraceContextKey, traceContext);
 
             context.Logger.EnrichWith(new LogProperty(TraceParentHeaderName, traceContext.TraceParent));
             context.Logger.EnrichWith(new LogProperty(TraceStateHeaderName, traceContext.TraceState));

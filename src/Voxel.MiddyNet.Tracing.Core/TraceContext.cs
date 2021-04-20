@@ -5,6 +5,8 @@ namespace Voxel.MiddyNet.Tracing.Core
 {
     public class TraceContext
     {
+        public const string TraceContextKey = "TraceContext";
+
         private string version;
         public string TraceId { get; }
         private string parentId;
