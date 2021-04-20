@@ -12,8 +12,4 @@
     <PackageReference Include="Amazon.Lambda.Core" Version="1.2.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Voxel.MiddyNet.Tracing.Core\Voxel.MiddyNet.Tracing.Core.csproj" />
-  </ItemGroup>
-
 </Project>
