@@ -266,14 +266,14 @@ And like this for Http API::
 
 Voxel.MiddyNet.HttpJsonBodyParser
 ---------------------------------
-This package contains a middleware that parse JSON object mapping to a explicit type. There are two versions avalaible: 
+This package contains a middleware that parses a JSON to an object of an explicit type. There are two versions avalaible: 
 
-* One for REST Api (APIGatewayProxyRequest and APIGatewayProxyResponse).
-* And another for Http Api (APIGatewayHttpApiV2ProxyRequest and APIGatewayHttpApiV2ProxyResponse).
+* One for REST APIs (APIGatewayProxyRequest and APIGatewayProxyResponse).
+* One for HTTP APIs (APIGatewayHttpApiV2ProxyRequest and APIGatewayHttpApiV2ProxyResponse).
 
 Configuration
 ^^^^^^^^^^^^^
-When you use the middleware, must put the specific type to convert JSON, then the middleware adds a object under context.AdditionalContext with the key "body". To access to the typed object you must do a casting of context["body"] with the custom type.
+When you use the middleware, You need to specify the type you want to convert the JSON object into. The middleware will put the object in the AdditionalContext["Body"] property. To access the object, you will need to perform an explicit cast of that property.
 
 Sample code
 ^^^^^^^^^^^
