@@ -4,6 +4,7 @@ using Amazon.Lambda.APIGatewayEvents;
 using Amazon.Lambda.Core;
 using FluentAssertions;
 using NSubstitute;
+using Voxel.MiddyNet.Tracing.Core;
 using Xunit;
 
 namespace Voxel.MiddyNet.Tracing.ApiGatewayMiddleware.Tests
@@ -16,6 +17,7 @@ namespace Voxel.MiddyNet.Tracing.ApiGatewayMiddleware.Tests
         private const string TraceparentHeaderValue = "00-0af7651916cd43dd8448eb211c80319c-b9c7c989f97918e1-01";
         private const string TracestateHeaderValue = "congo=ucfJifl5GOE";
         private const string TraceIdHeaderValue = "0af7651916cd43dd8448eb211c80319c";
+        private const string TraceContextKey = "TraceContext";
 
         [Fact]
         public async Task EnrichLoggerWithTraceContext()
@@ -55,12 +57,11 @@ namespace Voxel.MiddyNet.Tracing.ApiGatewayMiddleware.Tests
 
             await middleware.Before(apiGatewayEvent, context);
 
-            context.AdditionalContext.Should().ContainKey(TraceparentHeaderName);
-            context.AdditionalContext[TraceparentHeaderName].Should().Be(TraceparentHeaderValue);
-            context.AdditionalContext.Should().ContainKey(TracestateHeaderName);
-            context.AdditionalContext[TracestateHeaderName].Should().Be(TracestateHeaderValue);
-            context.AdditionalContext.Should().ContainKey(TraceIdHeaderName);
-            context.AdditionalContext[TraceIdHeaderName].Should().Be(TraceIdHeaderValue);
+            context.AdditionalContext.Should().ContainKey(TraceContextKey);
+            var traceContext = context.AdditionalContext[TraceContextKey] as TraceContext;
+            traceContext.TraceParent.Should().Be(TraceparentHeaderValue);
+            traceContext.TraceState.Should().Be(TracestateHeaderValue);
+            traceContext.TraceId.Should().Be(TraceIdHeaderValue);
         }
     }
 }
