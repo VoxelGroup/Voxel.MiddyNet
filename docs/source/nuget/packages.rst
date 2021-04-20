@@ -273,7 +273,7 @@ This package contains a middleware that parses a JSON to an object of an explici
 
 Configuration
 ^^^^^^^^^^^^^
-When you use the middleware, You need to specify the type you want to convert the JSON object into. The middleware will put the object in the AdditionalContext["Body"] property. To access the object, you will need to perform an explicit cast of that property.
+When you use the middleware, You need to specify the type you want to convert the JSON object into. The middleware will put the object in the AdditionalContext[Constants.BodyContextKey] property. To access the object, you will need to perform an explicit cast of that property.
 
 Sample code
 ^^^^^^^^^^^
@@ -288,7 +288,7 @@ A typical use of the middelware will look like this for Rest API::
 
         protected override async Task<APIGatewayProxyResponse> Handle(APIGatewayProxyRequest apiEvent, MiddyNetContext context)
         {
-            var foo = ((Foo)context.AdditionalContext["Body"]);
+            var foo = ((Foo)context.AdditionalContext[Constants.BodyContextKey]);
             
             // Do stuff with foo
 
@@ -313,7 +313,7 @@ And like this for Http API::
 
         protected override async Task<APIGatewayHttpApiV2ProxyResponse> Handle(APIGatewayHttpApiV2ProxyResponse apiEvent, MiddyNetContext context)
         {
-             var foo = ((Foo)context.AdditionalContext["Body"]);
+             var foo = ((Foo)context.AdditionalContext[Constants.BodyContextKey]);
 
             // Do stuff with typed foo
 

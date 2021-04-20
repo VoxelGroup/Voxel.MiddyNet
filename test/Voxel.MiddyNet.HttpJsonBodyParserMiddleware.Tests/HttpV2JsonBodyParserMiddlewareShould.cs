@@ -38,8 +38,8 @@ namespace Voxel.MiddyNet.HttpJsonBodyParserMiddleware.Tests
             var middleware = new HttpV2JsonBodyParserMiddleware<TestObject>();
             await middleware.Before(request, context);
 
-            context.AdditionalContext.ContainsKey("Body").Should().BeTrue();
-            context.AdditionalContext["Body"].Should().BeEquivalentTo(expectation);
+            context.AdditionalContext.ContainsKey(Constants.BodyContextKey).Should().BeTrue();
+            context.AdditionalContext[Constants.BodyContextKey].Should().BeEquivalentTo(expectation);
         }
 
         [Fact]
@@ -67,8 +67,8 @@ namespace Voxel.MiddyNet.HttpJsonBodyParserMiddleware.Tests
             var middleware = new HttpV2JsonBodyParserMiddleware<TestObject>();
             await middleware.Before(request, context);
 
-            context.AdditionalContext.ContainsKey("Body").Should().BeTrue();
-            context.AdditionalContext["Body"].Should().Be(serializedExpectation);
+            context.AdditionalContext.ContainsKey(Constants.BodyContextKey).Should().BeTrue();
+            context.AdditionalContext[Constants.BodyContextKey].Should().Be(serializedExpectation);
         }
 
         [Fact]
@@ -86,8 +86,8 @@ namespace Voxel.MiddyNet.HttpJsonBodyParserMiddleware.Tests
             var middleware = new HttpV2JsonBodyParserMiddleware<TestObject>();
             await middleware.Before(request, context);
 
-            context.AdditionalContext.ContainsKey("Body").Should().BeTrue();
-            context.AdditionalContext["Body"].Should().BeEquivalentTo(expectation);
+            context.AdditionalContext.ContainsKey(Constants.BodyContextKey).Should().BeTrue();
+            context.AdditionalContext[Constants.BodyContextKey].Should().BeEquivalentTo(expectation);
         }
 
         [Fact]
