@@ -8,11 +8,13 @@ namespace Voxel.MiddyNet.HttpJsonBodyParserMiddleware
 {
     public class HttpJsonBodyParserMiddleware<T> : ILambdaMiddleware<APIGatewayProxyRequest, APIGatewayProxyResponse>
     {
+        private const string BodyContextKey = "Body";
+
         public Task Before(APIGatewayProxyRequest lambdaEvent, MiddyNetContext context)
         {
             if (!HasJsonContentHeaders(lambdaEvent))
             {
-                context.AdditionalContext.Add("Body", lambdaEvent.Body);
+                context.AdditionalContext.Add(BodyContextKey, lambdaEvent.Body);
                 return Task.CompletedTask;
             }
 
@@ -24,7 +26,7 @@ namespace Voxel.MiddyNet.HttpJsonBodyParserMiddleware
             var source = JsonSerializer.Deserialize<T>(lambdaEvent.Body);
             
             
-            context.AdditionalContext.Add("Body", source);
+            context.AdditionalContext.Add(BodyContextKey, source);
             return Task.CompletedTask;
         }
 
