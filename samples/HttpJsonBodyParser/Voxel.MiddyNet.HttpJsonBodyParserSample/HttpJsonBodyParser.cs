@@ -15,8 +15,8 @@ namespace Voxel.MiddyNet.HttpJsonBodyParserSample
 
         protected override Task<APIGatewayProxyResponse> Handle(APIGatewayProxyRequest lambdaEvent, MiddyNetContext context)
         {
-            var person = ((Person) context.AdditionalContext[Constants.BodyContextKey]);
-            context.Logger.Log(LogLevel.Info, "Function called", new LogProperty(Constants.BodyContextKey, person));
+            var person = ((Person) context.AdditionalContext[HttpJsonBodyParserMiddleware.HttpJsonBodyParserMiddleware.BodyContextKey]);
+            context.Logger.Log(LogLevel.Info, "Function called", new LogProperty(HttpJsonBodyParserMiddleware.HttpJsonBodyParserMiddleware.BodyContextKey, person));
             var result = new APIGatewayProxyResponse
             {
                 StatusCode = 200,
