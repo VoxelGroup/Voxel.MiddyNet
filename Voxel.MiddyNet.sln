@@ -77,9 +77,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ApiGatewayProblemDetails", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Voxel.MiddyNet.ApiGatewayProblemDetails", "samples\ApiGatewayProblemDetails\Voxel.MiddyNet.ApiGatewayProblemDetails\Voxel.MiddyNet.ApiGatewayProblemDetails.csproj", "{615A99CC-A3ED-4E42-9A9A-AC29B13B095C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Voxel.MiddyNet.HttpJsonBodyParserMiddleware.Tests", "test\Voxel.MiddyNet.HttpJsonBodyParserMiddleware.Tests\Voxel.MiddyNet.HttpJsonBodyParserMiddleware.Tests.csproj", "{AD9A0773-EF96-4F4A-890C-337277EDCC2F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Voxel.MiddyNet.HttpJsonMiddleware.Tests", "test\Voxel.MiddyNet.HttpJsonMiddleware.Tests\Voxel.MiddyNet.HttpJsonMiddleware.Tests.csproj", "{AD9A0773-EF96-4F4A-890C-337277EDCC2F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Voxel.MiddyNet.HttpJsonBodyParserMiddleware", "src\Voxel.MiddyNet.HttpJsonBodyParserMiddleware\Voxel.MiddyNet.HttpJsonBodyParserMiddleware.csproj", "{111CB170-E682-498D-9E84-42FFFB66CE36}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Voxel.MiddyNet.HttpJsonMiddleware", "src\Voxel.MiddyNet.HttpJsonMiddleware\Voxel.MiddyNet.HttpJsonMiddleware.csproj", "{111CB170-E682-498D-9E84-42FFFB66CE36}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "HttpJsonBodyParser", "HttpJsonBodyParser", "{2B9304CC-B4DD-4DD5-9428-F7D8A0BC39BC}"
 EndProject

@@ -9,15 +9,15 @@ using FluentAssertions;
 using NSubstitute;
 using Xunit;
 
-namespace Voxel.MiddyNet.HttpJsonBodyParserMiddleware.Tests
+namespace Voxel.MiddyNet.HttpJsonMiddleware.Tests
 {
-    public class HttpJsonBodyParserMiddlewareShould
+    public class HttpV2JsonBodyParserMiddlewareShould
     {
         private MiddyNetContext context;
         private TestObject expectation;
         private string serializedExpectation;
 
-        public HttpJsonBodyParserMiddlewareShould()
+        public HttpV2JsonBodyParserMiddlewareShould()
         {
             context = new MiddyNetContext(Substitute.For<ILambdaContext>());
             expectation = new TestObject
@@ -30,12 +30,12 @@ namespace Voxel.MiddyNet.HttpJsonBodyParserMiddleware.Tests
         [Fact]
         public async Task ProcessTheJsonRequest()
         {
-            var request = new APIGatewayProxyRequest()
+            var request = new APIGatewayHttpApiV2ProxyRequest()
             {
                 Headers = new Dictionary<string, string> { { "Content-Type", "application/json" } },
                 Body = serializedExpectation
             };
-            var middleware = new HttpJsonBodyParserMiddleware<TestObject>();
+            var middleware = new HttpV2JsonBodyParserMiddleware<TestObject>();
             await middleware.Before(request, context);
 
             context.AdditionalContext.ContainsKey(HttpJsonBodyParserMiddleware.BodyContextKey).Should().BeTrue();
@@ -46,12 +46,12 @@ namespace Voxel.MiddyNet.HttpJsonBodyParserMiddleware.Tests
         public void ErrorWhenJsonNotMapsToObject()
         {
             var source = "Make it broken" + serializedExpectation;
-            var request = new APIGatewayProxyRequest()
+            var request = new APIGatewayHttpApiV2ProxyRequest()
             {
                 Headers = new Dictionary<string, string> { { "Content-Type", "application/json" } },
                 Body = source
             };
-            var middleware = new HttpJsonBodyParserMiddleware<TestObject>();
+            var middleware = new HttpV2JsonBodyParserMiddleware<TestObject>();
             Action action = () => middleware.Before(request, context);
 
             action.Should().Throw<Exception>().WithMessage("'M' is an invalid start of a value.*");
@@ -60,11 +60,11 @@ namespace Voxel.MiddyNet.HttpJsonBodyParserMiddleware.Tests
         [Fact]
         public async Task NotProcessTheBodyIfNoHeaderIsPassed()
         {
-            var request = new APIGatewayProxyRequest()
+            var request = new APIGatewayHttpApiV2ProxyRequest()
             {
                 Body = serializedExpectation
             };
-            var middleware = new HttpJsonBodyParserMiddleware<TestObject>();
+            var middleware = new HttpV2JsonBodyParserMiddleware<TestObject>();
             await middleware.Before(request, context);
 
             context.AdditionalContext.ContainsKey(HttpJsonBodyParserMiddleware.BodyContextKey).Should().BeTrue();
@@ -76,14 +76,14 @@ namespace Voxel.MiddyNet.HttpJsonBodyParserMiddleware.Tests
         {
             string base64Serialized = Convert.ToBase64String(Encoding.UTF8.GetBytes(serializedExpectation));
 
-            var request = new APIGatewayProxyRequest()
+            var request = new APIGatewayHttpApiV2ProxyRequest()
             {
                 Headers = new Dictionary<string, string> { { "Content-Type", "application/json" } },
                 IsBase64Encoded = true,
                 Body = base64Serialized
             };
 
-            var middleware = new HttpJsonBodyParserMiddleware<TestObject>();
+            var middleware = new HttpV2JsonBodyParserMiddleware<TestObject>();
             await middleware.Before(request, context);
 
             context.AdditionalContext.ContainsKey(HttpJsonBodyParserMiddleware.BodyContextKey).Should().BeTrue();
@@ -96,14 +96,14 @@ namespace Voxel.MiddyNet.HttpJsonBodyParserMiddleware.Tests
             var source = "Make it broken" + serializedExpectation;
             string base64Serialized = Convert.ToBase64String(Encoding.UTF8.GetBytes(source));
 
-            var request = new APIGatewayProxyRequest()
+            var request = new APIGatewayHttpApiV2ProxyRequest()
             {
                 Headers = new Dictionary<string, string> { { "Content-Type", "application/json" } },
                 IsBase64Encoded = true,
                 Body = base64Serialized
             };
 
-            var middleware = new HttpJsonBodyParserMiddleware<TestObject>();
+            var middleware = new HttpV2JsonBodyParserMiddleware<TestObject>();
             Action action = () => middleware.Before(request, context);
 
             action.Should().Throw<Exception>().WithMessage("'M' is an invalid start of a value.*");

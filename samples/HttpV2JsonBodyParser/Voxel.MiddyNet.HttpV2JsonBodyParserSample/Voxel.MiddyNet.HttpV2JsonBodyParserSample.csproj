@@ -14,6 +14,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\src\Voxel.MiddyNet.HttpJsonBodyParserMiddleware\Voxel.MiddyNet.HttpJsonBodyParserMiddleware.csproj" />
+    <ProjectReference Include="..\..\..\src\Voxel.MiddyNet.HttpJsonMiddleware\Voxel.MiddyNet.HttpJsonMiddleware.csproj" />
   </ItemGroup>
 </Project>

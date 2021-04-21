@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Amazon.Lambda.Core;
 using Amazon.Lambda.APIGatewayEvents;
-using Voxel.MiddyNet.HttpJsonBodyParserMiddleware;
+using Voxel.MiddyNet.HttpJsonMiddleware;
 
 [assembly: LambdaSerializer(typeof(Amazon.Lambda.Serialization.SystemTextJson.DefaultLambdaJsonSerializer))]
 namespace Voxel.MiddyNet.HttpJsonBodyParserSample
@@ -15,8 +15,8 @@ namespace Voxel.MiddyNet.HttpJsonBodyParserSample
 
         protected override Task<APIGatewayProxyResponse> Handle(APIGatewayProxyRequest lambdaEvent, MiddyNetContext context)
         {
-            var person = ((Person) context.AdditionalContext[HttpJsonBodyParserMiddleware.HttpJsonBodyParserMiddleware.BodyContextKey]);
-            context.Logger.Log(LogLevel.Info, "Function called", new LogProperty(HttpJsonBodyParserMiddleware.HttpJsonBodyParserMiddleware.BodyContextKey, person));
+            var person = ((Person) context.AdditionalContext[HttpJsonBodyParserMiddleware.BodyContextKey]);
+            context.Logger.Log(LogLevel.Info, "Function called", new LogProperty(HttpJsonBodyParserMiddleware.BodyContextKey, person));
             var result = new APIGatewayProxyResponse
             {
                 StatusCode = 200,

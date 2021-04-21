@@ -1,4 +1,4 @@
-namespace Voxel.MiddyNet.HttpJsonBodyParserMiddleware.Tests
+namespace Voxel.MiddyNet.HttpJsonMiddleware.Tests
 {
     public class TestObject
     {
