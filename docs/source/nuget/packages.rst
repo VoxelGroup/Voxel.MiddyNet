@@ -264,6 +264,69 @@ And like this for Http API::
         }
     }
 
+Voxel.MiddyNet.HttpJsonBodyParser
+---------------------------------
+This package contains a middleware that parses a JSON to an object of an explicit type. There are two versions avalaible: 
+
+* One for REST APIs (APIGatewayProxyRequest and APIGatewayProxyResponse).
+* One for HTTP APIs (APIGatewayHttpApiV2ProxyRequest and APIGatewayHttpApiV2ProxyResponse).
+
+Configuration
+^^^^^^^^^^^^^
+When you use the middleware, You need to specify the type you want to convert the JSON object into. The middleware will put the object in the AdditionalContext[Constants.BodyContextKey] property. To access the object, you will need to perform an explicit cast of that property.
+
+Sample code
+^^^^^^^^^^^
+A typical use of the middelware will look like this for Rest API::
+
+    public class MySample : MiddyNet<APIGatewayProxyRequest, APIGatewayProxyResponse>
+    {
+        public MySample()
+        {
+            Use(new HttpJsonBodyParserMiddleware<Foo>());
+        }
+
+        protected override async Task<APIGatewayProxyResponse> Handle(APIGatewayProxyRequest apiEvent, MiddyNetContext context)
+        {
+            var foo = ((Foo)context.AdditionalContext[Constants.BodyContextKey]);
+            
+            // Do stuff with foo
+
+            var result = new APIGatewayProxyResponse
+            {
+                StatusCode = 200,
+                Body = "hello from test"
+            };
+
+            return Task.FromResult(result);
+        }
+    }
+
+And like this for Http API::
+
+    public class MySample : MiddyNet<APIGatewayHttpApiV2ProxyRequest, APIGatewayHttpApiV2ProxyResponse>
+    {
+        public MySample()
+        {
+            Use(new HttpV2JsonBodyParserMiddleware<Foo>());
+        }
+
+        protected override async Task<APIGatewayHttpApiV2ProxyResponse> Handle(APIGatewayHttpApiV2ProxyResponse apiEvent, MiddyNetContext context)
+        {
+             var foo = ((Foo)context.AdditionalContext[Constants.BodyContextKey]);
+
+            // Do stuff with typed foo
+
+            var result = new APIGatewayHttpApiV2ProxyResponse
+            {
+                StatusCode = 200,
+                Body = "hello from test"
+            };
+
+            return Task.FromResult(result);
+        }
+    }
+
 Voxel.MiddyNet.ProblemDetailsMiddleware
 ---------------------------------------
 The middleware contained in this package formats Api exceptions as ProblemDetails following [RFC7807](https://tools.ietf.org/html/rfc7807).
