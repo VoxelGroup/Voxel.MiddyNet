@@ -1,0 +1,16 @@
+{
+  "name": "voxel.middynet.httpjsonbodyparsersample",
+  "version": "1.0.0",
+  "description": "Middy Net Middleware to parse JSON input into knowed type",
+  "main": "index.js",
+  "scripts": {
+    "build-package": "pushd Voxel.MiddyNet.HttpJsonBodyParserSample && build.cmd && popd",
+    "deploy": "pushd Voxel.MiddyNet.HttpJsonBodyParserSample && serverless deploy && popd"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "serverless": "^2.6.0"
+  },
+  "dependencies": {}
+}
