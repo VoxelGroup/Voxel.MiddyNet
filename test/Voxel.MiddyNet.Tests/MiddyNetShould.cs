@@ -211,7 +211,7 @@ namespace Voxel.MiddyNet.Tests
         [InlineData(false, false, true)]
         public void ThrowSpecificExceptionWhenOnlyOnePresent(bool throwBeforeException, bool throwAfterException, bool throwHandlerException)
         {
-            var lambdaFunction = new TestLambdaFunction(logLines, contextLines, 1, throwBeforeException, throwAfterException, throwHandlerException);
+            var lambdaFunction = new TestLambdaFunction(logLines, contextLines, 1, throwBeforeException, throwAfterException, throwHandlerException, false);
             Func<Task> act = async () => await lambdaFunction.Handler(0, new FakeLambdaContext());
 
             act.Should().NotThrow<AggregateException>();
