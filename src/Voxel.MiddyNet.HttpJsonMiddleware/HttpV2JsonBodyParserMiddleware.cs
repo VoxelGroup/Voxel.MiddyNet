@@ -8,6 +8,8 @@ namespace Voxel.MiddyNet.HttpJsonMiddleware
 {
     public class HttpV2JsonBodyParserMiddleware<T> : HttpJsonBodyParserMiddleware, ILambdaMiddleware<APIGatewayHttpApiV2ProxyRequest, APIGatewayHttpApiV2ProxyResponse>
     {
+        public bool InterruptsExecution => true;
+
         public Task Before(APIGatewayHttpApiV2ProxyRequest lambdaEvent, MiddyNetContext context)
         {
             if (!HasJsonContentHeaders(lambdaEvent))

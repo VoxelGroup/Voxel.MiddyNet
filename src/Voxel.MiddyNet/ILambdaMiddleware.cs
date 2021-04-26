@@ -7,5 +7,7 @@ namespace Voxel.MiddyNet
         Task Before(TReq lambdaEvent, MiddyNetContext context);
 
         Task<TRes> After(TRes lambdaResponse, MiddyNetContext context);
+
+        bool InterruptsExecution { get; }
     }
 }

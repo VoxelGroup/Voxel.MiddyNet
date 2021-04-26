@@ -12,6 +12,8 @@ namespace Voxel.MiddyNet.Tracing.ApiGatewayMiddleware
 
         public static string TraceContextKey = "TraceContext";
 
+        public bool InterruptsExecution => false;
+
         public Task Before(APIGatewayHttpApiV2ProxyRequest apiGatewayEvent, MiddyNetContext context)
         {
             var traceParentHeaderValue = string.Empty;

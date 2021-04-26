@@ -15,9 +15,14 @@ namespace Voxel.MiddyNet
         {
             InitialiseMiddyContext(context);
 
-            await ExecuteBeforeMiddlewares(lambdaEvent);
+            var beforeMiddlewaresExecutedWithoutErrors = await ExecuteBeforeMiddlewares(lambdaEvent);
 
-            var response = await SafeHandleLambdaEvent(lambdaEvent).ConfigureAwait(false);
+            var response = default(TRes);
+
+            if (beforeMiddlewaresExecutedWithoutErrors)
+            {
+                response = await SafeHandleLambdaEvent(lambdaEvent).ConfigureAwait(false);
+            }
 
             response = await ExecuteAfterMiddlewares(response);
 
@@ -66,7 +71,7 @@ namespace Voxel.MiddyNet
             return response;
         }
 
-        private async Task ExecuteBeforeMiddlewares(TReq lambdaEvent)
+        private async Task<bool> ExecuteBeforeMiddlewares(TReq lambdaEvent)
         {
             foreach (var middleware in middlewares)
             {
@@ -77,8 +82,11 @@ namespace Voxel.MiddyNet
                 catch (Exception ex)
                 {
                     MiddyContext.MiddlewareBeforeExceptions.Add(ex);
+                    if (middleware.InterruptsExecution) return false;
                 }
             }
+
+            return true;
         }
 
         private void InitialiseMiddyContext(ILambdaContext context)

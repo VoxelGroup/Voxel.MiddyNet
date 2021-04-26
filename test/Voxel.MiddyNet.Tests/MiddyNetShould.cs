@@ -23,17 +23,17 @@ namespace Voxel.MiddyNet.Tests
         {
             private readonly bool withFailingHandler;
 
-            public TestLambdaFunction(List<string> logLines, List<string> contextLogLines, int numberOfMiddlewares, bool withFailingMiddleware = false, bool withFailingHandler = false)
-                : this(logLines, contextLogLines, numberOfMiddlewares, withFailingMiddleware, withFailingMiddleware, withFailingHandler) { }
+            public TestLambdaFunction(List<string> logLines, List<string> contextLogLines, int numberOfMiddlewares, bool withFailingMiddleware = false, bool withFailingHandler = false, bool withInterruptingMiddleware = false)
+                : this(logLines, contextLogLines, numberOfMiddlewares, withFailingMiddleware, withFailingMiddleware, withFailingHandler, withInterruptingMiddleware) { }
 
-            public TestLambdaFunction(List<string> logLines, List<string> contextLogLines, int numberOfMiddlewares, bool withFailingBeforeMiddleware, bool withFailingAfterMiddleware, bool withFailingHandler)
+            public TestLambdaFunction(List<string> logLines, List<string> contextLogLines, int numberOfMiddlewares, bool withFailingBeforeMiddleware, bool withFailingAfterMiddleware, bool withFailingHandler, bool withInterruptingMiddleware)
 
             {
                 LogLines = logLines;
                 ContextLogLines = contextLogLines;
                 for (var i = 0; i < numberOfMiddlewares; i++)
                 {
-                    Use(new TestBeforeMiddleware(logLines, i + 1, withFailingBeforeMiddleware));
+                    Use(new TestBeforeMiddleware(logLines, i + 1, withFailingBeforeMiddleware, withInterruptingMiddleware));
                     Use(new TestAfterMiddleware(logLines, i + 1, withFailingAfterMiddleware));
                 }
 
@@ -62,12 +62,16 @@ namespace Voxel.MiddyNet.Tests
         public class TestBeforeMiddleware : ILambdaMiddleware<int, int>
         {
             private readonly int position;
+            private readonly bool interrupts = false;
             public List<string> LogLines { get; }
             public bool Failing { get; }
 
-            public TestBeforeMiddleware(List<string> logLines, int position, bool failing)
+            public bool InterruptsExecution => interrupts;
+
+            public TestBeforeMiddleware(List<string> logLines, int position, bool failing, bool interrupts)
             {
                 this.position = position;
+                this.interrupts = interrupts;
                 LogLines = logLines;
                 Failing = failing;
             }
@@ -93,6 +97,8 @@ namespace Voxel.MiddyNet.Tests
             private readonly int position;
             public List<string> LogLines { get; }
             public bool Failing { get; }
+
+            public bool InterruptsExecution => false;
 
             public TestAfterMiddleware(List<string> logLines, int position, bool failing)
             {
@@ -223,6 +229,30 @@ namespace Voxel.MiddyNet.Tests
             result.Should().Be(9);
         }
 
+        [Fact]
+        public void StopEvaluatingBeforeMiddlewaresIfInterruptExecutionSetToTrueAndExceptionHappens()
+        {
+            var lambdaFunction = new TestLambdaFunction(logLines, contextLines, 2, true, false, true);
+            Func<Task> act = async () => await lambdaFunction.Handler(0, new FakeLambdaContext());
+
+            act.Should().Throw<MiddlewareException>();
+
+            logLines.Should().Contain($"{MiddlewareBeforeLog}-1");
+            logLines.Should().NotContain($"{MiddlewareBeforeLog}-2");
+
+        }
+
+        [Fact]
+        public void NotExecuteLambdaIfInterruptExecutionSetToTrueAndExceptionHappens()
+        {
+            var lambdaFunction = new TestLambdaFunction(logLines, contextLines, 2, true, false, true);
+            Func<Task> act = async () => await lambdaFunction.Handler(0, new FakeLambdaContext());
+
+            act.Should().Throw<MiddlewareException>();
+            logLines.Should().NotContain(FunctionLog);
+
+        }
+
         private class AddsTwo : MiddyNet<int, int>
         {
             protected override Task<int> Handle(int lambdaEvent, MiddyNetContext context)
@@ -233,6 +263,8 @@ namespace Voxel.MiddyNet.Tests
 
         private class SquareIt : ILambdaMiddleware<int, int>
         {
+            public bool InterruptsExecution => false;
+
             public Task<int> After(int lambdaResponse, MiddyNetContext context)
             {
                 return Task.FromResult(lambdaResponse * lambdaResponse);
