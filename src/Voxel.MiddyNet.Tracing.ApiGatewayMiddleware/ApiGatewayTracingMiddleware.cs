@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Amazon.Lambda.APIGatewayEvents;
 using Voxel.MiddyNet.Tracing.Core;
 
@@ -10,6 +9,8 @@ namespace Voxel.MiddyNet.Tracing.ApiGatewayMiddleware
         private const string TraceParentHeaderName = "traceparent";
         private const string TraceStateHeaderName = "tracestate";
         private const string TraceIdHeaderName = "trace-id";
+
+        public static string TraceContextKey = "TraceContext";
 
         public Task Before(APIGatewayProxyRequest apiGatewayEvent, MiddyNetContext context)
         {
@@ -22,11 +23,13 @@ namespace Voxel.MiddyNet.Tracing.ApiGatewayMiddleware
                 traceStateHeaderValue = apiGatewayEvent.Headers[TraceStateHeaderName];
 
             var traceContext = TraceContext.Handle(traceParentHeaderValue, traceStateHeaderValue);
+            
+            context.AdditionalContext.Add(TraceContextKey, traceContext);
 
             context.Logger.EnrichWith(new LogProperty(TraceParentHeaderName, traceContext.TraceParent));
             context.Logger.EnrichWith(new LogProperty(TraceStateHeaderName, traceContext.TraceState));
             context.Logger.EnrichWith(new LogProperty(TraceIdHeaderName, traceContext.TraceId));
-
+            
             return Task.CompletedTask;
         }
 
