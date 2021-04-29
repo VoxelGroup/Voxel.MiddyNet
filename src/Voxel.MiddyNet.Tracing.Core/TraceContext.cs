@@ -54,7 +54,7 @@ namespace Voxel.MiddyNet.Tracing.Core
                 return Reset();
             }
 
-            return new TraceContext(version, traceId, RandomString(16), traceFlags, traceState);
+            return new TraceContext(version, traceId, parentId, traceFlags, traceState);
         }
 
         private static bool FlagsAreNotValid(string traceFlags)
@@ -91,6 +91,11 @@ namespace Voxel.MiddyNet.Tracing.Core
             const string chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
             return new string(Enumerable.Repeat(chars, length)
                 .Select(s => s[random.Next(s.Length)]).ToArray());
+        }
+
+        public static TraceContext MutateParentId(TraceContext traceContext)
+        {
+            return new TraceContext(traceContext.version, traceContext.TraceId, RandomString(16), traceContext.traceFlags, traceContext.TraceState);
         }
     }
 }

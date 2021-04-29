@@ -26,7 +26,7 @@ This is another package that is quite independent. It contains extension methods
 You can use this package inside a Lambda function or from any place, to send the ``TraceContext`` information in a way that MiddyNet will be able to read using a middleware.
 
 Voxel.MiddyNet.Tracing.Http
---------------------------
+---------------------------
 This is another package that is quite independent. It contains extension methods to add the information of the ``TraceContext`` object from ``Voxel.MiddyNet.Tracing.Core`` to an HttpRequestMessage via ``Headers``.
 
 You can use this package inside a Lambda function or from any place, to send the ``TraceContext`` information in a way that MiddyNet will be able to read using a middleware.
@@ -95,6 +95,10 @@ This package contains a middleware that reads the ``TraceContext`` information f
 
 The logs will have a property for ``traceparent``, another one for ``tracestate``, and another one for ``trace-id``.
 
+In addition, the MiddyNetContext is enriched with a new entry in the AdditionalContext collection that contains a TraceContext object.
+
+This TraceContext object provides a MutateParentId method that can be used to obtain a traceparent with the same Version, TraceId, and TraceFlags but with a new ParentId that can be used to call other systems, as `recommended by W3C. <https://www.w3.org/TR/trace-context/#mutating-the-traceparent-field>`_
+
 Sample code
 ^^^^^^^^^^^
 A typical use of the middleware for APIGateway will look like this::
@@ -108,17 +112,23 @@ A typical use of the middleware for APIGateway will look like this::
 
         protected override async Task<APIGatewayProxyResponse> Handle(APIGatewayProxyRequest apiEvent, MiddyNetContext context)
         {
-            context.Logger.Log(LogLevel.Info, "hello world");
+            //This log is enriched with the tracing information received in the headers of the request
+            context.Logger.Log(LogLevel.Info, "Function called.");
 
-            // Do stuff
+            //If you need to call another system, you need to obtain a traceparent based on the original traceparent
+            //received but with the ParentId changed
+            var currentTraceContext = (TraceContext)context.AdditionalContext[ApiGatewayTracingMiddleware.TraceContextKey];
+            var newTraceContext = TraceContext.MutateParentId(currentTraceContext);
 
-            var result = new APIGatewayProxyResponse
+            //Now you can use this newTraceContext in your calls 
+            var traceparentForCallingAnotherSystem = newTraceContext.TraceParent;
+            var tracestateForCallingAnotherSystem = newTraceContext.TraceState;
+
+            return Task.FromResult(new APIGatewayProxyResponse
             {
                 StatusCode = 200,
-                Body = "hello from test"
-            };
-
-            return Task.FromResult(result);
+                Body = "Ok"
+            });
         }
     }
 
@@ -133,9 +143,17 @@ and for APIGatewayHttpV2Api will look like this::
 
         protected override Task<APIGatewayHttpApiV2ProxyResponse> Handle(APIGatewayHttpApiV2ProxyRequest proxyRequest, MiddyNetContext context)
         {
-            context.Logger.Log(LogLevel.Info, "hello world");
+            //This log is enriched with the tracing information received in the headers of the request
+            context.Logger.Log(LogLevel.Info, "Function called.");
 
-            // Do stuff
+            //If you need to call another system, you need to obtain a traceparent based on the original traceparent
+            //received but with the ParentId changed
+            var currentTraceContext = (TraceContext)context.AdditionalContext[ApiGatewayHttpApiV2TracingMiddleware.TraceContextKey];
+            var newTraceContext = TraceContext.MutateParentId(currentTraceContext);
+
+            //Now you can use this newTraceContext in your calls 
+            var traceparentForCallingAnotherSystem = newTraceContext.TraceParent;
+            var tracestateForCallingAnotherSystem = newTraceContext.TraceState;
 
             return Task.FromResult(new APIGatewayHttpApiV2ProxyResponse
             {

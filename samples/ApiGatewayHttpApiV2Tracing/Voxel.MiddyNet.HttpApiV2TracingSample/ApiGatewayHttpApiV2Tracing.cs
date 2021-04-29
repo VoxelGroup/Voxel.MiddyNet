@@ -2,6 +2,7 @@
 using Amazon.Lambda.APIGatewayEvents;
 using Amazon.Lambda.Core;
 using Voxel.MiddyNet.Tracing.ApiGatewayMiddleware;
+using Voxel.MiddyNet.Tracing.Core;
 
 [assembly: LambdaSerializer(typeof(Amazon.Lambda.Serialization.SystemTextJson.DefaultLambdaJsonSerializer))]
 namespace Voxel.MiddyNet.HttpApiV2TracingSample
@@ -15,13 +16,17 @@ namespace Voxel.MiddyNet.HttpApiV2TracingSample
 
         protected override Task<APIGatewayHttpApiV2ProxyResponse> Handle(APIGatewayHttpApiV2ProxyRequest proxyRequest, MiddyNetContext context)
         {
-            var originalTraceParentHeaderValue = string.Empty;
-            if (proxyRequest.Headers.ContainsKey("traceparent"))
-            {
-                originalTraceParentHeaderValue = proxyRequest.Headers["traceparent"];
-            }
+            //This log is enriched with the tracing information received in the headers of the request
+            context.Logger.Log(LogLevel.Info, "Function called.");
 
-            context.Logger.Log(LogLevel.Info, "Function called", new LogProperty("original-traceparent", originalTraceParentHeaderValue));
+            //If you need to call another system, you need to obtain a traceparent based on the original traceparent
+            //received but with the ParentId changed
+            var currentTraceContext = (TraceContext)context.AdditionalContext[ApiGatewayHttpApiV2TracingMiddleware.TraceContextKey];
+            var newTraceContext = TraceContext.MutateParentId(currentTraceContext);
+
+            //Now you can use this newTraceContext in your calls 
+            var traceparentForCallingAnotherSystem = newTraceContext.TraceParent;
+            var tracestateForCallingAnotherSystem = newTraceContext.TraceState;
 
             return Task.FromResult(new APIGatewayHttpApiV2ProxyResponse
             {
