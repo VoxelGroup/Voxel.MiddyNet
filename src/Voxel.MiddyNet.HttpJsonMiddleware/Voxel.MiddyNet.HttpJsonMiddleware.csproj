@@ -1,7 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
-  <PropertyGroup>
+  
+ <PropertyGroup>
     <TargetFramework>$(NetCoreTargetVersion)</TargetFramework>
+    <Description>JSON Parser middleware for Voxel.MiddyNet</Description>
+    <Version>$(middynet)</Version>
+    <PackageId>Voxel.MiddyNet.HttpJsonBodyParser</PackageId>
+    <PackageVersion>$(middynet)</PackageVersion>
   </PropertyGroup>
 
   <ItemGroup>

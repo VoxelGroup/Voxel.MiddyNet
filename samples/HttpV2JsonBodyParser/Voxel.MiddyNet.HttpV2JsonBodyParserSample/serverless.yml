@@ -9,7 +9,6 @@ provider:
 custom:
   defaultRegion: eu-west-1
   defaultStage: dev${env:SLSUSER, ""}
-  sqsTracingSampleQueueName: ${self:service}-${self:provider.stage}-httpJsonBodyParserSample
 package:
   individually: true
 
