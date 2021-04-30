@@ -69,6 +69,6 @@ jobs:
       run: dotnet nuget push ./artifacts/Voxel.MiddyNet.Tracing.SQSMiddleware/*.nupkg -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json --skip-duplicate
     - name: Publish Voxel.MiddyNet.ProblemDetailsMiddleware nuget
       run: dotnet nuget push ./artifacts/Voxel.MiddyNet.ProblemDetailsMiddleware/*.nupkg -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json --skip-duplicate
-    - name: Publish Voxel.MiddyNet.Voxel.MiddyNet.HttpJsonMiddleware nuget
-      run: dotnet nuget push ./artifacts/Voxel.MiddyNet.Voxel.MiddyNet.HttpJsonMiddleware/*.nupkg -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json --skip-duplicate
+    - name: Publish Voxel.MiddyNet.HttpJsonMiddleware nuget
+      run: dotnet nuget push ./artifacts/Voxel.MiddyNet.HttpJsonMiddleware/*.nupkg -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json --skip-duplicate
     
