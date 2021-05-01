@@ -11,6 +11,8 @@ namespace Voxel.MiddyNet.Tracing.SQSMiddleware
         private const string TraceStateHeaderName = "tracestate";
         private const string TraceIdHeaderName = "trace-id";
 
+        public bool InterruptsExecution => false;
+
         public Task Before(SQSEvent sqsEvent, MiddyNetContext context)
         {
             var sqsMessage = sqsEvent.Records.First();

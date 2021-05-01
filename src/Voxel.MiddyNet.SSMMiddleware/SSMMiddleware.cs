@@ -25,6 +25,8 @@ namespace Voxel.MiddyNet.SSMMiddleware
             this.timeProvider = timeProvider;
         }
 
+        public bool InterruptsExecution => false;
+
         public async Task Before(TReq lambdaEvent, MiddyNetContext context)
         {
             foreach (var parameter in ssmOptions.ParametersToGet)

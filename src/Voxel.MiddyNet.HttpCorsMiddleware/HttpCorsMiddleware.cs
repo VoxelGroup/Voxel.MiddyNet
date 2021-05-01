@@ -21,6 +21,8 @@ namespace Voxel.MiddyNet.HttpCorsMiddleware
             this.corsOptions = corsOptions;
         }
 
+        public bool InterruptsExecution => false;
+
         private const string DefaultAccessControlAllowOrigin = "*";
         private const string AllowOriginHeader = "Access-Control-Allow-Origin";
         private const string AllowHeadersHeader = "Access-Control-Allow-Headers";

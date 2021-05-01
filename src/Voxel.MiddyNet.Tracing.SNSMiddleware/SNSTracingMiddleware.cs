@@ -11,6 +11,8 @@ namespace Voxel.MiddyNet.Tracing.SNSMiddleware
         private const string TraceStateHeaderName = "tracestate";
         private const string TraceIdHeaderName = "trace-id";
 
+        public bool InterruptsExecution => false;
+
         public Task Before(SNSEvent snsEvent, MiddyNetContext context)
         {
             var snsMessage = snsEvent.Records.First().Sns;
