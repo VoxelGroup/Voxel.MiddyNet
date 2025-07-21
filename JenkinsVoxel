@@ -14,7 +14,7 @@ pipeline {
 	stages {	
 		stage ('Start') {		
 			steps {
-				SetVersion(versionMajorAndMinor: '1.3', versionPatch: '1')
+				SetVersion(versionMajorAndMinor: '1.3')
 			}
 		}
 		stage ('Build') {
