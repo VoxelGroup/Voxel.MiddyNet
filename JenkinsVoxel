@@ -3,7 +3,7 @@
 @Library('VoxelGroup/JenkinsSharedLibrary')_
 
 pipeline {
-	agent { label 'Windows-Procliance' }
+	agent { label 'Windows-Procurement' }
 
 	options {
         ansiColor('vga')	       
