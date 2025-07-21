@@ -3,9 +3,7 @@
   <PropertyGroup>
     <TargetFramework>$(NetCoreTargetVersion)</TargetFramework>
     <Description>Lightwave middleware library for AWS Lambda</Description>
-    <Version>$(middynet)</Version>
     <PackageId>Voxel.MiddyNet</PackageId>
-    <PackageVersion>$(middynet)</PackageVersion>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <IncludeSymbols>true</IncludeSymbols>
     <PackageOutputPath>..\..\</PackageOutputPath>
