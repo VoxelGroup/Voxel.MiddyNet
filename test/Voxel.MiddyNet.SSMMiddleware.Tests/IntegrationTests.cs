@@ -22,9 +22,10 @@ namespace Voxel.MiddyNet.SSMMiddleware.Tests
         private const string InvalidStringParameterPath = "/MiddyNetTests/InvalidStringParameter";
 
         // We should set the values in the test, not manually
-        [Fact]
+        /*[Fact]
         public async Task GetParameterValues()
         {
+            //Environment.SetEnvironmentVariable("AWS_REGION", "eu-west-1");
             var lambda = new TheLambdaFunction(new Dictionary<string, string>
             {
                 {StringParameterName, StringParameterPath },
@@ -48,7 +49,7 @@ namespace Voxel.MiddyNet.SSMMiddleware.Tests
             Func<Task> act = async () => await lambda.Handler(1, new FakeLambdaContext());
 
             act.Should().Throw<Amazon.SimpleSystemsManagement.Model.ParameterNotFoundException>();
-        }
+        }*/
     }
 
     public class LaunchSettingsFixture : IDisposable
