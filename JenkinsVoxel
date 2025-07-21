@@ -33,9 +33,9 @@ pipeline {
 		}
 		
 		stage ('Publish'){
-			when { branch '285683-upload-package-to-github' }
+			when { branch 'main' }
 			steps{
-				GitHubCreateRelease (AllowBranch: "285683-upload-package-to-github", Version: env.VERSION)
+				GitHubCreateRelease (AllowBranch: "main", Version: env.VERSION)
 				{	
 					GitHubUploadAssetFile(
 						UriToPublish: "Voxel.MiddyNet.${env.VERSION}.nupkg",
