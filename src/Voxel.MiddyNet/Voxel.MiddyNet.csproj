@@ -6,6 +6,9 @@
     <Version>$(middynet)</Version>
     <PackageId>Voxel.MiddyNet</PackageId>
     <PackageVersion>$(middynet)</PackageVersion>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <IncludeSymbols>true</IncludeSymbols>
+    <PackageOutputPath>..\..\..\</PackageOutputPath>
   </PropertyGroup>
 
   <ItemGroup>

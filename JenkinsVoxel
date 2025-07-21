@@ -1,0 +1,62 @@
+#!/usr/bin/env groovy
+
+@Library('VoxelGroup/JenkinsSharedLibrary')_
+
+pipeline {
+	agent { label 'Windows-Procliance' }
+
+	options {
+        ansiColor('vga')	       
+		buildDiscarder(logRotator(numToKeepStr: '10'))
+		timeout(time: 30, unit: 'MINUTES') 
+     }	    
+	
+	stages {	
+		stage ('Start') {		
+			steps {
+				SetVersion(versionMajorAndMinor: '1.0')
+			}
+		}
+		stage ('Build') {
+			steps {					
+				BuildNetCore(
+					solution: 'Voxel.Middynet.sln', 
+					version: env.VERSION
+				)
+			}
+		}
+		
+		stage ('Test') {		
+			steps {
+				TestNetCore(solution: "Voxel.Middynet.sln")
+			}
+		}
+		
+		stage ('Publish'){
+			when { branch '285683-upload-package-to-github' }
+			steps{
+				GitHubCreateRelease (AllowBranch: "285683-upload-package-to-github", Version: env.VERSION)
+				{	
+					GitHubUploadAssetFile(
+						UriToPublish: "Voxel.Middynet.${env.VERSION}.nupkg",
+						FileName: "Voxel.Middynet"
+					){};
+					
+					GitHubUploadAssetFile(
+						UriToPublish: "Voxel.Middynet.SSMMiddleware.${env.VERSION}.nupkg",
+						FileName: "Voxel.Middynet.SSMMiddleware"
+					){};
+					
+					NugetPublish();
+				}
+			}
+		}
+
+	}
+	
+	post {
+		always {
+			ConsoleParsing();
+		}
+	}
+}
