@@ -8,7 +8,7 @@
     <PackageVersion>$(middynet)</PackageVersion>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <IncludeSymbols>true</IncludeSymbols>
-    <PackageOutputPath>..\..\..\</PackageOutputPath>
+    <PackageOutputPath>..\..\</PackageOutputPath>
   </PropertyGroup>
 
   <ItemGroup>
