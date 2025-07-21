@@ -14,7 +14,7 @@ pipeline {
 	stages {	
 		stage ('Start') {		
 			steps {
-				SetVersion(versionMajorAndMinor: '1.0')
+				SetVersion(versionMajorAndMinor: '1.3', versionPatch: '1')
 			}
 		}
 		stage ('Build') {
@@ -38,13 +38,13 @@ pipeline {
 				GitHubCreateRelease (AllowBranch: "285683-upload-package-to-github", Version: env.VERSION)
 				{	
 					GitHubUploadAssetFile(
-						UriToPublish: "Voxel.Middynet.${env.VERSION}.nupkg",
-						FileName: "Voxel.Middynet"
+						UriToPublish: "Voxel.MiddyNet.${env.VERSION}.nupkg",
+						FileName: "Voxel.MiddyNet"
 					){};
 					
 					GitHubUploadAssetFile(
-						UriToPublish: "Voxel.Middynet.SSMMiddleware.${env.VERSION}.nupkg",
-						FileName: "Voxel.Middynet.SSMMiddleware"
+						UriToPublish: "Voxel.MiddyNet.SSMMiddleware.${env.VERSION}.nupkg",
+						FileName: "Voxel.MiddyNet.SSMMiddleware"
 					){};
 					
 					NugetPublish();
