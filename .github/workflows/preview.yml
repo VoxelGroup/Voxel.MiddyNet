@@ -10,7 +10,7 @@ jobs:
       BUILD_CONFIG: Release
       VERSION_SUFFIX: -rc1.${{ github.run_number }}
 
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
 
     steps:
     - uses: actions/checkout@v2
