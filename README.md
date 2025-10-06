@@ -20,8 +20,25 @@ For project documentation, please visit [readthedocs](https://voxelmiddynet.read
 ```
 
 ## Running the tests
+There are some integration tests that need an AWS profile called MiddyNetDev configured in your local machine.
 
-Tests are written using xUnit and NSubstitute. There are some integration tests that need an AWS profile called MiddyNetDev configured in your local machine.
+To run the tests the following configuration is required:
+- In your user folder, ensure that a folder called `.aws` exists.
+- Inside that folder, ensure that a file called `credentials` exists with the following content:
+```
+[MiddyNetDev]
+aws_access_key_id = YOUR_ACCESS_KEY
+aws_secret_access_key = YOUR_SECRET_KEY
+# These values can be obtained from the corporate secret vault.
+```
+- Inside that folder, ensure that a file called `config` exists with the following content:
+```
+[profile MiddyNetDev]
+region = eu-west-1
+```
+
+Tests are written using xUnit and NSubstitute.
+
 1. Clone this repository
 2. Build the solution
 3. Run tests using VS embedded Tests Window or with this command: `dotnet test` under the test project folder
