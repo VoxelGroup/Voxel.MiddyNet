@@ -10,6 +10,8 @@ namespace Voxel.MiddyNet.ProblemDetailsMiddleware
         public ProblemDetailsMiddlewareV2(ProblemDetailsMiddlewareOptions options = null) =>
             this.options = options ?? new ProblemDetailsMiddlewareOptions();
 
+        public bool InterruptsExecution => false;
+
         public Task Before(APIGatewayHttpApiV2ProxyRequest lambdaEvent, MiddyNetContext context) => Task.CompletedTask;
 
         public Task<APIGatewayHttpApiV2ProxyResponse> After(APIGatewayHttpApiV2ProxyResponse lambdaResponse, MiddyNetContext context)
